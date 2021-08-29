@@ -24,8 +24,19 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin, RestorationMixin {
+class InheritedDataProvider extends InheritedWidget {
+  final TabController tabController;
+
+  InheritedDataProvider({
+    Widget child,
+    this.tabController,
+  }) : super(child: child);
+  @override
+  bool updateShouldNotify(InheritedDataProvider oldWidget) => tabController != oldWidget.tabController;
+  static InheritedDataProvider of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<InheritedDataProvider>();
+}
+
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin, RestorationMixin {
   TabController _tabController;
   RestorableInt tabIndex = RestorableInt(0);
 
@@ -72,75 +83,89 @@ class _HomePageState extends State<HomePage>
           isTextDirectionRtl ? turnsToRotateRight : turnsToRotateLeft;
       tabBarView = Row(
         children: [
-          Container(
-            width: 150 + 50 * (cappedTextScale(context) - 1),
-            alignment: Alignment.topCenter,
-            padding: const EdgeInsets.symmetric(vertical: 32),
-            child: Column(
-              children: [
-                const SizedBox(height: 24),
-                ExcludeSemantics(
-                  child: SizedBox(
-                    height: 80,
-                    child: Image.asset(
-                      'logo.png',
-                      package: 'rally_assets',
+          InheritedDataProvider(
+            tabController: _tabController,
+            child: Container(
+              width: 150 + 50 * (cappedTextScale(context) - 1),
+              alignment: Alignment.topCenter,
+              padding: const EdgeInsets.symmetric(vertical: 32),
+              child: Column(
+                children: [
+                  const SizedBox(height: 24),
+                  ExcludeSemantics(
+                    child: SizedBox(
+                      height: 80,
+                      child: Image.asset(
+                        'logo.png',
+                        package: 'rally_assets',
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 24),
-                // Rotate the tab bar, so the animation is vertical for desktops.
-                RotatedBox(
-                  quarterTurns: verticalRotation,
-                  child: _RallyTabBar(
-                    tabs: _buildTabs(
-                            context: context, theme: theme, isVertical: true)
-                        .map(
-                      (widget) {
-                        // Revert the rotation on the tabs.
-                        return RotatedBox(
-                          quarterTurns: revertVerticalRotation,
-                          child: widget,
-                        );
-                      },
-                    ).toList(),
-                    tabController: _tabController,
+                  const SizedBox(height: 24),
+                  // Rotate the tab bar, so the animation is vertical for desktops.
+                  RotatedBox(
+                    quarterTurns: verticalRotation,
+                    child: _RallyTabBar(
+                      tabs: _buildTabs(
+                          context: context, theme: theme, isVertical: true)
+                          .map(
+                            (widget) {
+                          // Revert the rotation on the tabs.
+                          return RotatedBox(
+                            quarterTurns: revertVerticalRotation,
+                            child: widget,
+                          );
+                        },
+                      ).toList(),
+                      tabController: _tabController,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            // Rotate the tab views so we can swipe up and down.
-            child: RotatedBox(
-              quarterTurns: verticalRotation,
-              child: TabBarView(
-                controller: _tabController,
-                children: _buildTabViews().map(
-                  (widget) {
-                    // Revert the rotation on the tab views.
-                    return RotatedBox(
-                      quarterTurns: revertVerticalRotation,
-                      child: widget,
-                    );
-                  },
-                ).toList(),
+                ],
               ),
             ),
           ),
+          InheritedDataProvider(
+            tabController: _tabController,
+            child: Expanded(
+              // Rotate the tab views so we can swipe up and down.
+              child: RotatedBox(
+                quarterTurns: verticalRotation,
+                child: TabBarView(
+                  controller: _tabController,
+                  children: _buildTabViews().map(
+                        (widget) {
+                      // Revert the rotation on the tab views.
+                      return RotatedBox(
+                        quarterTurns: revertVerticalRotation,
+                        child: widget,
+                      );
+                    },
+                  ).toList(),
+                ),
+              ),
+            ),
+          ),
+
+
         ],
       );
     } else {
       tabBarView = Column(
         children: [
-          _RallyTabBar(
-            tabs: _buildTabs(context: context, theme: theme),
+          InheritedDataProvider(
             tabController: _tabController,
+            child: _RallyTabBar(
+              tabs: _buildTabs(context: context, theme: theme),
+              tabController: _tabController,
+            ),
           ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: _buildTabViews(),
+          InheritedDataProvider(
+            tabController: _tabController,
+            child: Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: _buildTabViews(),
+              ),
             ),
           ),
         ],

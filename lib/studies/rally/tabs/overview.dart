@@ -15,6 +15,7 @@ import 'package:gallery/studies/rally/colors.dart';
 import 'package:gallery/studies/rally/data.dart';
 import 'package:gallery/studies/rally/finance.dart';
 import 'package:gallery/studies/rally/formatters.dart';
+import 'package:gallery/studies/rally/home.dart';
 
 /// A page that shows a status overview.
 class OverviewView extends StatefulWidget {
@@ -118,6 +119,7 @@ class _OverviewGrid extends StatelessWidget {
               buttonSemanticsLabel:
                   GalleryLocalizations.of(context).rallySeeAllAccounts,
               order: 1,
+              tabIndexToOpen: 1,
             ),
           ),
           if (hasMultipleColumns) SizedBox(width: spacing),
@@ -130,6 +132,7 @@ class _OverviewGrid extends StatelessWidget {
               buttonSemanticsLabel:
                   GalleryLocalizations.of(context).rallySeeAllBills,
               order: 2,
+              tabIndexToOpen: 2,
             ),
           ),
           _FinancialView(
@@ -140,6 +143,7 @@ class _OverviewGrid extends StatelessWidget {
             buttonSemanticsLabel:
                 GalleryLocalizations.of(context).rallySeeAllBudgets,
             order: 3,
+            tabIndexToOpen: 3,
           ),
         ],
       );
@@ -236,6 +240,7 @@ class _FinancialView extends StatelessWidget {
     this.financialItemViews,
     this.buttonSemanticsLabel,
     this.order,
+    this.tabIndexToOpen
   });
 
   final String title;
@@ -243,10 +248,13 @@ class _FinancialView extends StatelessWidget {
   final double total;
   final List<FinancialEntityCategoryView> financialItemViews;
   final double order;
+  final int tabIndexToOpen;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final tabController = InheritedDataProvider.of(context).tabController;
+
     return FocusTraversalOrder(
       order: NumericFocusOrder(order),
       child: Container(
@@ -283,7 +291,9 @@ class _FinancialView extends StatelessWidget {
                 0, math.min(financialItemViews.length, 3)),
             TextButton(
               style: TextButton.styleFrom(primary: Colors.white),
-              onPressed: () {},
+              onPressed: () {
+                tabController.animateTo(tabIndexToOpen);
+              },
               child: Text(
                 GalleryLocalizations.of(context).rallySeeAll,
                 semanticsLabel: buttonSemanticsLabel,
