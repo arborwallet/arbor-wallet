@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:arbor/models/wallet.dart';
+import 'package:arbor/models/fork.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'screens/info_screen.dart';
@@ -10,6 +11,7 @@ main() async {
   await Hive.initFlutter();
   // Registering the adapter
   Hive.registerAdapter(WalletAdapter());
+  Hive.registerAdapter(ForkAdapter());
   // Opening the box
   await Hive.openBox(HiveConstants.walletBox);
 

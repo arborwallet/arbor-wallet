@@ -66,8 +66,8 @@ class _InfoScreenState extends State<InfoScreen> {
                     ),
                   ),
                   child: ListTile(
-                    title: Text(walletData.name),
-                    subtitle: Text(walletData.phrase),
+                    title: Text('${walletData.fork.name} (${walletData.name})'),
+                    subtitle: Text(walletData.address),
                     trailing: IconButton(
                       onPressed: () => _deleteInfo(index),
                       icon: Icon(

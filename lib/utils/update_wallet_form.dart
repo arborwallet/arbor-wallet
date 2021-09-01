@@ -40,6 +40,8 @@ class _UpdateWalletFormState extends State<UpdateWalletForm> {
       phrase: existingWallet.phrase,
       privateKey: existingWallet.privateKey,
       publicKey: existingWallet.publicKey,
+      address: existingWallet.address,
+      fork: existingWallet.fork,
     );
 
     box.putAt(widget.index, newWallet);

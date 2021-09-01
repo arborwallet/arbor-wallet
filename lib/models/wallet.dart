@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:arbor/models/fork.dart';
 
 part 'wallet.g.dart';
 
@@ -19,11 +20,19 @@ class Wallet {
   @HiveField(4)
   final String publicKey;
 
+  @HiveField(5)
+  final String address;
+
+  @HiveField(6)
+  final Fork fork;
+
   Wallet({
     required this.name,
     required this.password,
     required this.phrase,
     required this.privateKey,
     required this.publicKey,
+    required this.address,
+    required this.fork,
   });
 }

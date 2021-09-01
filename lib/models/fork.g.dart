@@ -1,50 +1,41 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'wallet.dart';
+part of 'fork.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class WalletAdapter extends TypeAdapter<Wallet> {
+class ForkAdapter extends TypeAdapter<Fork> {
   @override
-  final int typeId = 1;
+  final int typeId = 2;
 
   @override
-  Wallet read(BinaryReader reader) {
+  Fork read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Wallet(
+    return Fork(
       name: fields[0] as String,
-      password: fields[1] as String,
-      phrase: fields[2] as String,
-      privateKey: fields[3] as String,
-      publicKey: fields[4] as String,
-      address: fields[5] as String,
-      fork: fields[6] as Fork,
+      ticker: fields[1] as String,
+      unit: fields[2] as String,
+      precision: fields[3] as int,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Wallet obj) {
+  void write(BinaryWriter writer, Fork obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.password)
+      ..write(obj.ticker)
       ..writeByte(2)
-      ..write(obj.phrase)
+      ..write(obj.unit)
       ..writeByte(3)
-      ..write(obj.privateKey)
-      ..writeByte(4)
-      ..write(obj.publicKey)
-      ..writeByte(5)
-      ..write(obj.address)
-      ..writeByte(6)
-      ..write(obj.fork);
+      ..write(obj.precision);
   }
 
   @override
@@ -53,7 +44,7 @@ class WalletAdapter extends TypeAdapter<Wallet> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is WalletAdapter &&
+      other is ForkAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
