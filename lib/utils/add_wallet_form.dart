@@ -111,8 +111,8 @@ class _AddWalletFormState extends State<AddWalletForm> {
   Future<Wallet> _fetchWalletKeys() async {
     final keygenResponse = await http.get(Uri.parse('https://farmforcrypto.com/api/v1/keygen'));
 
-    //print('HEADERS: ${response.headers}');
-    //print('BODY: ${response.body}');
+    // print('HEADERS: ${keygenResponse.headers}');
+    // print('BODY: ${keygenResponse.body}');
 
     if (keygenResponse.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -120,27 +120,21 @@ class _AddWalletFormState extends State<AddWalletForm> {
       KeygenResponse keygen = KeygenResponse.fromJson(jsonDecode(keygenResponse.body));
 
       if (keygen.success == true) {
-        // final walletResponse = await http.post(
-        //   Uri.parse('https://farmforcrypto.com/api/v1/wallet'),
-        //   headers: {
-        //     "Content-Type": "application/x-www-form-urlencoded",
-        //   },
-        //   encoding: Encoding.getByName('utf-8'),
-        //   body: {
-        //     "public_key": keygen.publicKey,
-        //     "fork": "xch",
-        //   },
-        // );
-        // HACK
-        final walletResponse = await http.get(Uri.parse('https://farmforcrypto.com/api/v1/wallet'));
+        final walletResponse = await http.post(
+          Uri.parse('https://farmforcrypto.com/api/v1/wallet'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            'public_key': keygen.publicKey,
+            'fork': 'xch',
+          }),
+        );
 
         if (walletResponse.statusCode == 200) {
           // If the server did return a 200 OK response,
           // then parse the JSON.
-          // HACK
-          ForkResponse fork = ForkResponse(name: 'Chia', ticker: 'xch', unit: 'mojo', precision: 12);
-          WalletResponse wallet = WalletResponse(success: true, address: 'xch16ezg9sjwmcf0n64r22qjdxgza02jwawptldys3yx53uw9t9f6eys2z4te7', fork: fork);
-          // WalletResponse wallet = WalletResponse.fromJson(jsonDecode(walletResponse.body));
+          WalletResponse wallet = WalletResponse.fromJson(jsonDecode(walletResponse.body));
           // temp wallet model to be filled out/persisted later
           Wallet walletModel = Wallet(
             name: '',
@@ -149,7 +143,7 @@ class _AddWalletFormState extends State<AddWalletForm> {
             privateKey: keygen.privateKey,
             publicKey: keygen.publicKey,
             address: wallet.address,
-            fork: Fork(name: fork.name, ticker: fork.ticker, unit: fork.unit, precision: fork.precision),
+            fork: Fork(name: wallet.fork.name, ticker: wallet.fork.ticker, unit: wallet.fork.unit, precision: wallet.fork.precision),
           );
 
           return walletModel;
