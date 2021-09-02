@@ -26,6 +26,9 @@ class Wallet {
   @HiveField(6)
   final Fork fork;
 
+  @HiveField(7)
+  final double balance;
+
   Wallet({
     required this.name,
     required this.password,
@@ -34,5 +37,6 @@ class Wallet {
     required this.publicKey,
     required this.address,
     required this.fork,
+    required this.balance,
   });
 }

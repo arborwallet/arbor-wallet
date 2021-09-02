@@ -32,7 +32,7 @@ class _InfoScreenState extends State<InfoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Arbor Wallet'),
+        title: const Text('Arbor Wallet'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.of(context).push(
@@ -40,13 +40,13 @@ class _InfoScreenState extends State<InfoScreen> {
             builder: (context) => AddScreen(),
           ),
         ),
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       body: ValueListenableBuilder(
         valueListenable: contactBox.listenable(),
         builder: (context, Box box, widget) {
           if (box.isEmpty) {
-            return Center(
+            return const Center(
               child: Text('Tap + to create a new wallet.'),
             );
           } else {
@@ -65,14 +65,20 @@ class _InfoScreenState extends State<InfoScreen> {
                       ),
                     ),
                   ),
-                  child: ListTile(
-                    title: Text('${walletData.fork.name} (${walletData.name})'),
-                    subtitle: Text(walletData.address),
-                    trailing: IconButton(
-                      onPressed: () => _deleteInfo(index),
-                      icon: Icon(
-                        Icons.delete,
-                        color: Colors.red,
+                  child: Card (
+                    elevation: 8,
+                    shadowColor: Colors.lightGreen,
+                    margin: EdgeInsets.all(10),
+                    child: ListTile(
+                      leading: Icon(Icons.account_balance_wallet),
+                      title: Text('${walletData.fork.name} (${walletData.name})'),
+                      subtitle: Text(walletData.address),
+                      trailing: IconButton(
+                        onPressed: () => _deleteInfo(index),
+                        icon: const Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
                       ),
                     ),
                   ),

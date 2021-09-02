@@ -144,6 +144,7 @@ class _AddWalletFormState extends State<AddWalletForm> {
             publicKey: keygen.publicKey,
             address: wallet.address,
             fork: Fork(name: wallet.fork.name, ticker: wallet.fork.ticker, unit: wallet.fork.unit, precision: wallet.fork.precision),
+            balance: 0,
           );
 
           return walletModel;
@@ -172,6 +173,7 @@ class _AddWalletFormState extends State<AddWalletForm> {
       publicKey: publicKey,
       address: address,
       fork: fork,
+      balance: 0,
     );
 
     box.add(newWallet);
