@@ -65,7 +65,7 @@ class GalleryApp extends StatelessWidget {
               LocaleNamesLocalizationsDelegate()
             ],
             routes: {
-              '/':(context)=>RootPage(),
+              '/':(context)=>const RootPage(),
             },
             initialRoute: '/',
             supportedLocales: GalleryLocalizations.supportedLocales,
