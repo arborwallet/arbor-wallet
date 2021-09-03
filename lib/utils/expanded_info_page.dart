@@ -165,7 +165,10 @@ class TransactionsSheet extends StatelessWidget {
         builder: (context, scrollController) {
           return Scaffold(
             appBar: AppBar(
-              leading: Icon(Icons.close),
+              leading: IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
             ),
             body: Container(
               child: Center(
