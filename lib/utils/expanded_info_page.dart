@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -128,7 +129,15 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
             style: ElevatedButton.styleFrom(
               minimumSize: Size(double.infinity, 30), // double.infinity is the width and 30 is the height
             ),
-            onPressed: () {},
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (BuildContext context) {
+                  return TransactionsSheet();
+                },
+              );
+            },
             child: Text('All Transactions')
         ),
         ListTile(
@@ -142,6 +151,29 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
           ),
         )
       ]
+    );
+  }
+}
+
+class TransactionsSheet extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: 0.86,
+        minChildSize: 0.6,
+        builder: (context, scrollController) {
+          return Scaffold(
+            appBar: AppBar(
+              leading: Icon(Icons.close),
+            ),
+            body: Container(
+              child: Center(
+                child: Text('Transactions!'),
+              ),
+            ),
+          );
+        }
     );
   }
 }
