@@ -73,7 +73,17 @@ class _InfoScreenState extends State<InfoScreen> {
                     child: Column(
                       children: [
                         ListTile(
-                          leading: Icon(Icons.account_balance_wallet),
+                          leading: Container(
+                            width: 50,
+                            height: 50,
+                            decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                                image: new DecorationImage(
+                                  image: AssetImage("assets/images/chia-logo.png"),
+                                  fit: BoxFit.fitHeight,
+                                ),
+                            ),
+                          ),
                           title: Text('${walletData.fork.name} (${walletData.name})'),
                           subtitle: Text(walletData.fork.ticker.toUpperCase()),
                           trailing: IconButton(
@@ -93,9 +103,9 @@ class _InfoScreenState extends State<InfoScreen> {
                           contentPadding: EdgeInsets.all(10.0),//change for side padding
                           title: Row(
                             children: <Widget>[
-                              Expanded(child: ElevatedButton(onPressed: () {},child: Text("Receive"))),
+                              Expanded(child: OutlinedButton(onPressed: () {},child: Text("Receive"))),
                               SizedBox(width: 10),
-                              Expanded(child: ElevatedButton(onPressed: () {},child: Text("Send"))),
+                              Expanded(child: OutlinedButton(onPressed: () {},child: Text("Send"))),
                             ],
                           ),
                         )
