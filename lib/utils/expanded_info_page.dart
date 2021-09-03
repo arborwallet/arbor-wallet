@@ -118,6 +118,16 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
                         },
                       ),
                     ),
+                    Card(
+                      child: ListTile(
+                        title: Text('Wallet Password'),
+                        subtitle: Text('*' * walletData.password.toString().length),
+                        trailing: Icon(Icons.copy),
+                        onTap: () {
+                          Clipboard.setData(ClipboardData(text: walletData.password));
+                        },
+                      ),
+                    ),
                   ],
                 );
               }
