@@ -9,39 +9,34 @@ import 'package:flutter_gen/gen_l10n/gallery_localizations.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:gallery/constants.dart';
 import 'package:gallery/data/gallery_options.dart';
-import 'package:gallery/pages/backdrop.dart';
-import 'package:gallery/pages/splash.dart';
+import 'package:gallery/rally/app.dart';
 import 'package:gallery/routes.dart';
 import 'package:gallery/themes/gallery_theme_data.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-export 'package:gallery/data/demos.dart' show pumpDeferredLibraries;
-
-import 'package:gallery/studies/rally/app.dart';
-
-void main() {
+void main(){
   GoogleFonts.config.allowRuntimeFetching = false;
   runApp(const GalleryApp());
 }
 
 class GalleryApp extends StatelessWidget {
   const GalleryApp({
-    Key key,
+    Key? key,
     this.initialRoute,
     this.isTestMode = false,
   }) : super(key: key);
 
   final bool isTestMode;
-  final String initialRoute;
+  final String? initialRoute;
 
   @override
   Widget build(BuildContext context) {
     return ModelBinding(
       initialModel: GalleryOptions(
-        themeMode: ThemeMode.system,
+        themeMode: ThemeMode.light,
         textScaleFactor: systemTextScaleFactorOption,
         customTextDirection: CustomTextDirection.localeBased,
-        locale: null,
+        locale: systemLocaleOption,
         timeDilation: timeDilation,
         platform: defaultTargetPlatform,
         isTestMode: isTestMode,
@@ -69,14 +64,17 @@ class GalleryApp extends StatelessWidget {
               ...GalleryLocalizations.localizationsDelegates,
               LocaleNamesLocalizationsDelegate()
             ],
-            initialRoute: initialRoute,
+            routes: {
+              '/':(context)=>RootPage(),
+            },
+            initialRoute: '/',
             supportedLocales: GalleryLocalizations.supportedLocales,
             locale: GalleryOptions.of(context).locale,
             localeResolutionCallback: (locale, supportedLocales) {
               deviceLocale = locale;
               return locale;
             },
-            onGenerateRoute: RouteConfiguration.onGenerateRoute,
+            //onGenerateRoute: RouteConfiguration.onGenerateRoute,
           );
         },
       ),
@@ -86,8 +84,8 @@ class GalleryApp extends StatelessWidget {
 
 class RootPage extends StatelessWidget {
   const RootPage({
-    Key key,
-  }) : super(key: key);
+    Key? key,
+  }) ;
 
   @override
   Widget build(BuildContext context) {
@@ -97,5 +95,21 @@ class RootPage extends StatelessWidget {
     //   ),
     // );
     return const RallyApp();
+  }
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      key: GlobalKey(),
+      title: 'Zoropay',
+      //home: const RootPage(),
+      themeMode: ThemeMode.light,
+      debugShowCheckedModeBanner: false,
+      onGenerateRoute: RouteConfiguration.onGenerateRoute,
+      //navigatorKey: StackedService.navigatorKey,
+      //onGenerateRoute: StackedRouter().onGenerateRoute,
+    );
   }
 }

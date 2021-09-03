@@ -38,7 +38,7 @@ class GalleryThemeData {
           _lightFillColor.withOpacity(0.80),
           _darkFillColor,
         ),
-        contentTextStyle: _textTheme.subtitle1.apply(color: _darkFillColor),
+        contentTextStyle: _textTheme.subtitle1!.apply(color: _darkFillColor),
       ),
     );
   }

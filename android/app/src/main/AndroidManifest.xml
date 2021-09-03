@@ -8,7 +8,6 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:label="Flutter Gallery"
-        android:name="io.flutter.app.FlutterPlayStoreSplitApplication"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

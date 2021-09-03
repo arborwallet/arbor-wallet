@@ -18,7 +18,7 @@ import 'package:gallery/feature_discovery/overlay.dart';
 class FeatureDiscoveryController extends StatefulWidget {
   final Widget child;
 
-  const FeatureDiscoveryController(this.child, {Key key}) : super(key: key);
+  const FeatureDiscoveryController(this.child, {Key? key}) : super(key: key);
 
   static _FeatureDiscoveryControllerState of(BuildContext context) {
     final matchResult =
@@ -95,13 +95,13 @@ class FeatureDiscovery extends StatefulWidget {
   final bool showOverlay;
 
   /// Callback invoked when the user dismisses an overlay.
-  final void Function() onDismiss;
+  final void Function()? onDismiss;
 
   /// Callback invoked when the user taps on the tap target of an overlay.
-  final void Function() onTap;
+  final void Function()? onTap;
 
   /// Color with which to fill the outer circle.
-  final Color color;
+  final Color? color;
 
   @visibleForTesting
   static const overlayKey = Key('overlay key');
@@ -110,11 +110,11 @@ class FeatureDiscovery extends StatefulWidget {
   static const gestureDetectorKey = Key('gesture detector key');
 
   const FeatureDiscovery({
-    Key key,
-    @required this.title,
-    @required this.description,
-    @required this.child,
-    @required this.showOverlay,
+    Key? key,
+    required this.title,
+    required this.description,
+    required this.child,
+    required this.showOverlay,
     this.onDismiss,
     this.onTap,
     this.color,
@@ -129,13 +129,13 @@ class _FeatureDiscoveryState extends State<FeatureDiscovery>
   bool showOverlay = false;
   FeatureDiscoveryStatus status = FeatureDiscoveryStatus.closed;
 
-  AnimationController openController;
-  AnimationController rippleController;
-  AnimationController tapController;
-  AnimationController dismissController;
+  AnimationController? openController;
+  AnimationController? rippleController;
+  AnimationController? tapController;
+  AnimationController? dismissController;
 
-  Animations animations;
-  OverlayEntry overlay;
+  Animations? animations;
+  OverlayEntry? overlay;
 
   Widget buildOverlay(BuildContext ctx, Offset center) {
     debugCheckHasMediaQuery(ctx);
@@ -160,7 +160,7 @@ class _FeatureDiscoveryState extends State<FeatureDiscovery>
             ),
           ),
           Background(
-            animations: animations,
+            animations: animations!,
             status: status,
             color: color,
             center: center,
@@ -168,7 +168,7 @@ class _FeatureDiscoveryState extends State<FeatureDiscovery>
             textDirection: Directionality.of(ctx),
           ),
           Content(
-            animations: animations,
+            animations: animations!,
             status: status,
             center: center,
             deviceSize: deviceSize,
@@ -177,12 +177,12 @@ class _FeatureDiscoveryState extends State<FeatureDiscovery>
             textTheme: Theme.of(ctx).textTheme,
           ),
           Ripple(
-            animations: animations,
+            animations: animations!,
             status: status,
             center: center,
           ),
           TapTarget(
-            animations: animations,
+            animations: animations!,
             status: status,
             center: center,
             onTap: tap,
@@ -197,10 +197,10 @@ class _FeatureDiscoveryState extends State<FeatureDiscovery>
   ///
   /// Tapping will stop any active controller and start the [tapController].
   void tap() {
-    openController.stop();
-    rippleController.stop();
-    dismissController.stop();
-    tapController.forward(from: 0.0);
+    openController!.stop();
+    rippleController!.stop();
+    dismissController!.stop();
+    tapController!.forward(from: 0.0);
   }
 
   /// Method to handle user dismissal.
@@ -208,19 +208,19 @@ class _FeatureDiscoveryState extends State<FeatureDiscovery>
   /// Dismissal will stop any active controller and start the
   /// [dismissController].
   void dismiss() {
-    openController.stop();
-    rippleController.stop();
-    tapController.stop();
-    dismissController.forward(from: 0.0);
+    openController!.stop();
+    rippleController!.stop();
+    tapController!.stop();
+    dismissController!.forward(from: 0.0);
   }
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (ctx, _) {
       if (overlay != null) {
-        SchedulerBinding.instance.addPostFrameCallback((_) {
+        SchedulerBinding.instance!.addPostFrameCallback((_) {
           // [OverlayEntry] needs to be explicitly rebuilt when necessary.
-          overlay.markNeedsBuild();
+          overlay!.markNeedsBuild();
         });
       } else {
         if (showOverlay && !FeatureDiscoveryController.of(ctx).isLocked) {
@@ -234,13 +234,13 @@ class _FeatureDiscoveryState extends State<FeatureDiscovery>
           // complete.
           FeatureDiscoveryController.of(ctx).lock();
 
-          SchedulerBinding.instance.addPostFrameCallback((_) {
+          SchedulerBinding.instance!.addPostFrameCallback((_) {
             setState(() {
               overlay = entry;
               status = FeatureDiscoveryStatus.closed;
-              openController.forward(from: 0.0);
+              openController!.forward(from: 0.0);
             });
-            Overlay.of(context).insert(entry);
+            Overlay.of(context)!.insert(entry);
           });
         }
       }
@@ -281,7 +281,7 @@ class _FeatureDiscoveryState extends State<FeatureDiscovery>
         if (animationStatus == AnimationStatus.forward) {
           setState(() => status = FeatureDiscoveryStatus.open);
         } else if (animationStatus == AnimationStatus.completed) {
-          rippleController.forward(from: 0.0);
+          rippleController!.forward(from: 0.0);
         }
       });
 
@@ -296,7 +296,7 @@ class _FeatureDiscoveryState extends State<FeatureDiscovery>
         if (animationStatus == AnimationStatus.forward) {
           setState(() => status = FeatureDiscoveryStatus.ripple);
         } else if (animationStatus == AnimationStatus.completed) {
-          rippleController.forward(from: 0.0);
+          rippleController!.forward(from: 0.0);
         }
       });
 
@@ -340,10 +340,10 @@ class _FeatureDiscoveryState extends State<FeatureDiscovery>
     assert(dismissController != null);
 
     animations = Animations(
-      openController,
-      tapController,
-      rippleController,
-      dismissController,
+      openController!,
+      tapController!,
+      rippleController!,
+      dismissController!,
     );
   }
 

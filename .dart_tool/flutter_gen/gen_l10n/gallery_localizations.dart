@@ -1,6 +1,7 @@
 
 import 'dart:async';
 
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
@@ -1615,13 +1616,13 @@ abstract class GalleryLocalizations {
   /// **'Discrete'**
   String get demoSlidersDiscrete;
 
-  /// Text to describe that we have a slider with discrete values and a custom theme.
+  /// Text to describe that we have a slider with discrete values and a custom theme. 
   ///
   /// In en, this message translates to:
   /// **'Discrete Slider with Custom Theme'**
   String get demoSlidersDiscreteSliderWithCustomTheme;
 
-  /// Text to describe that we have a range slider with continuous values and a custom theme.
+  /// Text to describe that we have a range slider with continuous values and a custom theme. 
   ///
   /// In en, this message translates to:
   /// **'Continuous Range Slider with Custom Theme'**
@@ -4927,7 +4928,7 @@ class _GalleryLocalizationsDelegate extends LocalizationsDelegate<GalleryLocaliz
 
   @override
   Future<GalleryLocalizations> load(Locale locale) {
-    return lookupGalleryLocalizations(locale);
+    return _lookupGalleryLocalizations(locale);
   }
 
   @override
@@ -4937,101 +4938,101 @@ class _GalleryLocalizationsDelegate extends LocalizationsDelegate<GalleryLocaliz
   bool shouldReload(_GalleryLocalizationsDelegate old) => false;
 }
 
-Future<GalleryLocalizations> lookupGalleryLocalizations(Locale locale) {
-
-  // Lookup logic when language+script codes are specified.
-  switch (locale.languageCode) {
-    case 'sr': {
+Future<GalleryLocalizations> _lookupGalleryLocalizations(Locale locale) {
+  
+// Lookup logic when language+script codes are specified.
+switch (locale.languageCode) {
+  case 'sr': {
   switch (locale.scriptCode) {
     case 'Latn': return gallery_localizations_sr.loadLibrary().then((dynamic _) => gallery_localizations_sr.GalleryLocalizationsSrLatn());
-   }
-  break;
-   }
   }
+  break;
+}
+}
 
-  // Lookup logic when language+country codes are specified.
-  switch (locale.languageCode) {
-    case 'ar': {
+// Lookup logic when language+country codes are specified.
+switch (locale.languageCode) {
+  case 'ar': {
   switch (locale.countryCode) {
     case 'EG': return gallery_localizations_ar.loadLibrary().then((dynamic _) => gallery_localizations_ar.GalleryLocalizationsArEg());
-case 'JO': return gallery_localizations_ar.loadLibrary().then((dynamic _) => gallery_localizations_ar.GalleryLocalizationsArJo());
-case 'MA': return gallery_localizations_ar.loadLibrary().then((dynamic _) => gallery_localizations_ar.GalleryLocalizationsArMa());
-case 'SA': return gallery_localizations_ar.loadLibrary().then((dynamic _) => gallery_localizations_ar.GalleryLocalizationsArSa());
-   }
+        case 'JO': return gallery_localizations_ar.loadLibrary().then((dynamic _) => gallery_localizations_ar.GalleryLocalizationsArJo());
+        case 'MA': return gallery_localizations_ar.loadLibrary().then((dynamic _) => gallery_localizations_ar.GalleryLocalizationsArMa());
+        case 'SA': return gallery_localizations_ar.loadLibrary().then((dynamic _) => gallery_localizations_ar.GalleryLocalizationsArSa());
+  }
   break;
-   }
+}
     case 'de': {
   switch (locale.countryCode) {
     case 'AT': return gallery_localizations_de.loadLibrary().then((dynamic _) => gallery_localizations_de.GalleryLocalizationsDeAt());
-case 'CH': return gallery_localizations_de.loadLibrary().then((dynamic _) => gallery_localizations_de.GalleryLocalizationsDeCh());
-   }
+        case 'CH': return gallery_localizations_de.loadLibrary().then((dynamic _) => gallery_localizations_de.GalleryLocalizationsDeCh());
+  }
   break;
-   }
+}
     case 'en': {
   switch (locale.countryCode) {
     case 'AU': return gallery_localizations_en.loadLibrary().then((dynamic _) => gallery_localizations_en.GalleryLocalizationsEnAu());
-case 'CA': return gallery_localizations_en.loadLibrary().then((dynamic _) => gallery_localizations_en.GalleryLocalizationsEnCa());
-case 'GB': return gallery_localizations_en.loadLibrary().then((dynamic _) => gallery_localizations_en.GalleryLocalizationsEnGb());
-case 'IE': return gallery_localizations_en.loadLibrary().then((dynamic _) => gallery_localizations_en.GalleryLocalizationsEnIe());
-case 'IN': return gallery_localizations_en.loadLibrary().then((dynamic _) => gallery_localizations_en.GalleryLocalizationsEnIn());
-case 'NZ': return gallery_localizations_en.loadLibrary().then((dynamic _) => gallery_localizations_en.GalleryLocalizationsEnNz());
-case 'SG': return gallery_localizations_en.loadLibrary().then((dynamic _) => gallery_localizations_en.GalleryLocalizationsEnSg());
-case 'ZA': return gallery_localizations_en.loadLibrary().then((dynamic _) => gallery_localizations_en.GalleryLocalizationsEnZa());
-   }
+        case 'CA': return gallery_localizations_en.loadLibrary().then((dynamic _) => gallery_localizations_en.GalleryLocalizationsEnCa());
+        case 'GB': return gallery_localizations_en.loadLibrary().then((dynamic _) => gallery_localizations_en.GalleryLocalizationsEnGb());
+        case 'IE': return gallery_localizations_en.loadLibrary().then((dynamic _) => gallery_localizations_en.GalleryLocalizationsEnIe());
+        case 'IN': return gallery_localizations_en.loadLibrary().then((dynamic _) => gallery_localizations_en.GalleryLocalizationsEnIn());
+        case 'NZ': return gallery_localizations_en.loadLibrary().then((dynamic _) => gallery_localizations_en.GalleryLocalizationsEnNz());
+        case 'SG': return gallery_localizations_en.loadLibrary().then((dynamic _) => gallery_localizations_en.GalleryLocalizationsEnSg());
+        case 'ZA': return gallery_localizations_en.loadLibrary().then((dynamic _) => gallery_localizations_en.GalleryLocalizationsEnZa());
+  }
   break;
-   }
+}
     case 'es': {
   switch (locale.countryCode) {
     case '419': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEs419());
-case 'AR': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsAr());
-case 'BO': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsBo());
-case 'CL': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsCl());
-case 'CO': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsCo());
-case 'CR': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsCr());
-case 'DO': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsDo());
-case 'EC': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsEc());
-case 'GT': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsGt());
-case 'HN': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsHn());
-case 'MX': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsMx());
-case 'NI': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsNi());
-case 'PA': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsPa());
-case 'PE': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsPe());
-case 'PR': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsPr());
-case 'PY': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsPy());
-case 'SV': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsSv());
-case 'US': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsUs());
-case 'UY': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsUy());
-case 'VE': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsVe());
-   }
+        case 'AR': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsAr());
+        case 'BO': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsBo());
+        case 'CL': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsCl());
+        case 'CO': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsCo());
+        case 'CR': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsCr());
+        case 'DO': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsDo());
+        case 'EC': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsEc());
+        case 'GT': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsGt());
+        case 'HN': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsHn());
+        case 'MX': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsMx());
+        case 'NI': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsNi());
+        case 'PA': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsPa());
+        case 'PE': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsPe());
+        case 'PR': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsPr());
+        case 'PY': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsPy());
+        case 'SV': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsSv());
+        case 'US': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsUs());
+        case 'UY': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsUy());
+        case 'VE': return gallery_localizations_es.loadLibrary().then((dynamic _) => gallery_localizations_es.GalleryLocalizationsEsVe());
+  }
   break;
-   }
+}
     case 'fr': {
   switch (locale.countryCode) {
     case 'CA': return gallery_localizations_fr.loadLibrary().then((dynamic _) => gallery_localizations_fr.GalleryLocalizationsFrCa());
-case 'CH': return gallery_localizations_fr.loadLibrary().then((dynamic _) => gallery_localizations_fr.GalleryLocalizationsFrCh());
-   }
+        case 'CH': return gallery_localizations_fr.loadLibrary().then((dynamic _) => gallery_localizations_fr.GalleryLocalizationsFrCh());
+  }
   break;
-   }
+}
     case 'pt': {
   switch (locale.countryCode) {
     case 'BR': return gallery_localizations_pt.loadLibrary().then((dynamic _) => gallery_localizations_pt.GalleryLocalizationsPtBr());
-case 'PT': return gallery_localizations_pt.loadLibrary().then((dynamic _) => gallery_localizations_pt.GalleryLocalizationsPtPt());
-   }
+        case 'PT': return gallery_localizations_pt.loadLibrary().then((dynamic _) => gallery_localizations_pt.GalleryLocalizationsPtPt());
+  }
   break;
-   }
+}
     case 'zh': {
   switch (locale.countryCode) {
     case 'CN': return gallery_localizations_zh.loadLibrary().then((dynamic _) => gallery_localizations_zh.GalleryLocalizationsZhCn());
-case 'HK': return gallery_localizations_zh.loadLibrary().then((dynamic _) => gallery_localizations_zh.GalleryLocalizationsZhHk());
-case 'TW': return gallery_localizations_zh.loadLibrary().then((dynamic _) => gallery_localizations_zh.GalleryLocalizationsZhTw());
-   }
-  break;
-   }
+        case 'HK': return gallery_localizations_zh.loadLibrary().then((dynamic _) => gallery_localizations_zh.GalleryLocalizationsZhHk());
+        case 'TW': return gallery_localizations_zh.loadLibrary().then((dynamic _) => gallery_localizations_zh.GalleryLocalizationsZhTw());
   }
+  break;
+}
+}
 
-  // Lookup logic when only language code is specified.
-  switch (locale.languageCode) {
-    case 'af': return gallery_localizations_af.loadLibrary().then((dynamic _) => gallery_localizations_af.GalleryLocalizationsAf());
+// Lookup logic when only language code is specified.
+switch (locale.languageCode) {
+  case 'af': return gallery_localizations_af.loadLibrary().then((dynamic _) => gallery_localizations_af.GalleryLocalizationsAf());
     case 'am': return gallery_localizations_am.loadLibrary().then((dynamic _) => gallery_localizations_am.GalleryLocalizationsAm());
     case 'ar': return gallery_localizations_ar.loadLibrary().then((dynamic _) => gallery_localizations_ar.GalleryLocalizationsAr());
     case 'as': return gallery_localizations_as.loadLibrary().then((dynamic _) => gallery_localizations_as.GalleryLocalizationsAs());
@@ -5107,7 +5108,8 @@ case 'TW': return gallery_localizations_zh.loadLibrary().then((dynamic _) => gal
     case 'vi': return gallery_localizations_vi.loadLibrary().then((dynamic _) => gallery_localizations_vi.GalleryLocalizationsVi());
     case 'zh': return gallery_localizations_zh.loadLibrary().then((dynamic _) => gallery_localizations_zh.GalleryLocalizationsZh());
     case 'zu': return gallery_localizations_zu.loadLibrary().then((dynamic _) => gallery_localizations_zu.GalleryLocalizationsZu());
-  }
+}
+
 
   throw FlutterError(
     'GalleryLocalizations.delegate failed to load unsupported locale "$locale". This is likely '

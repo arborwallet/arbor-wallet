@@ -39,13 +39,13 @@ class Background extends StatelessWidget {
   static const padding = 40.0;
 
   const Background({
-    Key key,
-    @required this.animations,
-    @required this.center,
-    @required this.color,
-    @required this.deviceSize,
-    @required this.status,
-    @required this.textDirection,
+    Key? key,
+    required this.animations,
+    required this.center,
+    required this.color,
+    required this.deviceSize,
+    required this.status,
+    required this.textDirection,
   }) : super(key: key);
 
   /// Compute the center position of the background.
@@ -182,14 +182,14 @@ class Content extends StatelessWidget {
   final TextTheme textTheme;
 
   const Content({
-    Key key,
-    @required this.animations,
-    @required this.center,
-    @required this.description,
-    @required this.deviceSize,
-    @required this.status,
-    @required this.title,
-    @required this.textTheme,
+    Key? key,
+    required this.animations,
+    required this.center,
+    required this.description,
+    required this.deviceSize,
+    required this.status,
+    required this.title,
+    required this.textTheme,
   }) : super(key: key);
 
   double get opacity => animations.contentOpacity(status).value;
@@ -222,7 +222,7 @@ class Content extends StatelessWidget {
       title,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
-      style: theme.headline6.copyWith(color: Colors.white),
+      style: theme.headline6!.copyWith(color: Colors.white),
     );
   }
 
@@ -231,7 +231,7 @@ class Content extends StatelessWidget {
       description,
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
-      style: theme.subtitle1.copyWith(color: Colors.white70),
+      style: theme.subtitle1!.copyWith(color: Colors.white70),
     );
   }
 }
@@ -248,10 +248,10 @@ class Ripple extends StatelessWidget {
   final FeatureDiscoveryStatus status;
 
   const Ripple({
-    Key key,
-    @required this.animations,
-    @required this.center,
-    @required this.status,
+    Key? key,
+    required this.animations,
+    required this.center,
+    required this.status,
   }) : super(key: key);
 
   double get radius => animations.rippleRadius(status).value;
@@ -298,12 +298,12 @@ class TapTarget extends StatelessWidget {
   final Icon child;
 
   const TapTarget({
-    Key key,
-    @required this.animations,
-    @required this.center,
-    @required this.status,
-    @required this.onTap,
-    @required this.child,
+    Key? key,
+    required this.animations,
+    required this.center,
+    required this.status,
+    required this.onTap,
+    required this.child,
   }) : super(key: key);
 
   double get radius => animations.tapTargetRadius(status).value;

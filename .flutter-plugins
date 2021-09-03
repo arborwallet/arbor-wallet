@@ -1,13 +1,13 @@
 # This is a generated file; do not edit or check into version control.
-package_info_plus=/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/package_info_plus-1.0.6/
-package_info_plus_macos=/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/package_info_plus_macos-1.1.1/
-package_info_plus_web=/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/package_info_plus_web-1.0.4/
-path_provider=/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.2/
-path_provider_linux=/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.0.2/
-path_provider_macos=/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-2.0.2/
-path_provider_windows=/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.0.3/
-url_launcher=/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-6.0.9/
-url_launcher_linux=/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_linux-2.0.1/
-url_launcher_macos=/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_macos-2.0.1/
-url_launcher_web=/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_web-2.0.4/
-url_launcher_windows=/usr/local/Caskroom/flutter/2.2.3/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_windows-2.0.2/
+package_info_plus=/Users/bushadev/.pub-cache/hosted/pub.dartlang.org/package_info_plus-1.0.6/
+package_info_plus_macos=/Users/bushadev/.pub-cache/hosted/pub.dartlang.org/package_info_plus_macos-1.1.1/
+package_info_plus_web=/Users/bushadev/.pub-cache/hosted/pub.dartlang.org/package_info_plus_web-1.0.4/
+path_provider=/Users/bushadev/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.2/
+path_provider_linux=/Users/bushadev/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.0.2/
+path_provider_macos=/Users/bushadev/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-2.0.2/
+path_provider_windows=/Users/bushadev/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.0.3/
+url_launcher=/Users/bushadev/.pub-cache/hosted/pub.dartlang.org/url_launcher-6.0.9/
+url_launcher_linux=/Users/bushadev/.pub-cache/hosted/pub.dartlang.org/url_launcher_linux-2.0.1/
+url_launcher_macos=/Users/bushadev/.pub-cache/hosted/pub.dartlang.org/url_launcher_macos-2.0.1/
+url_launcher_web=/Users/bushadev/.pub-cache/hosted/pub.dartlang.org/url_launcher_web-2.0.4/
+url_launcher_windows=/Users/bushadev/.pub-cache/hosted/pub.dartlang.org/url_launcher_windows-2.0.2/
