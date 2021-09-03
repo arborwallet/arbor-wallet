@@ -1,3 +1,4 @@
+import 'package:arbor/screens/expanded_info_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -13,11 +14,11 @@ class InfoScreen extends StatefulWidget {
 }
 
 class _InfoScreenState extends State<InfoScreen> {
-  late final Box contactBox;
+  late final Box walletBox;
 
   // Delete info from wallet box
   _deleteInfo(int index) {
-    contactBox.deleteAt(index);
+    walletBox.deleteAt(index);
 
     print('Item deleted from box at index: $index');
   }
@@ -26,7 +27,7 @@ class _InfoScreenState extends State<InfoScreen> {
   void initState() {
     super.initState();
     // Get reference to an already opened box
-    contactBox = Hive.box(HiveConstants.walletBox);
+    walletBox = Hive.box(HiveConstants.walletBox);
   }
 
   @override
@@ -44,7 +45,7 @@ class _InfoScreenState extends State<InfoScreen> {
         child: const Icon(Icons.add),
       ),
       body: ValueListenableBuilder(
-        valueListenable: contactBox.listenable(),
+        valueListenable: walletBox.listenable(),
         builder: (context, Box box, widget) {
           if (box.isEmpty) {
             return const Center(
@@ -60,7 +61,7 @@ class _InfoScreenState extends State<InfoScreen> {
                 return InkWell(
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => UpdateScreen(
+                      builder: (context) => ExpandedInfoScreen(
                         index: index,
                         wallet: walletData,
                       ),

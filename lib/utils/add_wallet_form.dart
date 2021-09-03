@@ -234,7 +234,7 @@ class _AddWalletFormState extends State<AddWalletForm> {
               });
           }
         },
-        child: const Text('Add'),
+        child: const Text('Create'),
       ),
     );
   }
