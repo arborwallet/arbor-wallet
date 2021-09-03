@@ -98,18 +98,3 @@ class RootPage extends StatelessWidget {
   }
 }
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      key: GlobalKey(),
-      title: 'Zoropay',
-      //home: const RootPage(),
-      themeMode: ThemeMode.light,
-      debugShowCheckedModeBanner: false,
-      onGenerateRoute: RouteConfiguration.onGenerateRoute,
-      //navigatorKey: StackedService.navigatorKey,
-      //onGenerateRoute: StackedRouter().onGenerateRoute,
-    );
-  }
-}
