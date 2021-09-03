@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:arbor/screens/update_screen.dart';
@@ -68,18 +69,37 @@ class _InfoScreenState extends State<InfoScreen> {
                   child: Card (
                     elevation: 8,
                     shadowColor: Colors.lightGreen,
-                    margin: EdgeInsets.all(10),
-                    child: ListTile(
-                      leading: Icon(Icons.account_balance_wallet),
-                      title: Text('${walletData.fork.name} (${walletData.name})'),
-                      subtitle: Text(walletData.address),
-                      trailing: IconButton(
-                        onPressed: () => _deleteInfo(index),
-                        icon: const Icon(
-                          Icons.delete,
-                          color: Colors.red,
+                    margin: EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: Icon(Icons.account_balance_wallet),
+                          title: Text('${walletData.fork.name} (${walletData.name})'),
+                          subtitle: Text(walletData.fork.ticker.toUpperCase()),
+                          trailing: IconButton(
+                            onPressed: () => _deleteInfo(index),
+                            icon: const Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                          ),
                         ),
-                      ),
+                        ListTile(
+                          // title: Text(walletData.balance.toStringAsFixed(walletData.fork.precision)),
+                          title: FittedBox(fit: BoxFit.contain, child: Text(walletData.balance.toStringAsFixed(walletData.fork.precision))),
+                          subtitle: Text(walletData.address.toString()),
+                        ),
+                        ListTile(
+                          contentPadding: EdgeInsets.all(10.0),//change for side padding
+                          title: Row(
+                            children: <Widget>[
+                              Expanded(child: ElevatedButton(onPressed: () {},child: Text("Receive"))),
+                              SizedBox(width: 10),
+                              Expanded(child: ElevatedButton(onPressed: () {},child: Text("Send"))),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 );
