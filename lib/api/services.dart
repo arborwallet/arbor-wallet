@@ -1,0 +1,1 @@
+export 'package:arbor/api/services/wallet_service.dart';

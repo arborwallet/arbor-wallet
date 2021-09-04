@@ -3,86 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:arbor/models/wallet.dart';
 
-import 'package:http/http.dart' as http;
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:arbor/hive_constants.dart';
-
-class KeygenResponse {
-  final bool success;
-  final String phrase;
-  final String privateKey;
-  final String publicKey;
-
-  KeygenResponse({
-    required this.success,
-    required this.phrase,
-    required this.privateKey,
-    required this.publicKey,
-  });
-
-  factory KeygenResponse.fromJson(Map<String, dynamic> json) {
-    return KeygenResponse(
-      success: json['success'],
-      phrase: json['phrase'],
-      privateKey: json['private_key'],
-      publicKey: json['public_key'],
-    );
-  }
-}
-
-class WalletResponse {
-  WalletResponse({
-    required this.success,
-    required this.address,
-    required this.fork,
-  });
-
-  final bool success;
-  final String address;
-  final ForkResponse fork;
-
-  factory WalletResponse.fromJson(Map<String, dynamic> json) => WalletResponse(
-    success: json["success"],
-    address: json["address"],
-    fork: ForkResponse.fromJson(json["fork"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "success": success,
-    "address": address,
-    "fork": fork.toJson(),
-  };
-}
-
-class ForkResponse {
-  ForkResponse({
-    required this.name,
-    required this.ticker,
-    required this.unit,
-    required this.precision,
-  });
-
-  final String name;
-  final String ticker;
-  final String unit;
-  final int precision;
-
-  factory ForkResponse.fromJson(Map<String, dynamic> json) => ForkResponse(
-    name: json["name"],
-    ticker: json["ticker"],
-    unit: json["unit"],
-    precision: json["precision"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "name": name,
-    "ticker": ticker,
-    "unit": unit,
-    "precision": precision,
-  };
-}
+import 'package:arbor/api/services.dart';
 
 class AddWalletForm extends StatefulWidget {
   const AddWalletForm({Key? key}) : super(key: key);
@@ -96,6 +20,7 @@ class _AddWalletFormState extends State<AddWalletForm> {
   final _passwordController = TextEditingController();
   final _walletFormKey = GlobalKey<FormState>();
 
+  final walletService = WalletService();
   bool _fetchingNewWalletKeys = false;
 
   late final Box box;
@@ -106,61 +31,6 @@ class _AddWalletFormState extends State<AddWalletForm> {
       return 'Field can\'t be empty';
     }
     return null;
-  }
-
-  Future<Wallet> _fetchWalletKeys() async {
-    final keygenResponse = await http.get(Uri.parse('https://farmforcrypto.com/api/v1/keygen'));
-
-    // print('HEADERS: ${keygenResponse.headers}');
-    // print('BODY: ${keygenResponse.body}');
-
-    if (keygenResponse.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      KeygenResponse keygen = KeygenResponse.fromJson(jsonDecode(keygenResponse.body));
-
-      if (keygen.success == true) {
-        final walletResponse = await http.post(
-          Uri.parse('https://farmforcrypto.com/api/v1/wallet'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, String>{
-            'public_key': keygen.publicKey,
-            'fork': 'xch',
-          }),
-        );
-
-        if (walletResponse.statusCode == 200) {
-          // If the server did return a 200 OK response,
-          // then parse the JSON.
-          WalletResponse wallet = WalletResponse.fromJson(jsonDecode(walletResponse.body));
-          // temp wallet model to be filled out/persisted later
-          Wallet walletModel = Wallet(
-            name: '',
-            password: '',
-            phrase: keygen.phrase,
-            privateKey: keygen.privateKey,
-            publicKey: keygen.publicKey,
-            address: wallet.address,
-            fork: Fork(name: wallet.fork.name, ticker: wallet.fork.ticker, unit: wallet.fork.unit, precision: wallet.fork.precision),
-            balance: 0,
-          );
-
-          return walletModel;
-        } else {
-          String apiError = jsonDecode(keygenResponse.body)[0]['error'];
-          throw Exception('Error: $apiError');
-        }
-      } else {
-        String apiError = jsonDecode(keygenResponse.body)[0]['error'];
-        throw Exception('Error: $apiError');
-      }
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to create a wallet.');
-    }
   }
 
   // Add info to wallet box
@@ -226,9 +96,7 @@ class _AddWalletFormState extends State<AddWalletForm> {
       child: ElevatedButton(
         onPressed: () {
           if (_walletFormKey.currentState!.validate()) {
-            // fetchedWallet = _fetchWalletKeys();
-            // async() {
-            fetchedWallet = _fetchWalletKeys();
+            fetchedWallet = walletService.fetchWalletKeys();
             setState(() {
                 _fetchingNewWalletKeys = true;
               });
