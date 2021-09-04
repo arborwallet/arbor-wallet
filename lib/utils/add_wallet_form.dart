@@ -47,7 +47,6 @@ class _AddWalletFormState extends State<AddWalletForm> {
     );
 
     box.add(newWallet);
-    print('Info added to box!');
   }
 
   @override

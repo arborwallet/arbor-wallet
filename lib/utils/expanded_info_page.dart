@@ -81,7 +81,7 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
                     ),
                     Card(
                       child: ListTile(
-                        title: FittedBox(fit: BoxFit.contain, child: Text('${walletData.fork.ticker.toUpperCase()}: ${walletData.balance.toStringAsFixed(walletData.fork.precision)}')),
+                        title: FittedBox(fit: BoxFit.contain, child: Text('${walletData.fork.ticker.toUpperCase()}: ${walletData.balanceForDisplay()}')),
                         trailing: Icon(Icons.copy),
                         onTap: () {
                           Clipboard.setData(ClipboardData(text: walletData.balance.toStringAsFixed(walletData.fork.precision)));
@@ -115,6 +115,16 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
                         trailing: Icon(Icons.copy),
                         onTap: () {
                           Clipboard.setData(ClipboardData(text: walletData.privateKey));
+                        },
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                        title: Text('Mnemonic'),
+                        subtitle: Text('*' * walletData.phrase.toString().length),
+                        trailing: Icon(Icons.copy),
+                        onTap: () {
+                          Clipboard.setData(ClipboardData(text: walletData.phrase));
                         },
                       ),
                     ),

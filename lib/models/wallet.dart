@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:hive/hive.dart';
 import 'package:arbor/models/fork.dart';
 
@@ -27,7 +29,7 @@ class Wallet {
   final Fork fork;
 
   @HiveField(7)
-  final double balance;
+  final int balance;
 
   Wallet({
     required this.name,
@@ -39,4 +41,11 @@ class Wallet {
     required this.fork,
     required this.balance,
   });
+
+  String balanceForDisplay() {
+    double display = balance / pow(10,fork.precision);
+    return display.toStringAsFixed(fork.precision);
+    // In case someone asks for the zeros at the end to be not displayed
+    // return display.toString();
+  }
 }

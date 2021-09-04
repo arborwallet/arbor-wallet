@@ -1,3 +1,4 @@
+import 'package:arbor/api/responses/balance_response.dart';
 import "package:arbor/api/services/api_service.dart";
 import 'package:arbor/api/responses.dart';
 import 'package:arbor/models/models.dart';
@@ -65,6 +66,36 @@ class WalletService extends ApiService {
       // If the server did not return a 200 OK response,
       // then throw an exception.
       throw Exception('Failed to create a wallet.');
+    }
+  }
+
+  // @GET("/v1/balance")
+  Future<int> fetchWalletBalance(String walletAddress) async {
+    final balanceData = await http.post(
+      Uri.parse('${baseURL}/api/v1/balance'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'address': walletAddress,
+      }),
+    );
+
+    if (balanceData.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      BalanceResponse balanceResponse = BalanceResponse.fromJson(jsonDecode(balanceData.body));
+
+      if (balanceResponse.success == true) {
+        return balanceResponse.balance;
+      } else {
+        throw Exception('Error: ${balanceResponse.error}');
+      }
+
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Oops. We could not retrieve the balance at this time. Try again later.');
     }
   }
 }
