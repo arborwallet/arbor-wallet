@@ -13,16 +13,13 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    Future.delayed(const Duration(milliseconds: 2500), () {
-      //
-    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green,
+      backgroundColor: ArborColors.green,
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 40),
         child: Column(

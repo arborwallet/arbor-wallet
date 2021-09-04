@@ -19,7 +19,7 @@ class OnBoardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ArborOnBoardingLayout(
-      globalBackgroundColor: Colors.green,
+      globalBackgroundColor: ArborColors.green,
 
       /*globalHeader: Align(
         alignment: Alignment.topCenter,
