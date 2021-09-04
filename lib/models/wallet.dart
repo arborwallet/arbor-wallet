@@ -1,7 +1,8 @@
 import 'dart:math';
 
 import 'package:hive/hive.dart';
-import 'package:arbor/models/fork.dart';
+
+import 'fork.dart';
 
 part 'wallet.g.dart';
 

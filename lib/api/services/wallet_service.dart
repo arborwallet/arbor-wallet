@@ -1,10 +1,12 @@
-import 'package:arbor/api/responses/balance_response.dart';
-import "package:arbor/api/services/api_service.dart";
-import 'package:arbor/api/responses.dart';
-import 'package:arbor/models/models.dart';
 
+
+import 'package:gallery/api/responses/balance_response.dart';
+import 'package:gallery/models/models.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import '../responses.dart';
+import 'api_service.dart';
 
 class WalletService extends ApiService {
   WalletService(

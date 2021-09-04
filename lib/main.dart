@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:arbor/models/wallet.dart';
-import 'package:arbor/models/fork.dart';
+import 'package:gallery/themes/arbor_theme_data.dart';
+import 'package:gallery/views/screens/splash_screen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'screens/info_screen.dart';
-import 'package:arbor/hive_constants.dart';
+import 'hive_constants.dart';
+import 'models/models.dart';
+
 
 main() async {
   // Initialize hive
@@ -35,11 +36,13 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Arbor',
-      theme: ThemeData(
+      /*theme: ThemeData(
         primarySwatch: Colors.green,
-      ),
+      ),*/
+      theme:ArborThemeData.lightTheme,
+
       debugShowCheckedModeBanner: false,
-      home: InfoScreen(),
+      home: SplashScreen(),
     );
   }
 }

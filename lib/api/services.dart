@@ -1,1 +1,1 @@
-export 'package:arbor/api/services/wallet_service.dart';
+export 'services/wallet_service.dart';

@@ -1,12 +1,12 @@
-import 'package:arbor/models/fork.dart';
 import 'package:flutter/material.dart';
+import 'package:gallery/api/services.dart';
+import 'package:gallery/hive_constants.dart';
+import 'package:gallery/models/fork.dart';
+import 'package:gallery/models/wallet.dart';
 import 'package:hive/hive.dart';
-import 'package:arbor/models/wallet.dart';
 
 import 'dart:async';
 
-import 'package:arbor/hive_constants.dart';
-import 'package:arbor/api/services.dart';
 
 class AddWalletForm extends StatefulWidget {
   const AddWalletForm({Key? key}) : super(key: key);

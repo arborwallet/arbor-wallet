@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gallery/hive_constants.dart';
+import 'package:gallery/models/models.dart';
 import 'package:hive/hive.dart';
 
-import 'package:arbor/models/wallet.dart';
-import 'package:arbor/hive_constants.dart';
+
 
 class UpdateWalletForm extends StatefulWidget {
   final int index;

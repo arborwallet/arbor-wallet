@@ -1,2 +1,2 @@
-export 'package:arbor/models/wallet.dart';
-export 'package:arbor/models/fork.dart';
+export 'wallet.dart';
+export 'fork.dart';
