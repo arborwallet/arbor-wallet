@@ -10,8 +10,8 @@ import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:gallery/constants.dart';
 import 'package:gallery/data/gallery_options.dart';
 import 'package:gallery/rally/app.dart';
-import 'package:gallery/routes.dart';
 import 'package:gallery/themes/gallery_theme_data.dart';
+import 'package:gallery/views/screens/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main(){
@@ -44,10 +44,6 @@ class GalleryApp extends StatelessWidget {
       child: Builder(
         builder: (context) {
           return MaterialApp(
-            // By default on desktop, scrollbars are applied by the
-            // ScrollBehavior. This overrides that. All vertical scrollables in
-            // the gallery need to be audited before enabling this feature,
-            // see https://github.com/flutter/gallery/issues/523
             scrollBehavior:
                 const MaterialScrollBehavior().copyWith(scrollbars: false),
             restorationScopeId: 'rootGallery',
@@ -65,7 +61,7 @@ class GalleryApp extends StatelessWidget {
               LocaleNamesLocalizationsDelegate()
             ],
             routes: {
-              '/':(context)=>const RootPage(),
+              '/':(context)=> SplashScreen(),
             },
             initialRoute: '/',
             supportedLocales: GalleryLocalizations.supportedLocales,
