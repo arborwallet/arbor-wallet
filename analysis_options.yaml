@@ -4,14 +4,12 @@ include: package:pedantic/analysis_options.1.11.0.yaml
 
 analyzer:
   strong-mode:
-    implicit-casts: false
-    implicit-dynamic: false
+    implicit-casts: true
 
 linter:
   # In addition to the pedantic lints
   rules:
     - avoid_types_on_closure_parameters
-    - avoid_void_async
     - camel_case_types
     - cancel_subscriptions
     - close_sinks

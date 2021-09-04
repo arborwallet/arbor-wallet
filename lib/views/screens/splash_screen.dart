@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gallery/core/arbor_colors.dart';
 import 'package:gallery/core/constants/asset_paths.dart';
+import 'package:gallery/views/screens/info_screen.dart';
 import 'package:gallery/views/screens/on_boarding_screen.dart';
 import 'package:gallery/views/widgets/arbor_button.dart';
 
@@ -29,11 +30,11 @@ class _SplashScreenState extends State<SplashScreen> {
           children: [
             Image.asset(
               AssetPaths.logo,
-              width: MediaQuery.of(context).size.width * 0.5,
-              height: MediaQuery.of(context).size.width * 0.5,
+              width: MediaQuery.of(context).size.width * 0.55,
+              height: MediaQuery.of(context).size.width * 0.55,
             ),
             const SizedBox(
-              height: 50,
+              height: 60,
             ),
             const Text(
               'Secure & Easy to Use Crypto Wallet',
@@ -45,12 +46,15 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
             const SizedBox(
-              height: 40,
+              height: 50,
             ),
             ArborButton(
               title: 'Get Started',
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute<Widget>(builder: (context)=>OnBoardingScreen()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute<Widget>(
+                        builder: (context) => OnBoardingScreen()));
               },
             ),
             const SizedBox(
@@ -59,10 +63,15 @@ class _SplashScreenState extends State<SplashScreen> {
             ArborButton(
               backgroundColor: ArborColors.deepGreen,
               title: 'I already have a wallet',
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute<Widget>(
+                        builder: (context) => InfoScreen()));
+              },
             ),
             const SizedBox(
-              height: 40,
+              height: 60,
             ),
           ],
         ),

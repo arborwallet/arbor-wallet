@@ -356,11 +356,13 @@ class ArborOnBoardingLayoutState extends State<ArborOnBoardingLayout> {
                   margin: widget.controlsMargin,
                   decoration: widget.dotsContainerDecorator,
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Expanded(
                         flex: 2,
                         child: SizedBox(width: 10,),
                       ),
+                      const Spacer(),
                       Expanded(
                         flex: widget.dotsFlex,
                         child: Center(
@@ -377,6 +379,7 @@ class ArborOnBoardingLayoutState extends State<ArborOnBoardingLayout> {
                               : const SizedBox(),
                         ),
                       ),
+                      const Spacer(),
                       Expanded(
                         flex: 2,
                         child:isLastPage?_toggleBtn(doneBtn, widget.showDoneButton):  _toggleBtn(skipBtn, isSkipBtn),

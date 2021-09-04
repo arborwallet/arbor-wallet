@@ -5,6 +5,7 @@ class AssetPaths {
 
   ///Images
   static const String logo = '$baseImagePath/logo.png';
+  static const String chiaLogo = '$baseImagePath/chia_logo.png';
 
   ///Icons
   static const String receive = '$baseIconPath/receive.svg';

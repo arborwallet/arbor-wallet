@@ -13,13 +13,24 @@ import 'package:gallery/rally/app.dart';
 import 'package:gallery/themes/gallery_theme_data.dart';
 import 'package:gallery/views/screens/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main(){
+import 'core/constants/hive_constants.dart';
+import 'core/models/fork.dart';
+import 'core/models/wallet.dart';
+
+void main()async{
+  await Hive.initFlutter();
+  // Registering the adapter
+  Hive.registerAdapter(WalletAdapter());
+  Hive.registerAdapter(ForkAdapter());
+  // Opening the box
+  await Hive.openBox(HiveConstants.walletBox);
   GoogleFonts.config.allowRuntimeFetching = false;
   runApp(const GalleryApp());
 }
 
-class GalleryApp extends StatelessWidget {
+class GalleryApp extends StatefulWidget {
   const GalleryApp({
     Key? key,
     this.initialRoute,
@@ -28,6 +39,20 @@ class GalleryApp extends StatelessWidget {
 
   final bool isTestMode;
   final String? initialRoute;
+
+  @override
+  _GalleryAppState createState() => _GalleryAppState();
+}
+
+class _GalleryAppState extends State<GalleryApp> {
+
+
+  @override
+  void dispose() {
+    // Closes all Hive boxes
+    Hive.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +64,7 @@ class GalleryApp extends StatelessWidget {
         locale: systemLocaleOption,
         timeDilation: timeDilation,
         platform: defaultTargetPlatform,
-        isTestMode: isTestMode,
+        isTestMode: widget.isTestMode,
       ),
       child: Builder(
         builder: (context) {

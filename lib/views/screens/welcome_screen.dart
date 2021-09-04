@@ -4,6 +4,8 @@ import 'package:gallery/core/arbor_colors.dart';
 import 'package:gallery/core/constants/asset_paths.dart';
 import 'package:gallery/views/widgets/arbor_button.dart';
 
+import 'info_screen.dart';
+
 class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,9 @@ class WelcomeScreen extends StatelessWidget {
               child: Center(
                 child: SvgPicture.asset(
                   AssetPaths.wealth,
-                  height: MediaQuery.of(context).size.height * 0.5,
+                  fit: BoxFit.fill,
+                  height: MediaQuery.of(context).size.height * 0.55,
+                  width: MediaQuery.of(context).size.width * 0.7,
                 ),
               ),
             ),
@@ -64,7 +68,12 @@ class WelcomeScreen extends StatelessWidget {
             ArborButton(
               backgroundColor: ArborColors.deepGreen,
               title: 'I already have a wallet',
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute<Widget>(
+                        builder: (context) => InfoScreen()));
+              },
             ),
             const SizedBox(
               height: 40,
