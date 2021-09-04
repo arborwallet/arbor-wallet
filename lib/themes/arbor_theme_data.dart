@@ -13,7 +13,7 @@ class ArborThemeData {
     highlightColor: Colors.transparent,
     dividerColor: Colors.grey,
     iconTheme: const IconThemeData(color: Colors.black),
-    //fontFamily: 'Poppins',
+    fontFamily: 'GalleryIcons',
 
     appBarTheme: const AppBarTheme(
       color: Colors.white,

@@ -10,6 +10,7 @@ import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:gallery/constants.dart';
 import 'package:gallery/data/gallery_options.dart';
 import 'package:gallery/rally/app.dart';
+import 'package:gallery/themes/arbor_theme_data.dart';
 import 'package:gallery/themes/gallery_theme_data.dart';
 import 'package:gallery/views/screens/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -75,7 +76,10 @@ class _GalleryAppState extends State<GalleryApp> {
             title: 'Flutter Gallery',
             debugShowCheckedModeBanner: false,
             themeMode: GalleryOptions.of(context).themeMode,
-            theme: GalleryThemeData.lightThemeData.copyWith(
+            /*theme: GalleryThemeData.lightThemeData.copyWith(
+              platform: GalleryOptions.of(context).platform,
+            ),*/
+            theme: ArborThemeData.lightTheme.copyWith(
               platform: GalleryOptions.of(context).platform,
             ),
             darkTheme: GalleryThemeData.darkThemeData.copyWith(
