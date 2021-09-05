@@ -1,4 +1,4 @@
-import 'package:arbor/core/constants/asset_paths.dart';
+import '/core/constants/asset_paths.dart';
 
 class OnBoardingText {
   final String title;

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
-import 'screens/info_screen.dart';
-import 'package:arbor/hive_constants.dart';
-import 'package:arbor/models/models.dart';
-import 'package:arbor/themes/arbor_theme_data.dart';
-import 'package:arbor/views/screens/splash_screen.dart';
+import 'hive_constants.dart';
+import 'models/fork.dart';
+import 'models/transaction.dart';
+import 'models/transactions.dart';
+import 'models/wallet.dart';
+import 'themes/arbor_theme_data.dart';
+import 'views/screens/splash_screen.dart';
 
 
 main() async {

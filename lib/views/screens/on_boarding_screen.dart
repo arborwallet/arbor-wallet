@@ -2,11 +2,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:arbor/core/arbor_colors.dart';
-import 'package:arbor/core/models/onboarding_text.dart';
-import 'package:arbor/views/screens/welcome_screen.dart';
-import 'package:arbor/views/widgets/layout/arbor_on_boarding_layout.dart';
+import '/views/widgets/layout/arbor_on_boarding_layout.dart';
+import '/core/arbor_colors.dart';
+import '/core/models/onboarding_text.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+
+import 'welcome_screen.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   final pageDecoration = const PageDecoration(

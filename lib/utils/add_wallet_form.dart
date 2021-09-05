@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:arbor/api/services.dart';
-import 'package:arbor/hive_constants.dart';
-import 'package:arbor/models/fork.dart';
-import 'package:arbor/models/wallet.dart';
+import '/api/services.dart';
+import '/models/models.dart';
 import 'package:hive/hive.dart';
 
 import 'dart:async';
+
+import '../hive_constants.dart';
 
 
 class AddWalletForm extends StatefulWidget {

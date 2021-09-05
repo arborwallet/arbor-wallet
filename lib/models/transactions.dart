@@ -1,6 +1,7 @@
-import 'package:arbor/models/fork.dart';
+
 import 'package:hive/hive.dart';
-import 'package:arbor/models/transaction.dart';
+
+import 'models.dart';
 
 part 'transactions.g.dart';
 

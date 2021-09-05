@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:arbor/hive_constants.dart';
-import 'package:arbor/models/models.dart';
+import '/models/models.dart';
 import 'package:hive/hive.dart';
+
+import '../hive_constants.dart';
 
 
 

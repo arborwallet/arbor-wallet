@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:arbor/models/models.dart';
-import 'package:arbor/utils/update_wallet_form.dart';
+import '/models/models.dart';
+import '/utils/update_wallet_form.dart';
 
 
 class UpdateScreen extends StatefulWidget {

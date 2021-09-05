@@ -1,7 +1,4 @@
-
-
-import 'package:arbor/api/responses/balance_response.dart';
-import 'package:arbor/models/models.dart';
+import '/models/models.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:arbor/core/arbor_colors.dart';
-import 'package:arbor/core/constants/asset_paths.dart';
-import 'package:arbor/screens/info_screen.dart';
-import 'package:arbor/views/widgets/arbor_button.dart';
+import '/screens/info_screen.dart';
+import '/core/arbor_colors.dart';
+import '/views/widgets/arbor_button.dart';
+import '/core/constants/asset_paths.dart';
 
 import 'on_boarding_screen.dart';
 
