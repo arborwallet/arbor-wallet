@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gallery/utils/add_wallet_form.dart';
+import 'package:arbor/utils/add_wallet_form.dart';
 
 class AddScreen extends StatefulWidget {
   @override

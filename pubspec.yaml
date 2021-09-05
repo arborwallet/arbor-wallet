@@ -1,7 +1,7 @@
-name: gallery
-description: A resource to help developers evaluate and use Flutter.
-repository: https://github.com/flutter/gallery
-version: 2.9.3+020903
+name: arbor
+description: Arbor Wallet is a fast, safe and green wallet.
+repository: https://github.com/Digital-Farming-Initiative/arbor-wallet
+version: 0.1.0
 
 environment:
   flutter: ^2.2.0

@@ -1,9 +1,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gallery/api/services.dart';
-import 'package:gallery/hive_constants.dart';
-import 'package:gallery/models/models.dart';
+import 'package:arbor/api/services.dart';
+import 'package:arbor/hive_constants.dart';
+import 'package:arbor/models/models.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:gallery/core/arbor_colors.dart';
+import 'package:arbor/core/arbor_colors.dart';
 
 class ArborButton extends StatelessWidget {
 

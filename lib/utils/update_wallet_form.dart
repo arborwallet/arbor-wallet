@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gallery/hive_constants.dart';
-import 'package:gallery/models/models.dart';
+import 'package:arbor/hive_constants.dart';
+import 'package:arbor/models/models.dart';
 import 'package:hive/hive.dart';
 
 

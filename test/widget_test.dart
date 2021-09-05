@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gallery/main.dart';
+import 'package:arbor/main.dart';
 
 
 

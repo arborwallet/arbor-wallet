@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gallery/core/arbor_colors.dart';
-import 'package:gallery/core/constants/asset_paths.dart';
-import 'package:gallery/screens/info_screen.dart';
-import 'package:gallery/views/widgets/arbor_button.dart';
+import 'package:arbor/core/arbor_colors.dart';
+import 'package:arbor/core/constants/asset_paths.dart';
+import 'package:arbor/screens/info_screen.dart';
+import 'package:arbor/views/widgets/arbor_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
   @override

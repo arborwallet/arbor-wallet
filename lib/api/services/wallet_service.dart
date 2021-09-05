@@ -1,7 +1,7 @@
 
 
-import 'package:gallery/api/responses/balance_response.dart';
-import 'package:gallery/models/models.dart';
+import 'package:arbor/api/responses/balance_response.dart';
+import 'package:arbor/models/models.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -92,6 +92,52 @@ class WalletService extends ApiService {
         return balanceResponse.balance;
       } else {
         throw Exception('Error: ${balanceResponse.error}');
+      }
+
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Oops. We could not retrieve the balance at this time. Try again later.');
+    }
+  }
+
+  // @GET("/v1/transactions")
+  Future<Transactions> fetchWalletTransactions(String walletAddress) async {
+    final transactionsData = await http.post(
+      Uri.parse('${baseURL}/api/v1/transactions'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'address': walletAddress,
+      }),
+    );
+
+    if (transactionsData.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      TransactionsResponse tr = TransactionsResponse.fromJson(jsonDecode(transactionsData.body));
+
+      if (tr.success == true) {
+        List<Transaction> transactionList = [];
+        for (TransactionResponse tr in tr.transactions) {
+          Transaction transaction = Transaction(
+              type: tr.type,
+              timestamp: tr.timestamp,
+              block: tr.block,
+              address: ((tr.sender != null) ? tr.sender! : tr.destination!),
+              amount: tr.amount);
+          transactionList.add(transaction);
+        }
+
+        Transactions transactionsModel = Transactions(
+            walletAddress: walletAddress,
+            list: transactionList,
+            fork: Fork(name: tr.fork.name, ticker: tr.fork.ticker, unit: tr.fork.unit, precision: tr.fork.precision)
+        );
+        return transactionsModel;
+      } else {
+        throw Exception('Error: ${tr.error}');
       }
 
     } else {
