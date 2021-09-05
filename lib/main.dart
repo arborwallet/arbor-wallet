@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
+import 'package:hive_flutter/hive_flutter.dart';
 import 'screens/info_screen.dart';
 import 'package:arbor/hive_constants.dart';
 import 'package:arbor/models/models.dart';
+import 'package:arbor/themes/arbor_theme_data.dart';
+import 'package:arbor/views/screens/splash_screen.dart';
 
 
 main() async {
@@ -38,11 +40,13 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Arbor',
-      theme: ThemeData(
+      /*theme: ThemeData(
         primarySwatch: Colors.green,
-      ),
+      ),*/
+      theme:ArborThemeData.lightTheme,
+
       debugShowCheckedModeBanner: false,
-      home: InfoScreen(),
+      home: SplashScreen(),
     );
   }
 }

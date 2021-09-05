@@ -1,5 +1,6 @@
-import 'package:arbor/api/responses/base_response.dart';
 
+
+import 'base_response.dart';
 import 'fork_response.dart';
 
 class BalanceResponse extends BaseResponse {

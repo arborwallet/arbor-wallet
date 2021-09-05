@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
-import 'package:arbor/models/wallet.dart';
+import 'package:arbor/models/models.dart';
 import 'package:arbor/utils/update_wallet_form.dart';
+
 
 class UpdateScreen extends StatefulWidget {
   final int index;
