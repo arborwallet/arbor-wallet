@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
             Positioned(
-              bottom: 40,right: 0,left: 0,
+              bottom: 30,right: 0,left: 0,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
