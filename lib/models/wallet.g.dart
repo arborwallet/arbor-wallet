@@ -24,13 +24,14 @@ class WalletAdapter extends TypeAdapter<Wallet> {
       publicKey: fields[4] as String,
       address: fields[5] as String,
       fork: fields[6] as Fork,
+      balance: fields[7] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, Wallet obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -44,7 +45,9 @@ class WalletAdapter extends TypeAdapter<Wallet> {
       ..writeByte(5)
       ..write(obj.address)
       ..writeByte(6)
-      ..write(obj.fork);
+      ..write(obj.fork)
+      ..writeByte(7)
+      ..write(obj.balance);
   }
 
   @override
