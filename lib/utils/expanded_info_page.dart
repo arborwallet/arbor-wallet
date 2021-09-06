@@ -7,6 +7,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:flutter/services.dart';
 import 'package:arbor/views/screens/transactions_screen.dart';
+import 'package:arbor/views/screens/password_qr_share_screen.dart';
 
 class ExpandedInfoPage extends StatefulWidget {
   const ExpandedInfoPage({
@@ -124,7 +125,14 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
                         subtitle: Text('*' * walletData.phrase.toString().length),
                         trailing: Icon(Icons.qr_code),
                         onTap: () {
-                          Clipboard.setData(ClipboardData(text: walletData.phrase));
+                          // Clipboard.setData(ClipboardData(text: walletData.phrase));
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (BuildContext context) {
+                              return PasswordQRShareSheet(walletPhrase: (walletBox.getAt(index) as Wallet).phrase);
+                            },
+                          );
                         },
                       ),
                     ),
