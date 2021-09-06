@@ -1,0 +1,50 @@
+name: arbor
+description: Arbor Wallet is a fast, safe and green wallet.
+repository: https://github.com/Digital-Farming-Initiative/arbor-wallet
+version: 0.1.0
+
+environment:
+  flutter: ^2.2.0
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  flutter_svg: ^0.22.0
+  google_fonts: ^2.0.0
+  hive: ^2.0.4
+  hive_flutter: ^1.1.0
+  http: ^0.13.3
+  intl: ^0.17.0
+  introduction_screen: ^2.1.0
+
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_driver:
+    sdk: flutter
+
+  flutter_lints: ^1.0.2
+  hive_generator: ^1.1.0
+  build_runner: ^2.0.6
+
+flutter:
+
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/fonts/
+
+  generate: true
+  uses-material-design: true
+  fonts:
+    - family: GalleryIcons
+      fonts:
+        - asset: assets/fonts/GalleryIcons.ttf
