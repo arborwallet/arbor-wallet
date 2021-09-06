@@ -22,7 +22,8 @@ dependencies:
   intl: ^0.17.0
   introduction_screen: ^2.1.0
 
-
+  #QR
+  qr_code_scanner: ^0.5.2
 
 
 dev_dependencies:
