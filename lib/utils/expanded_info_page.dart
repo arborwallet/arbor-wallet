@@ -7,6 +7,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 
 import 'package:flutter/services.dart';
+import 'package:arbor/views/screens/transactions_screen.dart';
+import 'package:arbor/views/screens/password_qr_share_screen.dart';
 
 import '../hive_constants.dart';
 
