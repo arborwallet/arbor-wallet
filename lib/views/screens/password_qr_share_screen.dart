@@ -31,10 +31,10 @@ class _PasswordQRShareSheetState extends State<PasswordQRShareSheet> {
       }
     });
   }
+
   String _passwordString() {
     return _isPasswordPlaintext ? widget.walletPhrase : '*' * widget.walletPhrase.toString().length;
   }
-
 
   @override
   Widget build(BuildContext context) {
