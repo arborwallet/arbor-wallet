@@ -8,6 +8,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:arbor/views/screens/transactions_screen.dart';
 import 'package:arbor/views/screens/password_qr_share_screen.dart';
+import 'package:arbor/views/screens/wallet_receive_screen.dart';
 
 class ExpandedInfoPage extends StatefulWidget {
   const ExpandedInfoPage({
@@ -28,10 +29,23 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
   int get index => widget.index;
 
   // Delete info from wallet box
-  _deleteInfo(int index) {
+  void _deleteInfo(int index) {
     walletBox.deleteAt(index);
 
     print('Item deleted from box at index: $index');
+  }
+
+  void _showReceiveView() {
+    Wallet walletData = walletBox.getAt(index) as Wallet;
+
+    Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => WalletReceiveScreen(
+            index: index,
+            wallet: walletData,
+          ),
+        ),
+    );
   }
 
   @override
@@ -162,7 +176,7 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
           contentPadding: EdgeInsets.all(10.0),//change for side padding
           title: Row(
             children: <Widget>[
-              Expanded(child: ElevatedButton(onPressed: () {},child: Text('Receive'))),
+              Expanded(child: ElevatedButton(onPressed: () {_showReceiveView();},child: Text('Receive'))),
               SizedBox(width: 10),
               Expanded(child: ElevatedButton(onPressed: () {},child: Text('Send'))),
             ],
