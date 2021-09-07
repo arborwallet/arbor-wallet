@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -42,13 +41,13 @@ class OnBoardingScreen extends StatelessWidget {
             ),
           )
           .toList(),
-      onDone: () => Navigator.push(
+      onDone: () => Navigator.pushReplacement(
         context,
         MaterialPageRoute<Widget>(
           builder: (context) => WelcomeScreen(),
         ),
       ),
-      onSkip: () => Navigator.push(
+      onSkip: () => Navigator.pushReplacement(
         context,
         MaterialPageRoute<Widget>(
           builder: (context) => WelcomeScreen(),
@@ -59,12 +58,28 @@ class OnBoardingScreen extends StatelessWidget {
       showDoneButton: true,
       skipFlex: 0,
       nextFlex: 0,
-      skip: const Text('SKIP',
-          style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white,fontSize: 18,),),
-      next: const Text('NEXT',
-          style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white,fontSize: 18,),),
+      skip: const Text(
+        'SKIP',
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+          fontSize: 18,
+        ),
+      ),
+      next: const Text(
+        'NEXT',
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+          fontSize: 18,
+        ),
+      ),
       done: const Text('SKIP',
-          style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white,fontSize: 18,)),
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+            fontSize: 18,
+          )),
       curve: Curves.fastLinearToSlowEaseIn,
       controlsMargin: const EdgeInsets.all(16),
       controlsPadding: kIsWeb
@@ -130,22 +145,6 @@ class _OnBoardingTextWidget extends StatelessWidget {
           const SizedBox(
             height: 30,
           ),
-          /*TextButton(
-            onPressed: onNextPressed,
-            style: TextButton.styleFrom(
-              primary: Colors.transparent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            ),
-            child: const Text(
-              'Next',
-              style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold),
-            ),
-          )*/
         ],
       ),
     );

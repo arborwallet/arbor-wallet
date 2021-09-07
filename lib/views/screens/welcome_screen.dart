@@ -4,6 +4,7 @@ import '/core/arbor_colors.dart';
 import '/core/constants/asset_paths.dart';
 import '/screens/info_screen.dart';
 import '/views/widgets/arbor_button.dart';
+import 'restore_wallet_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   @override
@@ -57,10 +58,11 @@ class WelcomeScreen extends StatelessWidget {
               ArborButton(
                 title: 'Get Started',
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute<Widget>(
-                          builder: (context) => InfoScreen()));
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => InfoScreen()),
+                        (route) => false,
+                  );
                 },
               ),
               const SizedBox(
@@ -70,7 +72,10 @@ class WelcomeScreen extends StatelessWidget {
                 backgroundColor: ArborColors.deepGreen,
                 title: 'I already have a wallet',
                 onPressed: () {
-
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RestoreWalletScreen()));
                 },
               ),
               const SizedBox(
