@@ -21,10 +21,13 @@ dependencies:
   http: ^0.13.3
   intl: ^0.17.0
   introduction_screen: ^2.1.0
-  qr_flutter: ^4.0.0
 
   #QR
   qr_code_scanner: ^0.5.2
+  qr_flutter: ^4.0.0
+
+  #State Management
+  provider: ^6.0.0
 
 
 dev_dependencies:

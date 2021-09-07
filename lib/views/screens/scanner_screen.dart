@@ -16,27 +16,41 @@ class _ScannerScreenState extends State<ScannerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ArborColors.green,
+      backgroundColor: ArborColors.deepGreen,
       appBar: AppBar(
-        backgroundColor: ArborColors.green,
+        backgroundColor: ArborColors.deepGreen,
         title: Text('Sync Devices'),
+        elevation: 0,
+        centerTitle: true,
       ),
       body: Container(
         padding: EdgeInsets.all(16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            QRView(
-              key: key,
-              onQRViewCreated: _onQRViewCreated,
-              overlay: QrScannerOverlayShape(
-                borderWidth: 5.0,
-                borderRadius: 20.0,
-                cutOutSize: 327,
+            SizedBox(height:20),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              height: 327,
+              child: QRView(
+                key: key,
+                onQRViewCreated: _onQRViewCreated,
+                overlay: QrScannerOverlayShape(
+                  overlayColor: ArborColors.deepGreen,
+                  borderColor: ArborColors.white,
+                  borderWidth: 4.0,
+                  borderRadius: 20.0,
+                  cutOutSize: 327,
+                ),
+                onPermissionSet: (ctrl, p) => _onPermissionSet(
+                  context,
+                  ctrl,
+                  p,
+                ),
               ),
             ),
             SizedBox(
-              height: 16,
+              height: 20,
             ),
             Text(
               'Scan QR Code',

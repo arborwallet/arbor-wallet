@@ -7,7 +7,9 @@ class AssetPaths {
   static const String logo = '$baseImagePath/logo.png';
 
   ///Icons
+  static const String qr = '$baseIconPath/qr.svg';
   static const String receive = '$baseIconPath/receive.svg';
+  static const String restore = '$baseIconPath/restore.svg';
   static const String send = '$baseIconPath/send.svg';
   static const String wealth = '$baseIconPath/wealth.svg';
 }

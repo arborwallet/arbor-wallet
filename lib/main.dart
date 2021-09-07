@@ -1,6 +1,8 @@
+import 'package:arbor/core/providers/restore_wallet_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 import 'hive_constants.dart';
 import 'models/fork.dart';
 import 'models/transaction.dart';
@@ -40,15 +42,16 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Arbor',
-      /*theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),*/
-      theme:ArborThemeData.lightTheme,
-
-      debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => RestoreWalletProvider()),
+      ],
+      child: MaterialApp(
+        title: 'Arbor',
+        theme:ArborThemeData.lightTheme,
+        debugShowCheckedModeBanner: false,
+        home: SplashScreen(),
+      ),
     );
   }
 }
