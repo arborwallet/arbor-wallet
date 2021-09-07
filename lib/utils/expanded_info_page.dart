@@ -188,6 +188,8 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
       ]
     );
   }
+
+
 }
 
 class TransactionsSheet extends StatefulWidget {

@@ -13,6 +13,7 @@ import 'views/screens/splash_screen.dart';
 
 main() async {
   // Initialize hive
+  //WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   // Registering the adapter
   Hive.registerAdapter(WalletAdapter());

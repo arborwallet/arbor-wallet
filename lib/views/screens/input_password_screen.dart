@@ -9,7 +9,7 @@ import '/core/arbor_colors.dart';
 import 'package:flutter/material.dart';
 
 class InputPasswordScreen extends StatelessWidget {
-  final formGlobalKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Consumer<RestoreWalletProvider>(
@@ -68,9 +68,7 @@ class InputPasswordScreen extends StatelessWidget {
 
   Widget firstChild(BuildContext context, RestoreWalletProvider model) {
     return Container(
-      child: Form(
-        key: formGlobalKey,
-        child: Column(
+      child:  Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -140,7 +138,6 @@ class InputPasswordScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 

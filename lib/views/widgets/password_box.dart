@@ -41,10 +41,12 @@ class PasswordBox extends StatelessWidget {
                   child: TextFormField(
                     maxLines: 1,
                     scrollPadding: EdgeInsets.zero,
+                    showCursor: false,
                     onChanged: onChanged,
                     keyboardType: TextInputType.text,
                     style: TextStyle(
                       fontSize: 16,
+                      color: ArborColors.white
                     ),
                     decoration: InputDecoration(
                       isCollapsed: true,

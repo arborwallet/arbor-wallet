@@ -14,18 +14,18 @@ class RestoreWalletProvider extends ChangeNotifier {
   QRViewController? controller;
   final walletService = WalletService();
 
-  String? firstPassword='',
-      secondPassword='',
-      thirdPassword='',
-      fourthPassword='',
-      fifthPassword='',
-      sixthPassword='';
-  String? seventhPassword='',
-      eighthPassword='',
-      ninthPassword='',
-      tenthPassword='',
-      eleventhPassword='',
-      twelfthPassword='';
+  String? firstPassword = '',
+      secondPassword = '',
+      thirdPassword = '',
+      fourthPassword = '',
+      fifthPassword = '',
+      sixthPassword = '';
+  String? seventhPassword = '',
+      eighthPassword = '',
+      ninthPassword = '',
+      tenthPassword = '',
+      eleventhPassword = '',
+      twelfthPassword = '';
 
   String errorMessage1 = '',
       errorMessage2 = '',
@@ -40,7 +40,7 @@ class RestoreWalletProvider extends ChangeNotifier {
       errorMessage11 = '',
       errorMessage12 = '';
 
-  String _errorMessage='Password field cannot be empty';
+  String _errorMessage = 'Password field cannot be empty';
 
   Wallet? recoveredWallet;
   String allPassword = '';
@@ -124,82 +124,91 @@ class RestoreWalletProvider extends ChangeNotifier {
         '${ninthPassword!.trim()} ${tenthPassword!.trim()} ${eleventhPassword!.trim()} ${twelfthPassword!.trim()}';
   }
 
-  bool validateFirstBatch(){
-    if(firstPassword!.trim()==''|| secondPassword!.trim()==''||thirdPassword!.trim()==''||fourthPassword!.trim()==''){
-      if(firstPassword!.trim()==''){
-        errorMessage1=_errorMessage;
+  bool validateFirstBatch() {
+    if (firstPassword!.trim() == '' ||
+        secondPassword!.trim() == '' ||
+        thirdPassword!.trim() == '' ||
+        fourthPassword!.trim() == '') {
+      if (firstPassword!.trim() == '') {
+        errorMessage1 = _errorMessage;
       }
 
-      if(secondPassword!.trim()==''){
-        errorMessage2=_errorMessage;
+      if (secondPassword!.trim() == '') {
+        errorMessage2 = _errorMessage;
       }
 
-      if(thirdPassword!.trim()==''){
-        errorMessage3=_errorMessage;
+      if (thirdPassword!.trim() == '') {
+        errorMessage3 = _errorMessage;
       }
 
-      if(fourthPassword!.trim()==''){
-        errorMessage4=_errorMessage;
-      }
-      notifyListeners();
-
-      return false;
-    }else{
-      return true;
-    }
-  }
-
-  bool validateSecondBatch(){
-    if(fifthPassword!.trim()==''|| sixthPassword!.trim()==''||seventhPassword!.trim()==''||eighthPassword!.trim()==''){
-      if(fifthPassword!.trim()==''){
-        errorMessage5=_errorMessage;
-      }
-
-      if(sixthPassword!.trim()==''){
-        errorMessage6=_errorMessage;
-      }
-
-      if(seventhPassword!.trim()==''){
-        errorMessage7=_errorMessage;
-      }
-
-      if(eighthPassword!.trim()==''){
-        errorMessage8=_errorMessage;
+      if (fourthPassword!.trim() == '') {
+        errorMessage4 = _errorMessage;
       }
       notifyListeners();
 
       return false;
-    }else{
+    } else {
       return true;
     }
   }
 
-  bool validateLastBatch(){
-    if(ninthPassword!.trim()==''|| tenthPassword!.trim()==''||eleventhPassword!.trim()==''||twelfthPassword!.trim()==''){
-      if(ninthPassword!.trim()==''){
-        errorMessage9=_errorMessage;
+  bool validateSecondBatch() {
+    if (fifthPassword!.trim() == '' ||
+        sixthPassword!.trim() == '' ||
+        seventhPassword!.trim() == '' ||
+        eighthPassword!.trim() == '') {
+      if (fifthPassword!.trim() == '') {
+        errorMessage5 = _errorMessage;
       }
 
-      if(tenthPassword!.trim()==''){
-        errorMessage10=_errorMessage;
+      if (sixthPassword!.trim() == '') {
+        errorMessage6 = _errorMessage;
       }
 
-      if(eleventhPassword!.trim()==''){
-        errorMessage11=_errorMessage;
+      if (seventhPassword!.trim() == '') {
+        errorMessage7 = _errorMessage;
       }
 
-      if(twelfthPassword!.trim()==''){
-        errorMessage12=_errorMessage;
+      if (eighthPassword!.trim() == '') {
+        errorMessage8 = _errorMessage;
       }
       notifyListeners();
 
       return false;
-    }else{
+    } else {
       return true;
     }
   }
 
-  clearErrorMessages(){
+  bool validateLastBatch() {
+    if (ninthPassword!.trim() == '' ||
+        tenthPassword!.trim() == '' ||
+        eleventhPassword!.trim() == '' ||
+        twelfthPassword!.trim() == '') {
+      if (ninthPassword!.trim() == '') {
+        errorMessage9 = _errorMessage;
+      }
+
+      if (tenthPassword!.trim() == '') {
+        errorMessage10 = _errorMessage;
+      }
+
+      if (eleventhPassword!.trim() == '') {
+        errorMessage11 = _errorMessage;
+      }
+
+      if (twelfthPassword!.trim() == '') {
+        errorMessage12 = _errorMessage;
+      }
+      notifyListeners();
+
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  clearErrorMessages() {
     errorMessage1 = '';
     errorMessage2 = '';
     errorMessage3 = '';
@@ -242,6 +251,7 @@ class RestoreWalletProvider extends ChangeNotifier {
         '$allPassword',
       );
       print('${recoveredWallet.toString()}');
+
       box.add(recoveredWallet);
     } on Exception catch (e) {
       print('Error');
