@@ -1,6 +1,5 @@
 import 'package:arbor/core/providers/restore_wallet_provider.dart';
 import 'package:flutter/material.dart';
-
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'hive_constants.dart';
@@ -51,6 +50,10 @@ class _MyAppState extends State<MyApp> {
         theme:ArborThemeData.lightTheme,
         debugShowCheckedModeBanner: false,
         home: SplashScreen(),
+        /*routes: {
+          "/":(context) => ChangeNotifierProvider<LoginViewModel>(
+              create: (_) => LoginViewModel(), child: LoginEmailScreen()),
+        },*/
       ),
     );
   }

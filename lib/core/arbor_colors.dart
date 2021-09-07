@@ -6,6 +6,7 @@ class ArborColors{
   static Color logoGreen=const Color(0xFF065D00);
   static Color deepGreen=const Color(0xFF023600);
   static Color lightGreen=const Color(0xFF77BC4A);
+  static Color errorRed=Colors.redAccent;
   static Color transparent=Colors.transparent;
   static Color white=Colors.white;
 }

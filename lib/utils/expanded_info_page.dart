@@ -138,21 +138,18 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
                     ),
                     Card(
                       child: ListTile(
-                        title: Text('Mnemonic'),
+                        title: Text('Password Phrase (mnemonic)'),
                         subtitle: Text('*' * walletData.phrase.toString().length),
-                        trailing: Icon(Icons.copy),
+                        trailing: Icon(Icons.qr_code),
                         onTap: () {
-                          Clipboard.setData(ClipboardData(text: walletData.phrase));
-                        },
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                        title: Text('Wallet Password'),
-                        subtitle: Text('*' * walletData.password.toString().length),
-                        trailing: Icon(Icons.copy),
-                        onTap: () {
-                          Clipboard.setData(ClipboardData(text: walletData.password));
+                          // Clipboard.setData(ClipboardData(text: walletData.phrase));
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (BuildContext context) {
+                              return PasswordQRShareSheet(walletPhrase: (walletBox.getAt(index) as Wallet).phrase);
+                            },
+                          );
                         },
                       ),
                     ),

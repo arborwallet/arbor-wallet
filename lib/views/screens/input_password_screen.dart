@@ -9,6 +9,7 @@ import '/core/arbor_colors.dart';
 import 'package:flutter/material.dart';
 
 class InputPasswordScreen extends StatelessWidget {
+  final formGlobalKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Consumer<RestoreWalletProvider>(
@@ -22,6 +23,7 @@ class InputPasswordScreen extends StatelessWidget {
             leading: IconButton(
               onPressed: () {
                 if (model.currentState == CrossFadeState.showFirst) {
+                  model.clearErrorMessages();
                   Navigator.pop(context);
                 } else {
                   model.back();
@@ -37,18 +39,6 @@ class InputPasswordScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                    child: Text(
-                      'Type your 12-word password to restore your existing wallet',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: ArborColors.white,
-                      ),
-                    ),
-                  ),
                   Expanded(
                     child: ListView(
                       padding: EdgeInsets.symmetric(
@@ -78,56 +68,78 @@ class InputPasswordScreen extends StatelessWidget {
 
   Widget firstChild(BuildContext context, RestoreWalletProvider model) {
     return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            '1 - 4',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              color: ArborColors.white,
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          PasswordBox(
-            index: 1,
-            onChanged: (v) => model.setFirstPassword(v),
-          ),
-          PasswordBox(
-            index: 2,
-            onChanged: (v) => model.setSecondPassword(v),
-          ),
-          PasswordBox(
-            index: 3,
-            onChanged: (v) => model.setThirdPassword(v),
-          ),
-          PasswordBox(
-            index: 4,
-            onChanged: (v) => model.setFourthPassword(v),
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          Row(
-            children: [
-              Expanded(
-                flex: 1,
-                child: Container(),
-              ),
-              Expanded(
-                child: ArborButton(
-                  backgroundColor: ArborColors.logoGreen,
-                  title: 'Next',
-                  onPressed: () => model.nextScreen(),
+      child: Form(
+        key: formGlobalKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              child: Text(
+                'Type your 12-word password to restore your existing wallet',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: ArborColors.white,
                 ),
-              )
-            ],
-          ),
-        ],
+              ),
+            ),
+            Text(
+              '1 - 4',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                color: ArborColors.white,
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            PasswordBox(
+              index: 1,
+              errorMessage: model.errorMessage1,
+              onChanged: (v) => model.setFirstPassword(v),
+            ),
+            PasswordBox(
+              index: 2,
+              errorMessage: model.errorMessage2,
+              onChanged: (v) => model.setSecondPassword(v),
+            ),
+            PasswordBox(
+              index: 3,
+              errorMessage: model.errorMessage3,
+              onChanged: (v) => model.setThirdPassword(v),
+            ),
+            PasswordBox(
+              index: 4,
+              errorMessage: model.errorMessage4,
+              onChanged: (v) => model.setFourthPassword(v),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Container(),
+                ),
+                Expanded(
+                  child: ArborButton(
+                    backgroundColor: ArborColors.logoGreen,
+                    title: 'Next',
+                    onPressed: () {
+                      if (model.validateFirstBatch() == true) {
+                        model.nextScreen();
+                      }
+                    },
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -138,6 +150,17 @@ class InputPasswordScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+            child: Text(
+              'Type your 12-word password to restore your existing wallet',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                color: ArborColors.white,
+              ),
+            ),
+          ),
           Text(
             '5 - 8',
             textAlign: TextAlign.center,
@@ -151,18 +174,22 @@ class InputPasswordScreen extends StatelessWidget {
           ),
           PasswordBox(
             index: 5,
+            errorMessage: model.errorMessage5,
             onChanged: (v) => model.setFifthPassword(v),
           ),
           PasswordBox(
             index: 6,
+            errorMessage: model.errorMessage6,
             onChanged: (v) => model.setSixthPassword(v),
           ),
           PasswordBox(
             index: 7,
+            errorMessage: model.errorMessage7,
             onChanged: (v) => model.setSeventhPassword(v),
           ),
           PasswordBox(
             index: 8,
+            errorMessage: model.errorMessage8,
             onChanged: (v) => model.setEighthPassword(v),
           ),
           SizedBox(
@@ -171,6 +198,15 @@ class InputPasswordScreen extends StatelessWidget {
           Row(
             children: [
               Expanded(
+                child: ArborButton(
+                  backgroundColor: ArborColors.logoGreen,
+                  title: 'Previous',
+                  onPressed: () {
+                    model.back();
+                  },
+                ),
+              ),
+              Expanded(
                 flex: 1,
                 child: Container(),
               ),
@@ -178,12 +214,16 @@ class InputPasswordScreen extends StatelessWidget {
                 child: ArborButton(
                   backgroundColor: ArborColors.logoGreen,
                   title: 'Next',
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => InputPasswordFinalScreen(),
-                    ),
-                  ),
+                  onPressed: () {
+                    if (model.validateSecondBatch() == true) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => InputPasswordFinalScreen(),
+                        ),
+                      );
+                    }
+                  },
                 ),
               )
             ],
