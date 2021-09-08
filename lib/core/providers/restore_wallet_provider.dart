@@ -35,6 +35,12 @@ class RestoreWalletProvider extends ChangeNotifier {
       _password10IsCorrect &&
       _password11IsCorrect &&
       _password12IsCorrect;
+  resetLastButton() {
+    _password9IsCorrect = false;
+    _password10IsCorrect = false;
+    _password11IsCorrect = false;
+    _password12IsCorrect = false;
+  }
 
   RegExp passwordRegex = new RegExp(
     r"(?<![\w\d])abc(?![\w\d])",
@@ -113,6 +119,7 @@ class RestoreWalletProvider extends ChangeNotifier {
         _password1IsCorrect = true;
       }
     } else {
+      _password1IsCorrect = false;
       errorMessage1 = _errorMessage;
     }
     notifyListeners();
@@ -128,6 +135,7 @@ class RestoreWalletProvider extends ChangeNotifier {
         _password2IsCorrect = true;
       }
     } else {
+      _password2IsCorrect = false;
       errorMessage2 = _errorMessage;
     }
     notifyListeners();
@@ -143,6 +151,7 @@ class RestoreWalletProvider extends ChangeNotifier {
         _password3IsCorrect = true;
       }
     } else {
+      _password3IsCorrect = false;
       errorMessage3 = _errorMessage;
     }
     notifyListeners();
@@ -158,6 +167,7 @@ class RestoreWalletProvider extends ChangeNotifier {
         _password4IsCorrect = true;
       }
     } else {
+      _password4IsCorrect = false;
       errorMessage4 = _errorMessage;
     }
     notifyListeners();
@@ -173,6 +183,7 @@ class RestoreWalletProvider extends ChangeNotifier {
         _password5IsCorrect = true;
       }
     } else {
+      _password5IsCorrect = false;
       errorMessage5 = _errorMessage;
     }
     notifyListeners();
@@ -188,6 +199,7 @@ class RestoreWalletProvider extends ChangeNotifier {
         _password6IsCorrect = true;
       }
     } else {
+      _password6IsCorrect = false;
       errorMessage6 = _errorMessage;
     }
     notifyListeners();
@@ -203,6 +215,7 @@ class RestoreWalletProvider extends ChangeNotifier {
         _password7IsCorrect = true;
       }
     } else {
+      _password7IsCorrect = false;
       errorMessage7 = _errorMessage;
     }
     notifyListeners();
@@ -218,6 +231,7 @@ class RestoreWalletProvider extends ChangeNotifier {
         _password8IsCorrect = true;
       }
     } else {
+      _password8IsCorrect = false;
       errorMessage8 = _errorMessage;
     }
     notifyListeners();
@@ -233,6 +247,7 @@ class RestoreWalletProvider extends ChangeNotifier {
         _password9IsCorrect = true;
       }
     } else {
+      _password9IsCorrect = false;
       errorMessage9 = _errorMessage;
     }
     notifyListeners();
@@ -248,6 +263,7 @@ class RestoreWalletProvider extends ChangeNotifier {
         _password10IsCorrect = true;
       }
     } else {
+      _password10IsCorrect = false;
       errorMessage10 = _errorMessage;
     }
     notifyListeners();
@@ -263,6 +279,7 @@ class RestoreWalletProvider extends ChangeNotifier {
         _password11IsCorrect = true;
       }
     } else {
+      _password11IsCorrect = false;
       errorMessage11 = _errorMessage;
     }
     notifyListeners();
@@ -278,6 +295,7 @@ class RestoreWalletProvider extends ChangeNotifier {
         _password12IsCorrect = true;
       }
     } else {
+      _password12IsCorrect = false;
       errorMessage12 = _errorMessage;
     }
     notifyListeners();

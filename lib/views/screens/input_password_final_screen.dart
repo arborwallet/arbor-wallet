@@ -35,6 +35,7 @@ class InputPasswordFinalScreen extends StatelessWidget
             centerTitle: true,
             leading: IconButton(
               onPressed: () {
+                model.resetLastButton();
                 Navigator.pop(context);
               },
               icon: Icon(Icons.arrow_back),
@@ -42,37 +43,30 @@ class InputPasswordFinalScreen extends StatelessWidget
             title: Text('Restore Wallet'),
           ),
           body: HideKeyboardContainer(
-            child: SingleChildScrollView(
-              child: Container(
-                //height: MediaQuery.of(context).size.height,
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+            child: Container(
+              //height: MediaQuery.of(context).size.height,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 20),
+                    child: Text(
+                      'Type your 12-word password to restore your existing wallet',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: ArborColors.white,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 20,
+                      ),
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 20),
-                          child: Text(
-                            'Type your 12-word password to restore your existing wallet',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: ArborColors.white,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          '9 - 12',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: ArborColors.white,
-                          ),
-                        ),
                         SizedBox(
                           height: 20,
                         ),
@@ -99,25 +93,26 @@ class InputPasswordFinalScreen extends StatelessWidget
                         SizedBox(
                           height: 50,
                         ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 30),
+                          child: ArborButton(
+                            backgroundColor: ArborColors.logoGreen,
+                            disabled: !model.lastBatchButtonIsDisabled,
+                            loading:
+                                model.recoverWalletStatus == Status.LOADING,
+                            title: 'Restore',
+                            onPressed: () {
+                              if (model.validateLastBatch() == true) {
+                                model.concatenatePasswords();
+                                model.recoverWallet();
+                              }
+                            },
+                          ),
+                        ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 30),
-                      child: ArborButton(
-                        backgroundColor: ArborColors.logoGreen,
-                        disabled: !model.lastBatchButtonIsDisabled,
-                        loading: model.recoverWalletStatus == Status.LOADING,
-                        title: 'Restore',
-                        onPressed: (){
-                          if(model.validateLastBatch()==true){
-                            model.concatenatePasswords();
-                            model.recoverWallet();
-                          }
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

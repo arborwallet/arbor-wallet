@@ -57,16 +57,6 @@ class InputPasswordScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Text(
-                    model.currentState == CrossFadeState.showFirst
-                        ? '1 - 4'
-                        : '5-8',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: ArborColors.white,
-                    ),
-                  ),
                   Expanded(
                     child: ListView(
                       padding: EdgeInsets.symmetric(
