@@ -26,7 +26,6 @@ dependencies:
   # WalletReceiveScreen
   path_provider: ^2.0.3
   share_plus: ^2.1.4
-#  image: ^3.0.2
 
 
 dev_dependencies:

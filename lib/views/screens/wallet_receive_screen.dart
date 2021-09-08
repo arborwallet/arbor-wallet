@@ -15,7 +15,6 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 
 import 'dart:ui' as ui;
-import 'package:image/image.dart' as nonui;
 
 class WalletReceiveScreen extends StatefulWidget {
   const WalletReceiveScreen({
@@ -47,16 +46,6 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
       var file = await new File('${tempDir}/wallet-receive-address.png').create();
       await file.writeAsBytes(pngBytes);
 
-      // // Attempt to remove transparency ( but the alpha channel is removed and the image is black instead )
-      // nonui.Image? jpgImage = nonui.decodeImage(file.readAsBytesSync());
-      // file = await new File('${tempDir}/wallet-receive-address1.png').create();
-      // if (jpgImage != null) {
-      //   // jpgImage = nonui.colorOffset(jpgImage, alpha: 0);
-      //   // jpgImage = nonui.drawPixel(jpgImage, 0, 0, 0, 0x00);
-      //
-      //   await file.writeAsBytes(nonui.encodeJpg(jpgImage));
-      // }
-
       await Share.shareFiles([file.path]);
     }
   }
@@ -72,65 +61,71 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
           ),
           title: Text('Receive ${widget.wallet.fork.name} (${widget.wallet.name})'),
         ),
-        body: Padding(
-          padding: EdgeInsets.fromLTRB(PASSWORD_PADDING, 0.0, PASSWORD_PADDING, 0.0),
-          child: RepaintBoundary(
+        body: RepaintBoundary(
             key: globalKey,
-            child: Column(
-              children: <Widget>[
-                Flexible(
-                  flex: 2,
-                  child: QrImage(
-                    data: widget.wallet.address,
-                    version: QrVersions.auto,
-                    embeddedImage: AssetImage('assets/images/logo.png'),
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Flexible(
-                    flex: 1,
-                    child: Center(
-                        child: Column(
-                          children: [
-                            Text(
-                              'Tap to copy your ${widget.wallet.fork.name} light wallet address:',
-                              style: TextStyle(fontSize: 20.0),),
-                            InkWell(
-                              child: ListTile(
-                                title: Text(
-                                  widget.wallet.address,
-                                  style: TextStyle(fontSize: 20.0),
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(PASSWORD_PADDING, 0.0, PASSWORD_PADDING, 0.0),
+              child: Container(
+                color: Colors.white,
+                child: Column(
+                  children: <Widget>[
+                    Flexible(
+                      flex: 2,
+                      child: QrImage(
+                        data: widget.wallet.address,
+                        version: QrVersions.auto,
+                        embeddedImage: AssetImage('assets/images/logo.png'),
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black,
+                        gapless: false,
+                      ),
+                    ),
+                    SizedBox(height: 20,),
+                    Flexible(
+                        flex: 1,
+                        child: Center(
+                            child: Column(
+                              children: [
+                                Text(
+                                  'Tap to copy your ${widget.wallet.fork.name} light wallet address:',
+                                  style: TextStyle(fontSize: 20.0),),
+                                InkWell(
+                                  child: ListTile(
+                                    title: Text(
+                                      widget.wallet.address,
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+                                    trailing: Icon(Icons.copy),
+                                    onTap: () {
+                                      Clipboard.setData(ClipboardData(text: widget.wallet.address));
+                                    },
+                                  ),
                                 ),
-                                trailing: Icon(Icons.copy),
-                                onTap: () {
-                                  Clipboard.setData(ClipboardData(text: widget.wallet.address));
-                                },
-                              ),
-                            ),
-                          ],
+                              ],
+                            )
                         )
-                    )
+                    ),
+                    SizedBox(height: 20,),
+                    Row(
+                      children: <Widget>[
+                        Flexible(
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: ArborButton(
+                            onPressed: () {
+                              _showShareSheet();
+                            },
+                            title: 'Share',
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 40,),
+                  ],
                 ),
-                // SizedBox(height: 20,),
-                // Row(
-                //   children: <Widget>[
-                //     Flexible(
-                //       flex: 1,
-                //       fit: FlexFit.tight,
-                //       child: ArborButton(
-                //         onPressed: () {
-                //           _showShareSheet();
-                //         },
-                //         title: 'Share',
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(height: 40,),
-              ],
-            ),
+              )
           )
         ),
-      );
+    );
   }
 }
