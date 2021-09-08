@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '/views/widgets/arbor_button.dart';
 
-import '/core/arbor_colors.dart';
+import '../../core/constants/arbor_colors.dart';
 import 'package:flutter/material.dart';
 
 class InputPasswordScreen extends StatelessWidget {
@@ -45,6 +45,28 @@ class InputPasswordScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 20),
+                    child: Text(
+                      'Type your 12-word password to restore your existing wallet',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: ArborColors.white,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    model.currentState == CrossFadeState.showFirst
+                        ? '1 - 4'
+                        : '5-8',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: ArborColors.white,
+                    ),
+                  ),
                   Expanded(
                     child: ListView(
                       padding: EdgeInsets.symmetric(
@@ -78,25 +100,6 @@ class InputPasswordScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: Text(
-              'Type your 12-word password to restore your existing wallet',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                color: ArborColors.white,
-              ),
-            ),
-          ),
-          Text(
-            '1 - 4',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              color: ArborColors.white,
-            ),
-          ),
           SizedBox(
             height: 20,
           ),
@@ -120,6 +123,59 @@ class InputPasswordScreen extends StatelessWidget {
             errorMessage: model.errorMessage4,
             onChanged: (v) => model.setFourthPassword(v),
           ),
+          /*Autocomplete<String>(
+            optionsBuilder: (TextEditingValue textEditingValue) {
+              return model.bipList
+                  .where(
+                      (e) => e.startsWith(textEditingValue.text.toLowerCase()))
+                  .toList();
+            },
+            onSelected: (String selection) {
+              //print('Selected: ${selection.name}');
+            },
+            fieldViewBuilder: (BuildContext context,
+                TextEditingController fieldTextEditingController,
+                FocusNode fieldFocusNode,
+                VoidCallback onFieldSubmitted) {
+              return TextField(
+                controller: fieldTextEditingController,
+                focusNode: fieldFocusNode,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+
+              );
+            },
+            */ /*optionsViewBuilder: (BuildContext context,
+                AutocompleteOnSelected<String> onSelected,
+                Iterable<String> options) {
+              return  Material(
+                  child: Container(
+                    width: 200,
+                    color: Colors.white,
+                    child: ListView.builder(
+                      padding: EdgeInsets.all(10.0),
+                      itemCount: options.length,
+                      //itemCount: options.where((e) => e.startsWith(model.firstPassword!.trim().toLowerCase())).length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final String option = options.elementAt(index);
+                        return GestureDetector(
+                          onTap: () {
+                            onSelected(option);
+                          },
+                          child: ListTile(
+                            title: Text(
+                              option,
+                              style: const TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                );
+            },*/ /*
+          ),*/
           SizedBox(
             height: 40,
           ),
@@ -154,25 +210,6 @@ class InputPasswordScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: Text(
-              'Type your 12-word password to restore your existing wallet',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                color: ArborColors.white,
-              ),
-            ),
-          ),
-          Text(
-            '5 - 8',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              color: ArborColors.white,
-            ),
-          ),
           SizedBox(
             height: 20,
           ),

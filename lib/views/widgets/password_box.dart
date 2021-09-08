@@ -92,7 +92,7 @@ class NewPasswordBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 16),
+      margin: EdgeInsets.only(bottom: 4),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
