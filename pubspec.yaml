@@ -51,6 +51,7 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/fonts/
+    - assets/bip39/
 
   generate: true
   uses-material-design: true

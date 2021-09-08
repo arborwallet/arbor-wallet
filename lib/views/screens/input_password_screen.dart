@@ -1,7 +1,9 @@
+import 'package:arbor/core/enums/status.dart';
 import 'package:arbor/core/providers/restore_wallet_provider.dart';
 import 'package:arbor/views/screens/input_password_final_screen.dart';
 import 'package:arbor/views/widgets/layout/hide_keyboard_container.dart';
 import 'package:arbor/views/widgets/password_box.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '/views/widgets/arbor_button.dart';
 
@@ -9,11 +11,15 @@ import '/core/arbor_colors.dart';
 import 'package:flutter/material.dart';
 
 class InputPasswordScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Consumer<RestoreWalletProvider>(
       builder: (_, model, __) {
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+          if (model.recoverWalletStatus == Status.IDLE) {
+            model.setBip39Words();
+          }
+        });
         return Scaffold(
           backgroundColor: ArborColors.green,
           appBar: AppBar(
@@ -68,76 +74,77 @@ class InputPasswordScreen extends StatelessWidget {
 
   Widget firstChild(BuildContext context, RestoreWalletProvider model) {
     return Container(
-      child:  Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-              child: Text(
-                'Type your 12-word password to restore your existing wallet',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: ArborColors.white,
-                ),
-              ),
-            ),
-            Text(
-              '1 - 4',
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+            child: Text(
+              'Type your 12-word password to restore your existing wallet',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
                 color: ArborColors.white,
               ),
             ),
-            SizedBox(
-              height: 20,
+          ),
+          Text(
+            '1 - 4',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 14,
+              color: ArborColors.white,
             ),
-            PasswordBox(
-              index: 1,
-              errorMessage: model.errorMessage1,
-              onChanged: (v) => model.setFirstPassword(v),
-            ),
-            PasswordBox(
-              index: 2,
-              errorMessage: model.errorMessage2,
-              onChanged: (v) => model.setSecondPassword(v),
-            ),
-            PasswordBox(
-              index: 3,
-              errorMessage: model.errorMessage3,
-              onChanged: (v) => model.setThirdPassword(v),
-            ),
-            PasswordBox(
-              index: 4,
-              errorMessage: model.errorMessage4,
-              onChanged: (v) => model.setFourthPassword(v),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          PasswordBox(
+            index: 1,
+            errorMessage: model.errorMessage1,
+            onChanged: (v) => model.setFirstPassword(v),
+          ),
+          PasswordBox(
+            index: 2,
+            errorMessage: model.errorMessage2,
+            onChanged: (v) => model.setSecondPassword(v),
+          ),
+          PasswordBox(
+            index: 3,
+            errorMessage: model.errorMessage3,
+            onChanged: (v) => model.setThirdPassword(v),
+          ),
+          PasswordBox(
+            index: 4,
+            errorMessage: model.errorMessage4,
+            onChanged: (v) => model.setFourthPassword(v),
+          ),
+          SizedBox(
+            height: 40,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Container(),
+              ),
+              Expanded(
+                child: ArborButton(
+                  backgroundColor: ArborColors.logoGreen,
+                  disabled: model.firstBatchButtonIsDisabled,
+                  title: 'Next',
+                  onPressed: () {
+                    if (model.validateFirstBatch() == true) {
+                      model.nextScreen();
+                    }
+                  },
                 ),
-                Expanded(
-                  child: ArborButton(
-                    backgroundColor: ArborColors.logoGreen,
-                    title: 'Next',
-                    onPressed: () {
-                      if (model.validateFirstBatch() == true) {
-                        model.nextScreen();
-                      }
-                    },
-                  ),
-                )
-              ],
-            ),
-          ],
-        ),
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -210,12 +217,13 @@ class InputPasswordScreen extends StatelessWidget {
               Expanded(
                 child: ArborButton(
                   backgroundColor: ArborColors.logoGreen,
+                  disabled: model.secondBatchButtonIsDisabled,
                   title: 'Next',
                   onPressed: () {
                     if (model.validateSecondBatch() == true) {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
+                        CupertinoPageRoute(
                           builder: (context) => InputPasswordFinalScreen(),
                         ),
                       );

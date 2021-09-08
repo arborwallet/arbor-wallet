@@ -6,11 +6,13 @@ class ArborButton extends StatelessWidget {
   final Color? backgroundColor;
   final VoidCallback onPressed;
   final bool loading;
+  final bool disabled;
 
   ArborButton(
       {required this.title,
-      this.backgroundColor,
+      this.backgroundColor=const Color(0xFF77BC4A),
       required this.onPressed,
+        this.disabled=false,
       this.loading = false});
 
   @override
@@ -20,7 +22,7 @@ class ArborButton extends StatelessWidget {
       elevation: 0.0,
       focusElevation: 0.0,
       hoverElevation: 0.0,
-      fillColor: backgroundColor ?? ArborColors.lightGreen,
+      fillColor:disabled || loading? backgroundColor!.withOpacity(0.3):backgroundColor,
       highlightElevation: 0.0,
       animationDuration: Duration.zero,
       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -28,7 +30,7 @@ class ArborButton extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
-      onPressed: onPressed,
+      onPressed:disabled|| loading?(){}:onPressed,
       child: Center(
         child: loading
             ? Container(
