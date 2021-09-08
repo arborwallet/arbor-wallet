@@ -11,7 +11,7 @@ import 'package:arbor/views/screens/transactions_screen.dart';
 import 'package:arbor/views/screens/password_qr_share_screen.dart';
 import 'package:arbor/views/screens/wallet_receive_screen.dart';
 
-import '../hive_constants.dart';
+import '../core/constants/hive_constants.dart';
 
 class ExpandedInfoPage extends StatefulWidget {
   const ExpandedInfoPage({

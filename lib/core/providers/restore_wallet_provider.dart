@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import '../../hive_constants.dart';
+import '../constants/hive_constants.dart';
 
 class RestoreWalletProvider extends ChangeNotifier {
   Box box = Hive.box(HiveConstants.walletBox);

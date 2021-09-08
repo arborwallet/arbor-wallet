@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '/views/widgets/layout/arbor_on_boarding_layout.dart';
-import '/core/arbor_colors.dart';
+import '../../core/constants/arbor_colors.dart';
 import '/core/models/onboarding_text.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 

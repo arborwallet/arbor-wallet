@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '/core/arbor_colors.dart';
+import '../../core/constants/arbor_colors.dart';
 import '/core/constants/asset_paths.dart';
 import '/screens/info_screen.dart';
 import '/views/widgets/arbor_button.dart';

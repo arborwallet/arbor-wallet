@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 
 import 'dart:async';
 
-import '../hive_constants.dart';
+import '../core/constants/hive_constants.dart';
 
 
 class AddWalletForm extends StatefulWidget {

@@ -3,7 +3,7 @@ import 'package:arbor/views/screens/input_password_screen.dart';
 import 'package:arbor/views/screens/scanner_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '/core/arbor_colors.dart';
+import '../../core/constants/arbor_colors.dart';
 import 'package:flutter/material.dart';
 
 class RestoreWalletScreen extends StatefulWidget {

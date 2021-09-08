@@ -1,6 +1,6 @@
 import 'package:arbor/views/screens/restore_wallet_screen.dart';
 import 'package:flutter/material.dart';
-import '/core/arbor_colors.dart';
+import '../../core/constants/arbor_colors.dart';
 import '/views/widgets/arbor_button.dart';
 import '/core/constants/asset_paths.dart';
 

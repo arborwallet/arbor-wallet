@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '/models/models.dart';
-import '../hive_constants.dart';
+import '../core/constants/hive_constants.dart';
 import '/api/services.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -71,15 +71,6 @@ class _InfoScreenState extends State<InfoScreen> {
       child: Scaffold(
           appBar: AppBar(
             title: const Text('Arbor Wallet'),
-            leading: IconButton(onPressed: (){
-              if (Navigator.of(context).canPop()) {
-                Navigator.of(context).pop();
-              } else {
-                // Android back button hack
-                SystemNavigator.pop();
-              }
-            }, icon: Icon(Icons.arrow_back,),),
-
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () => Navigator.of(context).push(
@@ -149,7 +140,8 @@ class _InfoScreenState extends State<InfoScreen> {
                                 // title: Text(walletData.balance.toStringAsFixed(walletData.fork.precision)),
                                 title: FittedBox(
                                     fit: BoxFit.contain,
-                                    child: Text(walletData.balanceForDisplay())),
+                                    child:
+                                        Text(walletData.balanceForDisplay())),
                                 subtitle: Text(walletData.address.toString()),
                               ),
                               ListTile(

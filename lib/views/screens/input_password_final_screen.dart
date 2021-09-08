@@ -1,4 +1,4 @@
-import 'package:arbor/core/arbor_colors.dart';
+import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/enums/status.dart';
 import 'package:arbor/core/providers/restore_wallet_provider.dart';
 import 'package:arbor/screens/info_screen.dart';

@@ -4,7 +4,7 @@ import 'package:arbor/screens/info_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-import '/core/arbor_colors.dart';
+import '../../core/constants/arbor_colors.dart';
 import 'package:flutter/material.dart';
 
 class ScannerScreen extends StatefulWidget {
