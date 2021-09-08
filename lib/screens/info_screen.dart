@@ -71,6 +71,14 @@ class _InfoScreenState extends State<InfoScreen> {
       child: Scaffold(
           appBar: AppBar(
             title: const Text('Arbor Wallet'),
+            leading: IconButton(onPressed: (){
+              if (Navigator.of(context).canPop()) {
+                Navigator.of(context).pop();
+              } else {
+                // Android back button hack
+                SystemNavigator.pop();
+              }
+            }, icon: Icon(Icons.arrow_back,),),
 
           ),
           floatingActionButton: FloatingActionButton(
