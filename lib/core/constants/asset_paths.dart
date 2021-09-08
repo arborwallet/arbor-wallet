@@ -2,6 +2,8 @@ class AssetPaths {
   static const String baseIconPath = 'assets/icons';
   static const String baseImagePath = 'assets/images';
 
+  ///BIP39
+  static const String bip39='assets/bip39/english.txt';
 
   ///Images
   static const String logo = '$baseImagePath/logo.png';

@@ -1,4 +1,5 @@
 import 'package:arbor/api/services.dart';
+import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/core/enums/status.dart';
 import 'package:arbor/models/models.dart';
 import 'package:flutter/foundation.dart';
@@ -11,14 +12,19 @@ import '../../hive_constants.dart';
 class RestoreWalletProvider extends ChangeNotifier {
   Box box = Hive.box(HiveConstants.walletBox);
   CrossFadeState currentState = CrossFadeState.showFirst;
-  Status recoverWalletStatus = Status.IDLE;
+  Status recoverWalletStatus = Status.SUCCESS;
   QRViewController? controller;
   final walletService = WalletService();
   String bip39words = '';
   List<String> bipList = [];
-  bool firstBatchButtonIsDisabled = false;
-  bool secondBatchButtonIsDisabled = false;
-  bool lastBatchButtonIsDisabled = false;
+
+
+  bool get firstBatchButtonIsDisabled=>_password1IsCorrect && _password2IsCorrect && _password3IsCorrect && _password4IsCorrect;
+
+  bool get secondBatchButtonIsDisabled=>_password5IsCorrect && _password6IsCorrect && _password7IsCorrect && _password8IsCorrect;
+
+  bool get lastBatchButtonIsDisabled=>_password9IsCorrect && _password10IsCorrect && _password11IsCorrect && _password12IsCorrect;
+
   RegExp passwordRegex = new RegExp(
     r"(?<![\w\d])abc(?![\w\d])",
     caseSensitive: false,
@@ -71,14 +77,14 @@ class RestoreWalletProvider extends ChangeNotifier {
 
   bool validatePassword(String word) {
     try {
-      if (word.length >= 3 && (word == bipList.firstWhere((e) => e == word))) {
+      if (word.length >= 3 &&
+          (word == bipList.firstWhere((e) => e == word, orElse: () => ''))) {
+        return true;
+      } else if (word.length < 3) {
         return true;
       } else {
         return false;
       }
-    } on StateError catch (e) {
-      debugPrint('ERROR: ${e.toString()}');
-      return false;
     } on Exception catch (e) {
       debugPrint('ERROR: ${e.toString()}');
       return false;
@@ -89,7 +95,11 @@ class RestoreWalletProvider extends ChangeNotifier {
     firstPassword = password;
     if (validatePassword(password)) {
       errorMessage1 = '';
-      _password1IsCorrect = true;
+      if (password.length < 3) {
+        _password1IsCorrect = false;
+      } else {
+        _password1IsCorrect = true;
+      }
     } else {
       errorMessage1 = _errorMessage;
     }
@@ -100,6 +110,11 @@ class RestoreWalletProvider extends ChangeNotifier {
     secondPassword = password;
     if (validatePassword(password)) {
       errorMessage2 = '';
+      if (password.length < 3) {
+        _password2IsCorrect = false;
+      } else {
+        _password2IsCorrect = true;
+      }
     } else {
       errorMessage2 = _errorMessage;
     }
@@ -110,6 +125,11 @@ class RestoreWalletProvider extends ChangeNotifier {
     thirdPassword = password;
     if (validatePassword(password)) {
       errorMessage3 = '';
+      if (password.length < 3) {
+        _password3IsCorrect = false;
+      } else {
+        _password3IsCorrect = true;
+      }
     } else {
       errorMessage3 = _errorMessage;
     }
@@ -120,6 +140,11 @@ class RestoreWalletProvider extends ChangeNotifier {
     fourthPassword = password;
     if (validatePassword(password)) {
       errorMessage4 = '';
+      if (password.length < 3) {
+        _password4IsCorrect = false;
+      } else {
+        _password4IsCorrect = true;
+      }
     } else {
       errorMessage4 = _errorMessage;
     }
@@ -130,6 +155,11 @@ class RestoreWalletProvider extends ChangeNotifier {
     fifthPassword = password;
     if (validatePassword(password)) {
       errorMessage5 = '';
+      if (password.length < 3) {
+        _password5IsCorrect = false;
+      } else {
+        _password5IsCorrect = true;
+      }
     } else {
       errorMessage5 = _errorMessage;
     }
@@ -140,6 +170,11 @@ class RestoreWalletProvider extends ChangeNotifier {
     sixthPassword = password;
     if (validatePassword(password)) {
       errorMessage6 = '';
+      if (password.length < 3) {
+        _password6IsCorrect = false;
+      } else {
+        _password6IsCorrect = true;
+      }
     } else {
       errorMessage6 = _errorMessage;
     }
@@ -150,6 +185,11 @@ class RestoreWalletProvider extends ChangeNotifier {
     seventhPassword = password;
     if (validatePassword(password)) {
       errorMessage7 = '';
+      if (password.length < 3) {
+        _password7IsCorrect = false;
+      } else {
+        _password7IsCorrect = true;
+      }
     } else {
       errorMessage7 = _errorMessage;
     }
@@ -160,6 +200,11 @@ class RestoreWalletProvider extends ChangeNotifier {
     eighthPassword = password;
     if (validatePassword(password)) {
       errorMessage8 = '';
+      if (password.length < 3) {
+        _password8IsCorrect = false;
+      } else {
+        _password8IsCorrect = true;
+      }
     } else {
       errorMessage8 = _errorMessage;
     }
@@ -170,6 +215,11 @@ class RestoreWalletProvider extends ChangeNotifier {
     ninthPassword = password;
     if (validatePassword(password)) {
       errorMessage9 = '';
+      if (password.length < 3) {
+        _password9IsCorrect = false;
+      } else {
+        _password9IsCorrect = true;
+      }
     } else {
       errorMessage9 = _errorMessage;
     }
@@ -180,6 +230,11 @@ class RestoreWalletProvider extends ChangeNotifier {
     tenthPassword = password;
     if (validatePassword(password)) {
       errorMessage10 = '';
+      if (password.length < 3) {
+        _password10IsCorrect = false;
+      } else {
+        _password10IsCorrect = true;
+      }
     } else {
       errorMessage10 = _errorMessage;
     }
@@ -190,6 +245,11 @@ class RestoreWalletProvider extends ChangeNotifier {
     eleventhPassword = password;
     if (validatePassword(password)) {
       errorMessage11 = '';
+      if (password.length < 3) {
+        _password11IsCorrect = false;
+      } else {
+        _password11IsCorrect = true;
+      }
     } else {
       errorMessage11 = _errorMessage;
     }
@@ -200,6 +260,11 @@ class RestoreWalletProvider extends ChangeNotifier {
     twelfthPassword = password;
     if (validatePassword(password)) {
       errorMessage12 = '';
+      if (password.length < 3) {
+        _password12IsCorrect = false;
+      } else {
+        _password12IsCorrect = true;
+      }
     } else {
       errorMessage12 = _errorMessage;
     }
@@ -356,9 +421,7 @@ class RestoreWalletProvider extends ChangeNotifier {
     try {
       bip39words = await loadAsset();
       bipList = bip39words.trim().split('\n').map((e) => e).toList();
-      print(bip39words.length);
-      print('LIST: ${bipList.length}');
-      recoverWalletStatus = Status.SUCCESS;
+      recoverWalletStatus = Status.IDLE;
       notifyListeners();
     } on Exception catch (e) {
       debugPrint('ERROR: ${e.toString()}');
@@ -366,6 +429,6 @@ class RestoreWalletProvider extends ChangeNotifier {
   }
 
   Future<String> loadAsset() async {
-    return await rootBundle.loadString('assets/bip39/english.txt');
+    return await rootBundle.loadString(AssetPaths.bip39);
   }
 }

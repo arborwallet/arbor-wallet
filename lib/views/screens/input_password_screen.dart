@@ -16,7 +16,7 @@ class InputPasswordScreen extends StatelessWidget {
     return Consumer<RestoreWalletProvider>(
       builder: (_, model, __) {
         WidgetsBinding.instance!.addPostFrameCallback((_) {
-          if (model.recoverWalletStatus == Status.IDLE) {
+          if (model.recoverWalletStatus == Status.SUCCESS) {
             model.setBip39Words();
           }
         });
@@ -132,7 +132,7 @@ class InputPasswordScreen extends StatelessWidget {
               Expanded(
                 child: ArborButton(
                   backgroundColor: ArborColors.logoGreen,
-                  disabled: model.firstBatchButtonIsDisabled,
+                  disabled: !model.firstBatchButtonIsDisabled,
                   title: 'Next',
                   onPressed: () {
                     if (model.validateFirstBatch() == true) {
@@ -217,7 +217,7 @@ class InputPasswordScreen extends StatelessWidget {
               Expanded(
                 child: ArborButton(
                   backgroundColor: ArborColors.logoGreen,
-                  disabled: model.secondBatchButtonIsDisabled,
+                  disabled: !model.secondBatchButtonIsDisabled,
                   title: 'Next',
                   onPressed: () {
                     if (model.validateSecondBatch() == true) {

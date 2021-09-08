@@ -22,7 +22,7 @@ class ArborButton extends StatelessWidget {
       elevation: 0.0,
       focusElevation: 0.0,
       hoverElevation: 0.0,
-      fillColor:disabled || loading? backgroundColor!.withOpacity(0.3):backgroundColor,
+      fillColor:disabled || loading? backgroundColor!.withOpacity(0.2):backgroundColor,
       highlightElevation: 0.0,
       animationDuration: Duration.zero,
       padding: const EdgeInsets.symmetric(vertical: 16),
