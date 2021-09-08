@@ -18,12 +18,23 @@ class RestoreWalletProvider extends ChangeNotifier {
   String bip39words = '';
   List<String> bipList = [];
 
+  bool get firstBatchButtonIsDisabled =>
+      _password1IsCorrect &&
+      _password2IsCorrect &&
+      _password3IsCorrect &&
+      _password4IsCorrect;
 
-  bool get firstBatchButtonIsDisabled=>_password1IsCorrect && _password2IsCorrect && _password3IsCorrect && _password4IsCorrect;
+  bool get secondBatchButtonIsDisabled =>
+      _password5IsCorrect &&
+      _password6IsCorrect &&
+      _password7IsCorrect &&
+      _password8IsCorrect;
 
-  bool get secondBatchButtonIsDisabled=>_password5IsCorrect && _password6IsCorrect && _password7IsCorrect && _password8IsCorrect;
-
-  bool get lastBatchButtonIsDisabled=>_password9IsCorrect && _password10IsCorrect && _password11IsCorrect && _password12IsCorrect;
+  bool get lastBatchButtonIsDisabled =>
+      _password9IsCorrect &&
+      _password10IsCorrect &&
+      _password11IsCorrect &&
+      _password12IsCorrect;
 
   RegExp passwordRegex = new RegExp(
     r"(?<![\w\d])abc(?![\w\d])",
@@ -78,9 +89,10 @@ class RestoreWalletProvider extends ChangeNotifier {
   bool validatePassword(String word) {
     try {
       if (word.length >= 3 &&
-          (word == bipList.firstWhere((e) => e == word, orElse: () => ''))) {
+          (word.trim() ==
+              bipList.firstWhere((e) => e == word.trim(), orElse: () => ''))) {
         return true;
-      } else if (word.length < 3) {
+      } else if (word.trim().length < 3) {
         return true;
       } else {
         return false;
