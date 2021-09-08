@@ -71,47 +71,48 @@ class _OptionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
-      elevation: 2,
-      color: ArborColors.logoGreen,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20),),),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.all(30),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              '$iconPath',
-              height: 60,
-              width: 60,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              '$description',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                color: ArborColors.white,
+    return InkWell(
+      onTap: onPressed,
+      child: Card(
+        margin: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+        elevation: 2,
+        color: ArborColors.logoGreen,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20),),),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.all(30),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                '$iconPath',
+                height: 60,
+                width: 60,
               ),
-            ),
-            TextButton(
-              onPressed: onPressed,
-              child: Text(
-                '$actionText',
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                '$description',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: ArborColors.green,
+                  fontSize: 14,
+                  color: ArborColors.white,
                 ),
               ),
-            ),
-          ],
+               Text(
+                  '$actionText',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: ArborColors.green,
+                  ),
+                ),
+
+            ],
+          ),
         ),
       ),
     );
