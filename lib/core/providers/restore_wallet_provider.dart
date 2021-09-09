@@ -303,9 +303,9 @@ class RestoreWalletProvider extends ChangeNotifier {
 
   concatenatePasswords() {
     allPassword =
-        '${firstPassword!.trim()} ${secondPassword!.trim()} ${thirdPassword!.trim()} ${fourthPassword!.trim()} '
-        '${fifthPassword!.trim()} ${sixthPassword!.trim()} ${seventhPassword!.trim()} ${eighthPassword!.trim()} '
-        '${ninthPassword!.trim()} ${tenthPassword!.trim()} ${eleventhPassword!.trim()} ${twelfthPassword!.trim()}';
+        '${firstPassword!.trim().toLowerCase()} ${secondPassword!.trim().toLowerCase()} ${thirdPassword!.trim().toLowerCase()} ${fourthPassword!.trim().toLowerCase()} '
+        '${fifthPassword!.trim().toLowerCase()} ${sixthPassword!.trim().toLowerCase()} ${seventhPassword!.trim().toLowerCase()} ${eighthPassword!.trim().toLowerCase()} '
+        '${ninthPassword!.trim().toLowerCase()} ${tenthPassword!.trim().toLowerCase()} ${eleventhPassword!.trim().toLowerCase()} ${twelfthPassword!.trim().toLowerCase()}';
   }
 
   bool validateFirstBatch() {

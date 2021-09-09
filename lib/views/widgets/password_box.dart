@@ -45,7 +45,6 @@ class PasswordBox extends StatelessWidget {
                     scrollPadding: EdgeInsets.zero,
                     inputFormatters: [
                       FilteringTextInputFormatter.deny(' '),
-                      FilteringTextInputFormatter.allow(RegExp('[a-z]'))
                     ],
                     showCursor: true,
                     cursorColor: ArborColors.white,
