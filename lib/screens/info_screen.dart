@@ -111,14 +111,16 @@ class _InfoScreenState extends State<InfoScreen> {
                       var walletData = currentBox.getAt(index)!;
 
                       return InkWell(
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => ExpandedInfoScreen(
-                              index: index,
-                              wallet: walletData,
+                        onTap: () =>
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ExpandedInfoScreen(
+                                      index: index,
+                                      wallet: walletData,
+                                    ),
+                              ),
                             ),
-                          ),
-                        ),
                         child: Card(
                           elevation: 8,
                           shadowColor: Colors.lightGreen,
@@ -139,7 +141,8 @@ class _InfoScreenState extends State<InfoScreen> {
                                   ),
                                 ),
                                 title: Text(
-                                    '${walletData.fork.name} (${walletData.name})'),
+                                    '${walletData.fork.name} (${walletData.name})'
+                                ),
                                 subtitle:
                                     Text(walletData.fork.ticker.toUpperCase()),
                                 trailing: IconButton(
@@ -177,19 +180,9 @@ class _InfoScreenState extends State<InfoScreen> {
                               )
                             ],
                           ),
-                          ListTile(
-                            contentPadding: EdgeInsets.all(10.0),//change for side padding
-                            title: Row(
-                              children: <Widget>[
-                                Expanded(child: OutlinedButton(onPressed: () {_showReceiveView(walletIndex: index);},child: Text("Receive"))),
-                                SizedBox(width: 10),
-                                Expanded(child: OutlinedButton(onPressed: () {},child: Text("Send"))),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                        ),
+                      );
+                    },
                   );
                 }
               },
