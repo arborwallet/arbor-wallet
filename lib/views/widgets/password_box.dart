@@ -1,5 +1,6 @@
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:simple_autocomplete_formfield/simple_autocomplete_formfield.dart';
 
 class PasswordBox extends StatelessWidget {
@@ -42,6 +43,10 @@ class PasswordBox extends StatelessWidget {
                   child: TextFormField(
                     maxLines: 1,
                     scrollPadding: EdgeInsets.zero,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.deny(' '),
+                      FilteringTextInputFormatter.allow(RegExp('[a-z]'))
+                    ],
                     showCursor: true,
                     cursorColor: ArborColors.white,
                     onChanged: onChanged,

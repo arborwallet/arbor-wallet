@@ -96,7 +96,9 @@ class InputPasswordScreen extends StatelessWidget {
           PasswordBox(
             index: 1,
             errorMessage: model.errorMessage1,
-            onChanged: (v) => model.setFirstPassword(v),
+            onChanged: (v){
+              model.setFirstPassword(v.trim());
+            },
           ),
           PasswordBox(
             index: 2,
