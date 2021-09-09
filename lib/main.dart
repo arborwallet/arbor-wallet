@@ -1,15 +1,19 @@
+import 'package:arbor/core/providers/restore_wallet_provider.dart';
 import 'package:flutter/material.dart';
-
 import 'package:hive_flutter/hive_flutter.dart';
-import 'screens/info_screen.dart';
-import 'package:arbor/hive_constants.dart';
-import 'package:arbor/models/models.dart';
-import 'package:arbor/themes/arbor_theme_data.dart';
-import 'package:arbor/views/screens/splash_screen.dart';
+import 'package:provider/provider.dart';
+import 'core/constants/hive_constants.dart';
+import 'models/fork.dart';
+import 'models/transaction.dart';
+import 'models/transactions.dart';
+import 'models/wallet.dart';
+import 'themes/arbor_theme_data.dart';
+import 'views/screens/splash_screen.dart';
 
 
 main() async {
   // Initialize hive
+  //WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   // Registering the adapter
   Hive.registerAdapter(WalletAdapter());
@@ -38,15 +42,20 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Arbor',
-      /*theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),*/
-      theme:ArborThemeData.lightTheme,
-
-      debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => RestoreWalletProvider()),
+      ],
+      child: MaterialApp(
+        title: 'Arbor',
+        theme:ArborThemeData.lightTheme,
+        debugShowCheckedModeBanner: false,
+        home: SplashScreen(),
+        /*routes: {
+          "/":(context) => ChangeNotifierProvider<LoginViewModel>(
+              create: (_) => LoginViewModel(), child: LoginEmailScreen()),
+        },*/
+      ),
     );
   }
 }

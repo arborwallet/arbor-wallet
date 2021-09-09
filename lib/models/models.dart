@@ -1,4 +1,4 @@
-export 'package:arbor/models/wallet.dart';
-export 'package:arbor/models/fork.dart';
-export 'package:arbor/models/transaction.dart';
-export 'package:arbor/models/transactions.dart';
+export '/models/wallet.dart';
+export '/models/fork.dart';
+export '/models/transaction.dart';
+export '/models/transactions.dart';

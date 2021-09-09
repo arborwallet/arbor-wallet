@@ -1,9 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:arbor/models/models.dart';
-import 'package:arbor/utils/expanded_info_page.dart';
-
-import 'package:arbor/models/wallet.dart';
+import '/models/models.dart';
+import '/utils/expanded_info_page.dart';
 
 class ExpandedInfoScreen extends StatefulWidget {
   final int index;

@@ -1,15 +1,19 @@
-
 import 'package:flutter/material.dart';
-import 'package:arbor/core/arbor_colors.dart';
+import '../../core/constants/arbor_colors.dart';
 
 class ArborButton extends StatelessWidget {
-
   final String title;
   final Color? backgroundColor;
   final VoidCallback onPressed;
+  final bool loading;
+  final bool disabled;
 
-
-  ArborButton({required this.title, this.backgroundColor,required this.onPressed});
+  ArborButton(
+      {required this.title,
+      this.backgroundColor=const Color(0xFF77BC4A),
+      required this.onPressed,
+        this.disabled=false,
+      this.loading = false});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +22,7 @@ class ArborButton extends StatelessWidget {
       elevation: 0.0,
       focusElevation: 0.0,
       hoverElevation: 0.0,
-      fillColor: backgroundColor??ArborColors.lightGreen,
+      fillColor:disabled || loading? backgroundColor!.withOpacity(0.2):backgroundColor,
       highlightElevation: 0.0,
       animationDuration: Duration.zero,
       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -26,13 +30,26 @@ class ArborButton extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
-      onPressed: onPressed,
-      child:  Center(
-        child: Text(
-          '$title',
-          style:const TextStyle(
-              color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
-        ),
+      onPressed:disabled|| loading?(){}:onPressed,
+      child: Center(
+        child: loading
+            ? Container(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    ArborColors.white,
+                  ),
+                ),
+              )
+            : Text(
+                '$title',
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold),
+              ),
       ),
     );
   }

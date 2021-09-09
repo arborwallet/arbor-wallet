@@ -297,7 +297,7 @@ class ArborOnBoardingLayoutState extends State<ArborOnBoardingLayout> {
 
     final nextBtn = IntroButton(
       color: widget.nextColor ?? widget.color,
-      onPressed: widget.showNextButton && !_isScrolling ? next : null,
+      onPressed: widget.showNextButton && !isLastPage ? next : _onSkip,
       child: widget.next,
     );
 
@@ -349,7 +349,7 @@ class ArborOnBoardingLayoutState extends State<ArborOnBoardingLayout> {
             right: 0,
             child: Column(
               children: [
-                _toggleBtn(nextBtn, widget.showNextButton),
+                 _toggleBtn(nextBtn, widget.showNextButton),
                 const SizedBox(height: 20,),
                 Container(
                   padding: widget.controlsPadding,
