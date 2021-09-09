@@ -93,6 +93,7 @@ class RestoreWalletProvider extends ChangeNotifier {
   String allPassword = '';
 
   bool validatePassword(String word) {
+    //word=word.toLowerCase();
     try {
       if (word.length >= 3 &&
           (word.trim() ==
