@@ -1,3 +1,4 @@
+import 'package:arbor/views/screens/wallet_receive_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -47,6 +48,19 @@ class _InfoScreenState extends State<InfoScreen> {
 
       walletBox.putAt(index, newWallet);
     }
+  }
+
+  void _showReceiveView({required int walletIndex}) {
+    Wallet walletData = walletBox.getAt(walletIndex) as Wallet;
+
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => WalletReceiveScreen(
+          index: walletIndex,
+          wallet: walletData,
+        ),
+      ),
+    );
   }
 
   @override
@@ -163,9 +177,19 @@ class _InfoScreenState extends State<InfoScreen> {
                               )
                             ],
                           ),
-                        ),
-                      );
-                    },
+                          ListTile(
+                            contentPadding: EdgeInsets.all(10.0),//change for side padding
+                            title: Row(
+                              children: <Widget>[
+                                Expanded(child: OutlinedButton(onPressed: () {_showReceiveView(walletIndex: index);},child: Text("Receive"))),
+                                SizedBox(width: 10),
+                                Expanded(child: OutlinedButton(onPressed: () {},child: Text("Send"))),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   );
                 }
               },
