@@ -53,10 +53,6 @@ class _MyAppState extends State<MyApp> {
         theme:ArborThemeData.lightTheme,
         debugShowCheckedModeBanner: false,
         home: SplashScreen(),
-        /*routes: {
-          "/":(context) => ChangeNotifierProvider<LoginViewModel>(
-              create: (_) => LoginViewModel(), child: LoginEmailScreen()),
-        },*/
       ),
     );
   }

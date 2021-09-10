@@ -7,6 +7,7 @@ import 'package:arbor/views/screens/send/address_scanner.dart';
 import 'package:arbor/views/screens/send/status_screen.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:arbor/views/widgets/arbor_textfield.dart';
+import 'package:arbor/views/widgets/editting_controller.dart';
 import 'package:arbor/views/widgets/layout/hide_keyboard_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ import 'package:provider/provider.dart';
 
 class ValueScreen extends StatelessWidget {
   final addressFocusNode = FocusNode();
-  final addressController = TextEditingController();
+  final addressController = CustomTextEditingController();
 
   final Wallet wallet;
   ValueScreen({required this.wallet});
@@ -39,6 +40,15 @@ class ValueScreen extends StatelessWidget {
               resizeToAvoidBottomInset: false,
               appBar: AppBar(
                 centerTitle: true,
+                leading: IconButton(
+                  onPressed: () {
+                    model.clearInput();
+                    Navigator.pop(context, false);
+                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: ArborColors.white,
+                  ),),
                 title: Text(
                   'Enter Amount',
                   style: TextStyle(
@@ -86,7 +96,7 @@ class ValueScreen extends StatelessWidget {
                           Expanded(
                             flex: 1,
                             child: Text(
-                              'XCH Wallet',
+                              '${wallet.fork.name}',
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.left,
                               style: TextStyle(
@@ -101,7 +111,7 @@ class ValueScreen extends StatelessWidget {
                             child: Text(
                               model.walletBalanceStatus == Status.LOADING
                                   ? 'Loading...'
-                                  : 'XCH ${model.readableBalance}',
+                                  : '${model.readableBalance} ${wallet.fork.ticker.toUpperCase()}',
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.end,
                               style: TextStyle(
@@ -123,10 +133,14 @@ class ValueScreen extends StatelessWidget {
                       height: 40,
                     ),
                     ArborTextField(
-                      hintText: "Enter Recipient's Address",
+                      hintText: "Tap to paste Recipient's Address",
                       focusNode: addressFocusNode,
                       controller: addressController
                         ..text = model.receiverAddress,
+                      isDisabled: true,
+                      onTextFieldTapped: (){
+                        model.getClipBoardData();
+                      },
                       errorMessage: model.addressErrorMessage,
                       onChanged: (v) => model.setReceiverAddress(v),
                       onIconPressed: () {

@@ -13,9 +13,8 @@ class StatusScreen extends StatelessWidget {
     return Consumer<SendCryptoProvider>(builder: (_, model, __) {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (model.sendCryptoStatus == Status.ERROR) {
-          showErrorDialog(context, model);
+          //showErrorDialog(context, model);
         }
-
         if (model.sendCryptoStatus == Status.CLOSE) {
           Navigator.pop(context, false);
         }
@@ -33,7 +32,7 @@ class StatusScreen extends StatelessWidget {
               ),
               elevation: 0,
               automaticallyImplyLeading: false,
-              leading: model.sendCryptoStatus == Status.IDLE
+              leading: model.sendCryptoStatus == Status.IDLE || model.sendCryptoStatus == Status.ERROR
                   ? IconButton(
                       onPressed: () {
                         Navigator.pop(context, false);
@@ -41,7 +40,7 @@ class StatusScreen extends StatelessWidget {
                       icon: Icon(
                         Icons.arrow_back,
                         color: ArborColors.white,
-                      ))
+                      ),)
                   : null,
               backgroundColor: ArborColors.green,
             ),

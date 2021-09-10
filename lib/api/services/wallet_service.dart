@@ -262,7 +262,7 @@ class WalletService extends ApiService {
           return sendResponse;
         }
       }else{
-        return responseData.body.toString();
+        return 'Transaction failed';
       }
     }on Exception catch(e){
       return e.toString();

@@ -2,7 +2,9 @@ import 'package:arbor/api/responses.dart';
 import 'package:arbor/api/services/wallet_service.dart';
 import 'package:arbor/core/constants/ui_constants.dart';
 import 'package:arbor/core/enums/status.dart';
+import 'package:arbor/core/utils/regex.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
 class SendCryptoProvider extends ChangeNotifier {
   Status sendCryptoStatus = Status.IDLE;
@@ -37,24 +39,29 @@ class SendCryptoProvider extends ChangeNotifier {
   bool get enableButton => _validAddress && double.parse(_transactionValue) > 0;
 
   double get convertedBalance => _walletBalance / chiaPrecision;
-  String get readableBalance=>convertedBalance.toStringAsFixed(8);
+  String get readableBalance=>convertedBalance.toStringAsFixed(12);
 
   double _amount = 0;
   double get amount => _amount;
 
   bool _validAddress = false;
 
-  RegExp amountRegex = new RegExp(
-    r"(^[+-]?\d*\.\d{1,8}$)",
-  );
-
-  RegExp addressRegex =
-      new RegExp("(?:[^qpzry9x8gf2tvdw0s3jn54khce6mua7l]{58})");
 
   bool validAddress(String address) {
-    _validAddress = address.startsWith('xch1');
+    _validAddress = address.startsWith('xch1') &&  Regex.chiaAddressRegex.hasMatch(_receiverAddress)&& address.length==62 ;
+    print('Address is valid $_validAddress');
     notifyListeners();
     return _validAddress;
+  }
+
+  getClipBoardData()async{
+    ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
+    if(data!=null){
+      setReceiverAddress(data.text!);
+    }else{
+      _addressErrorMessage='Clipboard is empty';
+      notifyListeners();
+    }
   }
 
   setWalletBalance(int v) {
@@ -79,8 +86,9 @@ class SendCryptoProvider extends ChangeNotifier {
       return;
     }
 
+
     if (_transactionValue.contains('.') &&
-        _transactionValue.split('.').last.length == 8) {
+        _transactionValue.split('.').last.length == 12) {
       return;
     }
 
@@ -105,7 +113,7 @@ class SendCryptoProvider extends ChangeNotifier {
 
   setReceiverAddress(String value) {
     _receiverAddress = value;
-    if (value.length >= 62) {
+    if (value.length >= 1) {
       bool addressIsValid = validAddress(value);
       if (addressIsValid) {
         _addressErrorMessage = '';
@@ -171,6 +179,14 @@ class SendCryptoProvider extends ChangeNotifier {
       notifyListeners();
       throw Exception('${e.toString()}');
     }
+  }
+
+  clearInput(){
+    _transactionValue='0';
+    _receiverAddress='';
+    _errorMessage='';
+    _addressErrorMessage='';
+    notifyListeners();
   }
 
   clearStatus() {
