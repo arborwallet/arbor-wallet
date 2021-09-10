@@ -125,7 +125,7 @@ class ValueScreen extends StatelessWidget {
                       height: 20,
                     ),
                     Text(
-                      '${model.transactionValue} XCH',
+                      '${model.transactionValue} ${wallet.fork.ticker.toUpperCase()}',
                       style:
                           TextStyle(fontSize: 30, color: ArborColors.deepGreen),
                     ),

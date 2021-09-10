@@ -26,7 +26,7 @@ class InputPasswordFinalScreen extends StatelessWidget
             model.clearStatus();
           }
 
-          if(model.recoverWalletStatus == Status.SUCCESS){
+          if (model.recoverWalletStatus == Status.SUCCESS) {
             debugPrint('An error occurred');
           }
         });
@@ -64,7 +64,6 @@ class InputPasswordFinalScreen extends StatelessWidget
                       ),
                     ),
                   ),
-                  //xch1n9vdyc04hwtkwtcwnfzpharhrxvf828ynvc0w66ktxnhu2qx68hq67y5uz
                   Expanded(
                     child: ListView(
                       children: [

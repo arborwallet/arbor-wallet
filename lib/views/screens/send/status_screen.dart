@@ -11,14 +11,6 @@ class StatusScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<SendCryptoProvider>(builder: (_, model, __) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
-        if (model.sendCryptoStatus == Status.ERROR) {
-          showErrorDialog(context, model);
-        }
-        if (model.sendCryptoStatus == Status.CLOSE) {
-          Navigator.pop(context, false);
-        }
-      });
       return Container(
         color: ArborColors.green,
         child: SafeArea(
@@ -32,10 +24,12 @@ class StatusScreen extends StatelessWidget {
               ),
               elevation: 0,
               automaticallyImplyLeading: false,
-              leading: model.sendCryptoStatus == Status.IDLE || model.sendCryptoStatus == Status.ERROR
+              leading: model.sendCryptoStatus == Status.IDLE
                   ? IconButton(
                       onPressed: () {
+
                         Navigator.pop(context, false);
+                        model.close();
                       },
                       icon: Icon(
                         Icons.arrow_back,
@@ -52,6 +46,8 @@ class StatusScreen extends StatelessWidget {
                     return _processingView(model);
                   } else if (model.sendCryptoStatus == Status.SUCCESS) {
                     return _successView(context, model);
+                  } else if (model.sendCryptoStatus == Status.ERROR) {
+                    return _errorView(context, model);
                   } else {
                     return _summaryView(context, model);
                   }
@@ -151,6 +147,59 @@ class StatusScreen extends StatelessWidget {
           title: 'Continue',
           onPressed: () {
             Navigator.pop(context, true);
+            model.close();
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _errorView(BuildContext context, SendCryptoProvider model) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Container(),
+        ),
+        SvgPicture.asset(
+          AssetPaths.walletSendError,
+          fit: BoxFit.cover,
+          height: 150,
+        ),
+        Expanded(
+          flex: 5,
+          child: Container(),
+        ),
+        Text(
+          'Oops!',
+          style: TextStyle(
+            color: ArborColors.white,
+            fontWeight: FontWeight.w600,
+            fontSize: 24,
+          ),
+        ),
+        Text(
+          '${model.errorMessage}',
+          style: TextStyle(
+            color: ArborColors.white,
+            fontWeight: FontWeight.w400,
+            fontSize: 18,
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Container(),
+        ),
+        ArborButton(
+          backgroundColor: ArborColors.logoGreen,
+          disabled: false,
+          loading: false,
+          title: 'Go Back',
+          onPressed: () {
+            Navigator.pop(context, true);
+            model.close();
           },
         ),
       ],
@@ -261,59 +310,6 @@ class StatusScreen extends StatelessWidget {
     );
   }
 
-  showErrorDialog(BuildContext context, SendCryptoProvider model) {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => AlertDialog(
-              actionsPadding: EdgeInsets.all(20),
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'ERROR',
-                    style: TextStyle(color: ArborColors.black),
-                  ),
-                ],
-              ),
-              content: Text(
-                '${model.errorMessage}',
-                textAlign: TextAlign.center,
-              ),
-              actions: [
-                ArborButton(
-                  backgroundColor: ArborColors.logoGreen,
-                  disabled: false,
-                  loading: false,
-                  title: 'OK',
-                  onPressed: () {
-                    Navigator.pop(context);
-                    model.close();
-                  },
-                ),
-              ],
-            ));
-  }
 
-  showAlertDialog(BuildContext context) {
 
-    // set up the button
-    Widget okButton = TextButton(
-      child: Text("OK"),
-      onPressed: () { },
-    );
-
-    // set up the AlertDialog
-    Dialog alert = Dialog(
-      child: Text("My title"),
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
 }

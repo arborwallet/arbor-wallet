@@ -36,7 +36,7 @@ class SendCryptoProvider extends ChangeNotifier {
   String _transactionValue = '0';
   String get transactionValue => _transactionValue;
 
-  bool get enableButton => _validAddress && double.parse(_transactionValue) > 0;
+  bool get enableButton => _validAddress && double.parse(_transactionValue) >= 0;
 
   double get convertedBalance => _walletBalance / chiaPrecision;
   String get readableBalance=>convertedBalance.toStringAsFixed(12);
@@ -53,7 +53,9 @@ class SendCryptoProvider extends ChangeNotifier {
     // https://github.com/sipa/bips/blob/bip-taproot/bip-0136.mediawiki
     int _maxPossibleLength = forkTicker.length+1+58;
     _validAddress = address.startsWith('${forkTicker}1') &&  Regex.chiaAddressRegex.hasMatch(_receiverAddress)&& address.length==_maxPossibleLength ;
-    print('Address is valid $_validAddress');
+
+    //Print to console only in debug mode
+    debugPrint('Address is valid $_validAddress');
     notifyListeners();
     return _validAddress;
   }
