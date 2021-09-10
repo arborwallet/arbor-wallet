@@ -1,4 +1,5 @@
 import 'package:arbor/core/providers/restore_wallet_provider.dart';
+import 'package:arbor/core/providers/send_crypto_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +46,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => RestoreWalletProvider()),
+        ChangeNotifierProvider(create: (_) => SendCryptoProvider()),
       ],
       child: MaterialApp(
         title: 'Arbor',
