@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:arbor/core/providers/restore_wallet_provider.dart';
 import 'package:arbor/views/screens/no_encryption_available_sccreen.dart';
+import 'package:arbor/core/providers/send_crypto_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -91,6 +92,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => RestoreWalletProvider()),
+        ChangeNotifierProvider(create: (_) => SendCryptoProvider()),
       ],
       child: MaterialApp(
         title: 'Arbor',
