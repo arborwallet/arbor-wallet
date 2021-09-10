@@ -13,10 +13,7 @@ class StatusScreen extends StatelessWidget {
     return Consumer<SendCryptoProvider>(builder: (_, model, __) {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (model.sendCryptoStatus == Status.ERROR) {
-
-          //showErrorDialog(context, model);
-          showAlertDialog(context);
-
+          showErrorDialog(context, model);
         }
         if (model.sendCryptoStatus == Status.CLOSE) {
           Navigator.pop(context, false);
