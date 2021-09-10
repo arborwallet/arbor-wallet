@@ -1,5 +1,3 @@
-import 'package:arbor/api/responses/send_response.dart';
-
 import '/models/models.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -267,7 +265,6 @@ class WalletService extends ApiService {
         return responseData.body.toString();
       }
     }on Exception catch(e){
-      //throw Exception(e.toString());
       return e.toString();
     }
   }

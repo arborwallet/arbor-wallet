@@ -17,7 +17,7 @@ class StatusScreen extends StatelessWidget {
         }
 
         if (model.sendCryptoStatus == Status.CLOSE) {
-          Navigator.pop(context);
+          Navigator.pop(context, false);
         }
       });
       return Container(
@@ -36,7 +36,7 @@ class StatusScreen extends StatelessWidget {
               leading: model.sendCryptoStatus == Status.IDLE
                   ? IconButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.pop(context, false);
                       },
                       icon: Icon(
                         Icons.arrow_back,
@@ -151,7 +151,7 @@ class StatusScreen extends StatelessWidget {
           loading: false,
           title: 'Continue',
           onPressed: () {
-            Navigator.pop(context,true);
+            Navigator.pop(context, true);
           },
         ),
       ],

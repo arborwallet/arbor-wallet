@@ -31,13 +31,13 @@ class SendCryptoProvider extends ChangeNotifier {
   int _walletBalance = 0;
   int get walletBalance => _walletBalance;
 
-  String _transactionValue='0';
-  String get transactionValue=>_transactionValue;
+  String _transactionValue = '0';
+  String get transactionValue => _transactionValue;
 
-  bool get enableButton => _validAddress && double.parse(_transactionValue)>0;
+  bool get enableButton => _validAddress && double.parse(_transactionValue) > 0;
 
-  double _convertedBalance=0;
   double get convertedBalance => _walletBalance / chiaPrecision;
+  String get readableBalance=>convertedBalance.toStringAsFixed(8);
 
   double _amount = 0;
   double get amount => _amount;
@@ -57,44 +57,49 @@ class SendCryptoProvider extends ChangeNotifier {
     return _validAddress;
   }
 
-
-
   setWalletBalance(int v) {
     _walletBalance = v;
     notifyListeners();
   }
 
-  setTransactionValue(v){
-
-    if(_transactionValue=='0' && v!='.'){
-      _transactionValue=v;
+  setTransactionValue(v) {
+    if (_transactionValue == '0' && v != '.') {
+      _transactionValue = v;
       notifyListeners();
       return;
     }
 
-    if(_transactionValue=='0' && v=='.'){
-      _transactionValue='0.';
+    if (_transactionValue == '0' && v == '.') {
+      _transactionValue = '0.';
       notifyListeners();
       return;
     }
 
-    if(_transactionValue.contains('.') &&  v=='.'){
+    if (_transactionValue.contains('.') && v == '.') {
       return;
     }
 
-    _transactionValue+=v;
+    if (_transactionValue.contains('.') &&
+        _transactionValue.split('.').last.length == 8) {
+      return;
+    }
+
+    _transactionValue += v;
     notifyListeners();
   }
 
-
-  deleteCharacter(){
-    if(_transactionValue=='0'){
-
-    }else if(_transactionValue!='0' && _transactionValue.length==1){
-      _transactionValue='0';
-    }else{
-      _transactionValue= removeLastCharacter(_transactionValue);
+  deleteCharacter() {
+    if (_transactionValue == '0') {
+    } else if (_transactionValue != '0' && _transactionValue.length == 1) {
+      _transactionValue = '0';
+    } else {
+      _transactionValue = removeLastCharacter(_transactionValue);
     }
+    notifyListeners();
+  }
+
+  useMax(){
+    _transactionValue=readableBalance;
     notifyListeners();
   }
 
@@ -127,26 +132,28 @@ class SendCryptoProvider extends ChangeNotifier {
     try {
       transactionResponse = await walletService.sendXCH(
         privateKey: privateKey,
-        amount: double.parse(_transactionValue)*chiaPrecision,
+        amount: double.parse(_transactionValue) * chiaPrecision,
         address: _receiverAddress,
       );
-      if (transactionResponse.runtimeType == BaseResponse) {
-        _errorMessage = transactionResponse.error;
-        sendCryptoStatus = Status.ERROR;
-        notifyListeners();
-      } else {
+
+      if (transactionResponse == 'success') {
         sendCryptoStatus = Status.SUCCESS;
         _walletBalanceStatus = Status.IDLE;
-        _transactionValue='0';
+        _transactionValue = '0';
         _receiverAddress = '';
         _appBarTitle = 'All Done';
-        notifyListeners();
+      } else if (transactionResponse.runtimeType == BaseResponse) {
+        _errorMessage = transactionResponse.error;
+        sendCryptoStatus = Status.ERROR;
+      } else {
+        _errorMessage = 'An error occurred';
+        sendCryptoStatus = Status.ERROR;
       }
+      notifyListeners();
     } on Exception catch (e) {
-      print('Send error');
+      _errorMessage = e.toString();
       sendCryptoStatus = Status.ERROR;
       notifyListeners();
-      throw Exception('${e.toString()}');
     }
   }
 
@@ -156,11 +163,10 @@ class SendCryptoProvider extends ChangeNotifier {
     try {
       _walletBalance =
           await walletService.fetchWalletBalance(currentUserAddress);
-      //_convertedBalance = _walletBalance / 1000000000000;
       _walletBalanceStatus = Status.SUCCESS;
       notifyListeners();
     } on Exception catch (e) {
-      _convertedBalance = 0;
+      _walletBalance = 0;
       _walletBalanceStatus = Status.ERROR;
       notifyListeners();
       throw Exception('${e.toString()}');
@@ -176,11 +182,11 @@ class SendCryptoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String removeLastCharacter(String str){
+  String removeLastCharacter(String str) {
     if (str.length > 1) {
       str = str.substring(0, str.length - 1);
-    }else{
-      str='0';
+    } else {
+      str = '0';
     }
     return str;
   }

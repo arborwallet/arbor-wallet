@@ -1,4 +1,3 @@
-import 'package:arbor/views/screens/send/status_screen.dart';
 import 'package:arbor/views/screens/send/value_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

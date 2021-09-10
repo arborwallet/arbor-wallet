@@ -101,7 +101,7 @@ class ValueScreen extends StatelessWidget {
                             child: Text(
                               model.walletBalanceStatus == Status.LOADING
                                   ? 'Loading...'
-                                  : 'XCH ${model.convertedBalance}',
+                                  : 'XCH ${model.readableBalance}',
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.end,
                               style: TextStyle(
@@ -142,20 +142,40 @@ class ValueScreen extends StatelessWidget {
                       width: 10,
                     ),
                     Expanded(
-                      child: NumericKeyboard(
-                          onKeyboardTap: (_) => model.setTransactionValue(_),
-                          textColor: ArborColors.white,
-                          rightButtonFn: () =>model.deleteCharacter(),
-                          rightIcon: Icon(
-                            Icons.arrow_back,
-                            color: ArborColors.white,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 4,
+                            child: NumericKeyboard(
+                                onKeyboardTap: (_) =>
+                                    model.setTransactionValue(_),
+                                textColor: ArborColors.white,
+                                rightButtonFn: () => model.deleteCharacter(),
+                                rightIcon: Icon(
+                                  Icons.arrow_back,
+                                  color: ArborColors.white,
+                                ),
+                                leftButtonFn: () =>
+                                    model.setTransactionValue('.'),
+                                leftIcon: Icon(
+                                  Icons.adjust_sharp,
+                                  color: ArborColors.white,
+                                ),
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly),
                           ),
-                          leftButtonFn: () => model.setTransactionValue('.'),
-                          leftIcon: Icon(
-                            Icons.adjust_sharp,
-                            color: ArborColors.white,
+                          Expanded(
+                            flex: 1,
+                            child: IconButton(
+                              onPressed: ()=>model.useMax(),
+                              icon: Text(
+                                'MAX',
+                                style: TextStyle(color: ArborColors.white),
+                              ),
+                            ),
                           ),
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly),
+                        ],
+                      ),
                     ),
                     ArborButton(
                       backgroundColor: ArborColors.logoGreen,
