@@ -28,6 +28,7 @@ class ValueScreen extends StatelessWidget {
         if (model.walletBalanceStatus == Status.IDLE) {
           model.setWalletBalance(wallet.balance);
           model.privateKey = wallet.privateKey;
+          model.forkPrecision=wallet.fork.precision;
           model.currentUserAddress = wallet.address;
         }
       });
@@ -162,7 +163,7 @@ class ValueScreen extends StatelessWidget {
                             flex: 4,
                             child: NumericKeyboard(
                                 onKeyboardTap: (_) =>
-                                    model.setTransactionValue(_, wallet.fork.precision),
+                                    model.setTransactionValue(_),
                                 textColor: ArborColors.white,
                                 rightButtonFn: () => model.deleteCharacter(),
                                 rightIcon: Icon(
@@ -170,7 +171,7 @@ class ValueScreen extends StatelessWidget {
                                   color: ArborColors.white,
                                 ),
                                 leftButtonFn: () =>
-                                    model.setTransactionValue('.', wallet.fork.precision),
+                                    model.setTransactionValue('.'),
                                 leftIcon: Icon(
                                   Icons.adjust_sharp,
                                   color: ArborColors.white,
@@ -178,6 +179,26 @@ class ValueScreen extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,),
                           ),
+
+                          GestureDetector(
+                            onTap: ()=>model.useMax(),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                color: ArborColors.deepGreen,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'MAX',
+                                  style: TextStyle(color: ArborColors.white),
+                                ),
+                              ),
+
+                            ),
+                          ),
+
                           Expanded(
                             flex: 1,
                             child: IconButton(
