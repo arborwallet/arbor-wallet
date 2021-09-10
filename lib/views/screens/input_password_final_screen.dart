@@ -25,6 +25,10 @@ class InputPasswordFinalScreen extends StatelessWidget
             );
             model.clearStatus();
           }
+
+          if(model.recoverWalletStatus == Status.SUCCESS){
+            debugPrint('An error occurred');
+          }
         });
         return Scaffold(
           backgroundColor: ArborColors.green,
