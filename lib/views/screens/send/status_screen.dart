@@ -129,7 +129,7 @@ class StatusScreen extends StatelessWidget {
           ),
         ),
         Text(
-          'Chia(${model.forkTicker.toUpperCase()}) sent',
+          '${model.forkName}(${model.forkTicker.toUpperCase()}) sent',
           style: TextStyle(
             color: ArborColors.white,
             fontWeight: FontWeight.w400,

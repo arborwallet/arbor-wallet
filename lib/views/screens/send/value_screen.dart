@@ -29,6 +29,7 @@ class ValueScreen extends StatelessWidget {
           model.privateKey=wallet.privateKey;
           model.currentUserAddress=wallet.address;
           model.forkPrecision=wallet.fork.precision;
+          model.forkName=wallet.fork.name;
           model.forkTicker=wallet.fork.ticker;
           model.setWalletBalance(wallet.balance);
         }

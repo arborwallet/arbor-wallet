@@ -28,6 +28,7 @@ class SendCryptoProvider extends ChangeNotifier {
 
   var transactionResponse;
   int forkPrecision=0;
+  String forkName='';
   String forkTicker='';
   String privateKey='';
   String currentUserAddress='';
