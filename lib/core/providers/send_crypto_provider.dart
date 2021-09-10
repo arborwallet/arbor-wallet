@@ -36,7 +36,7 @@ class SendCryptoProvider extends ChangeNotifier {
   String _transactionValue = '0';
   String get transactionValue => _transactionValue;
 
-  bool get enableButton => _validAddress && double.parse(_transactionValue) >= 0;
+  bool get enableButton => _validAddress && double.parse(_transactionValue) > 0;
 
   double get convertedBalance => _walletBalance / chiaPrecision;
   String get readableBalance=>convertedBalance.toStringAsFixed(12);
