@@ -5,11 +5,6 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:flutter/material.dart';
 
 class AddressScanner extends StatefulWidget {
-  const AddressScanner({
-    required this.forkTicker,
-  });
-
-  final String forkTicker;
 
   @override
   _AddressScannerState createState() => _AddressScannerState();
@@ -51,7 +46,7 @@ class _AddressScannerState extends State<AddressScanner> {
                   child: QRView(
                     key: key,
                     onQRViewCreated: (_) =>
-                        onQRViewCreated(context, model, controller!, widget.forkTicker),
+                        onQRViewCreated(context, model, controller!),
                     overlay: QrScannerOverlayShape(
                       overlayColor: ArborColors.green,
                       borderColor: ArborColors.white,
@@ -78,11 +73,10 @@ class _AddressScannerState extends State<AddressScanner> {
     BuildContext context,
     SendCryptoProvider model,
     QRViewController controller,
-    String forkTicker,
   ) {
     controller.scannedDataStream.listen((scanData) {
       controller.pauseCamera();
-      model.setReceiverAddress(scanData.code, forkTicker);
+      model.setReceiverAddress(scanData.code);
       Navigator.pop(context);
     });
   }

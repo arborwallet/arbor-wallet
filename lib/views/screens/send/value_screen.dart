@@ -26,10 +26,8 @@ class ValueScreen extends StatelessWidget {
     return Consumer<SendCryptoProvider>(builder: (_, model, __) {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (model.walletBalanceStatus == Status.IDLE) {
+          model.setUserWallet(wallet);
           model.setWalletBalance(wallet.balance);
-          model.privateKey = wallet.privateKey;
-          model.forkPrecision=wallet.fork.precision;
-          model.currentUserAddress = wallet.address;
         }
       });
       return Container(
@@ -140,15 +138,15 @@ class ValueScreen extends StatelessWidget {
                         ..text = model.receiverAddress,
                       isDisabled: true,
                       onTextFieldTapped: (){
-                        model.getClipBoardData(wallet.fork.ticker);
+                        model.getClipBoardData();
                       },
                       errorMessage: model.addressErrorMessage,
-                      onChanged: (v) => model.setReceiverAddress(v, wallet.fork.ticker),
+                      onChanged: (v) => model.setReceiverAddress(v),
                       onIconPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => AddressScanner(forkTicker: wallet.fork.ticker),
+                            builder: (context) => AddressScanner(),
                           ),
                         );
                       },
@@ -180,32 +178,25 @@ class ValueScreen extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,),
                           ),
 
-                          GestureDetector(
-                            onTap: ()=>model.useMax(),
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              height: double.infinity,
-                              decoration: BoxDecoration(
-                                color: ArborColors.deepGreen,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'MAX',
-                                  style: TextStyle(color: ArborColors.white),
-                                ),
-                              ),
-
-                            ),
-                          ),
-
                           Expanded(
                             flex: 1,
-                            child: IconButton(
-                              onPressed: ()=>model.useMax(),
-                              icon: Text(
-                                'MAX',
-                                style: TextStyle(color: ArborColors.white),
+                            child: GestureDetector(
+                              onTap: ()=>model.useMax(),
+                              child: Container(
+                                margin: EdgeInsets.symmetric(vertical: 16),
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: ArborColors.deepGreen,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'MAX',
+                                    style: TextStyle(color: ArborColors.white,fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+
                               ),
                             ),
                           ),

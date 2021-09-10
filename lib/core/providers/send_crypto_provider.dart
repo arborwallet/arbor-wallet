@@ -3,6 +3,7 @@ import 'package:arbor/api/services/wallet_service.dart';
 import 'package:arbor/core/constants/ui_constants.dart';
 import 'package:arbor/core/enums/status.dart';
 import 'package:arbor/core/utils/regex.dart';
+import 'package:arbor/models/models.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -17,6 +18,12 @@ class SendCryptoProvider extends ChangeNotifier {
   String _appBarTitle = '';
   String get appBarTitle => _appBarTitle;
 
+  Wallet? _userWallet;
+  setUserWallet(Wallet wallet){
+    _userWallet=wallet;
+    notifyListeners();
+  }
+
   String _receiverAddress = '';
   String get receiverAddress => _receiverAddress;
 
@@ -26,8 +33,6 @@ class SendCryptoProvider extends ChangeNotifier {
   String _addressErrorMessage = '';
   String get addressErrorMessage => _addressErrorMessage;
 
-  String privateKey = '';
-  String currentUserAddress = '';
   var transactionResponse;
 
   int _walletBalance = 0;
@@ -39,7 +44,7 @@ class SendCryptoProvider extends ChangeNotifier {
   bool get enableButton => _validAddress && double.parse(_transactionValue) > 0;
 
   double get convertedBalance => _walletBalance / chiaPrecision;
-  String get readableBalance=>convertedBalance.toStringAsFixed(12);
+  String get readableBalance=>convertedBalance.toStringAsFixed(_userWallet!.fork.precision);
 
   double _amount = 0;
   double get amount => _amount;
@@ -47,12 +52,12 @@ class SendCryptoProvider extends ChangeNotifier {
   bool _validAddress = false;
 
 
-  bool validAddress(String address, String forkTicker) {
+  bool validAddress(String address) {
     // format and length are from
     // https://github.com/Chia-Network/chia-blockchain/blob/main/chia/util/bech32m.py
     // https://github.com/sipa/bips/blob/bip-taproot/bip-0136.mediawiki
-    int _maxPossibleLength = forkTicker.length+1+58;
-    _validAddress = address.startsWith('${forkTicker}1') &&  Regex.chiaAddressRegex.hasMatch(_receiverAddress)&& address.length==_maxPossibleLength ;
+    int _maxPossibleLength = _userWallet!.fork.ticker.length+1+58;
+    _validAddress = address.startsWith('${_userWallet!.fork.ticker}1') &&  Regex.chiaAddressRegex.hasMatch(_receiverAddress)&& address.length==_maxPossibleLength ;
 
     //Print to console only in debug mode
     debugPrint('Address is valid $_validAddress');
@@ -60,10 +65,10 @@ class SendCryptoProvider extends ChangeNotifier {
     return _validAddress;
   }
 
-  getClipBoardData(String forkTicker)async{
+  getClipBoardData()async{
     ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
     if(data!=null){
-      setReceiverAddress(data.text!, forkTicker);
+      setReceiverAddress(data.text!);
     }else{
       _addressErrorMessage='Clipboard is empty';
       notifyListeners();
@@ -75,7 +80,7 @@ class SendCryptoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  setTransactionValue(v, int forkPrecision) {
+  setTransactionValue(v) {
     if (_transactionValue == '0' && v != '.') {
       _transactionValue = v;
       notifyListeners();
@@ -94,7 +99,7 @@ class SendCryptoProvider extends ChangeNotifier {
 
 
     if (_transactionValue.contains('.') &&
-        _transactionValue.split('.').last.length == forkPrecision) {
+        _transactionValue.split('.').last.length == _userWallet!.fork.precision) {
       return;
     }
 
@@ -117,10 +122,10 @@ class SendCryptoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  setReceiverAddress(String value, String forkTicker) {
+  setReceiverAddress(String value,) {
     _receiverAddress = value;
     if (value.length >= 1) {
-      bool addressIsValid = validAddress(value, forkTicker);
+      bool addressIsValid = validAddress(value);
       if (addressIsValid) {
         _addressErrorMessage = '';
       } else {
@@ -146,7 +151,7 @@ class SendCryptoProvider extends ChangeNotifier {
     notifyListeners();
     try {
       transactionResponse = await walletService.sendXCH(
-        privateKey: privateKey,
+        privateKey: _userWallet!.privateKey,
         amount: double.parse(_transactionValue) * chiaPrecision,
         address: _receiverAddress,
       );
@@ -177,7 +182,7 @@ class SendCryptoProvider extends ChangeNotifier {
     notifyListeners();
     try {
       _walletBalance =
-          await walletService.fetchWalletBalance(currentUserAddress);
+          await walletService.fetchWalletBalance(_userWallet!.address);
       _walletBalanceStatus = Status.SUCCESS;
       notifyListeners();
     } on Exception catch (e) {
