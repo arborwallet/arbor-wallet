@@ -139,15 +139,15 @@ class ValueScreen extends StatelessWidget {
                         ..text = model.receiverAddress,
                       isDisabled: true,
                       onTextFieldTapped: (){
-                        model.getClipBoardData();
+                        model.getClipBoardData(wallet.fork.ticker);
                       },
                       errorMessage: model.addressErrorMessage,
-                      onChanged: (v) => model.setReceiverAddress(v),
+                      onChanged: (v) => model.setReceiverAddress(v, wallet.fork.ticker),
                       onIconPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => AddressScanner(),
+                            builder: (context) => AddressScanner(forkTicker: wallet.fork.ticker),
                           ),
                         );
                       },
@@ -162,7 +162,7 @@ class ValueScreen extends StatelessWidget {
                             flex: 4,
                             child: NumericKeyboard(
                                 onKeyboardTap: (_) =>
-                                    model.setTransactionValue(_),
+                                    model.setTransactionValue(_, wallet.fork.precision),
                                 textColor: ArborColors.white,
                                 rightButtonFn: () => model.deleteCharacter(),
                                 rightIcon: Icon(
@@ -170,7 +170,7 @@ class ValueScreen extends StatelessWidget {
                                   color: ArborColors.white,
                                 ),
                                 leftButtonFn: () =>
-                                    model.setTransactionValue('.'),
+                                    model.setTransactionValue('.', wallet.fork.precision),
                                 leftIcon: Icon(
                                   Icons.adjust_sharp,
                                   color: ArborColors.white,

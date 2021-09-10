@@ -47,17 +47,21 @@ class SendCryptoProvider extends ChangeNotifier {
   bool _validAddress = false;
 
 
-  bool validAddress(String address) {
-    _validAddress = address.startsWith('xch1') &&  Regex.chiaAddressRegex.hasMatch(_receiverAddress)&& address.length==62 ;
+  bool validAddress(String address, String forkTicker) {
+    // format and length are from
+    // https://github.com/Chia-Network/chia-blockchain/blob/main/chia/util/bech32m.py
+    // https://github.com/sipa/bips/blob/bip-taproot/bip-0136.mediawiki
+    int _maxPossibleLength = forkTicker.length+1+58;
+    _validAddress = address.startsWith('${forkTicker}1') &&  Regex.chiaAddressRegex.hasMatch(_receiverAddress)&& address.length==_maxPossibleLength ;
     print('Address is valid $_validAddress');
     notifyListeners();
     return _validAddress;
   }
 
-  getClipBoardData()async{
+  getClipBoardData(String forkTicker)async{
     ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
     if(data!=null){
-      setReceiverAddress(data.text!);
+      setReceiverAddress(data.text!, forkTicker);
     }else{
       _addressErrorMessage='Clipboard is empty';
       notifyListeners();
@@ -69,7 +73,7 @@ class SendCryptoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  setTransactionValue(v) {
+  setTransactionValue(v, int forkPrecision) {
     if (_transactionValue == '0' && v != '.') {
       _transactionValue = v;
       notifyListeners();
@@ -88,7 +92,7 @@ class SendCryptoProvider extends ChangeNotifier {
 
 
     if (_transactionValue.contains('.') &&
-        _transactionValue.split('.').last.length == 12) {
+        _transactionValue.split('.').last.length == forkPrecision) {
       return;
     }
 
@@ -111,10 +115,10 @@ class SendCryptoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  setReceiverAddress(String value) {
+  setReceiverAddress(String value, String forkTicker) {
     _receiverAddress = value;
     if (value.length >= 1) {
-      bool addressIsValid = validAddress(value);
+      bool addressIsValid = validAddress(value, forkTicker);
       if (addressIsValid) {
         _addressErrorMessage = '';
       } else {
