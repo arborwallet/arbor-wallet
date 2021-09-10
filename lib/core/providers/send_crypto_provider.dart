@@ -118,6 +118,7 @@ class SendCryptoProvider extends ChangeNotifier {
       if (addressIsValid) {
         _addressErrorMessage = '';
       } else {
+        _receiverAddress = '';
         _addressErrorMessage = 'Invalid address';
       }
     } else {

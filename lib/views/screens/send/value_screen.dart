@@ -130,7 +130,7 @@ class ValueScreen extends StatelessWidget {
                           TextStyle(fontSize: 30, color: ArborColors.deepGreen),
                     ),
                     SizedBox(
-                      height: 40,
+                      height: 20,
                     ),
                     ArborTextField(
                       hintText: "Tap to paste Recipient's Address",
