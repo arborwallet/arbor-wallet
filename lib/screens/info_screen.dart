@@ -1,3 +1,4 @@
+import 'package:arbor/views/screens/wallet_receive_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -49,6 +50,19 @@ class _InfoScreenState extends State<InfoScreen> {
     }
   }
 
+  void _showReceiveView({required int walletIndex}) {
+    Wallet walletData = walletBox.getAt(walletIndex) as Wallet;
+
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => WalletReceiveScreen(
+          index: walletIndex,
+          wallet: walletData,
+        ),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -97,14 +111,16 @@ class _InfoScreenState extends State<InfoScreen> {
                       var walletData = currentBox.getAt(index)!;
 
                       return InkWell(
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => ExpandedInfoScreen(
-                              index: index,
-                              wallet: walletData,
+                        onTap: () =>
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ExpandedInfoScreen(
+                                      index: index,
+                                      wallet: walletData,
+                                    ),
+                              ),
                             ),
-                          ),
-                        ),
                         child: Card(
                           elevation: 8,
                           shadowColor: Colors.lightGreen,
@@ -125,7 +141,8 @@ class _InfoScreenState extends State<InfoScreen> {
                                   ),
                                 ),
                                 title: Text(
-                                    '${walletData.fork.name} (${walletData.name})'),
+                                    '${walletData.fork.name} (${walletData.name})'
+                                ),
                                 subtitle:
                                     Text(walletData.fork.ticker.toUpperCase()),
                                 trailing: IconButton(
