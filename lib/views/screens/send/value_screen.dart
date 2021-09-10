@@ -47,7 +47,8 @@ class ValueScreen extends StatelessWidget {
                   icon: Icon(
                     Icons.arrow_back,
                     color: ArborColors.white,
-                  ),),
+                  ),
+                ),
                 title: Text(
                   'Enter Amount',
                   style: TextStyle(
@@ -137,7 +138,7 @@ class ValueScreen extends StatelessWidget {
                       controller: addressController
                         ..text = model.receiverAddress,
                       isDisabled: true,
-                      onTextFieldTapped: (){
+                      onTextFieldTapped: () {
                         model.getClipBoardData();
                       },
                       errorMessage: model.addressErrorMessage,
@@ -160,28 +161,27 @@ class ValueScreen extends StatelessWidget {
                           Expanded(
                             flex: 4,
                             child: NumericKeyboard(
-                                onKeyboardTap: (_) =>
-                                    model.setTransactionValue(_),
-                                textColor: ArborColors.white,
-                                rightButtonFn: () => model.deleteCharacter(),
-                                rightIcon: Icon(
-                                  Icons.arrow_back,
-                                  color: ArborColors.white,
-                                ),
-                                leftButtonFn: () =>
-                                    model.setTransactionValue('.'),
-                                leftIcon: Icon(
-                                  Icons.adjust_sharp,
-                                  color: ArborColors.white,
-                                ),
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,),
+                              onKeyboardTap: (_) =>
+                                  model.setTransactionValue(_),
+                              textColor: ArborColors.white,
+                              rightButtonFn: () => model.deleteCharacter(),
+                              rightIcon: Icon(
+                                Icons.arrow_back,
+                                color: ArborColors.white,
+                              ),
+                              leftButtonFn: () =>
+                                  model.setTransactionValue('.'),
+                              leftIcon: Icon(
+                                Icons.adjust_sharp,
+                                color: ArborColors.white,
+                              ),
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            ),
                           ),
-
                           Expanded(
                             flex: 1,
                             child: GestureDetector(
-                              onTap: ()=>model.useMax(),
+                              onTap: () => model.useMax(),
                               child: Container(
                                 margin: EdgeInsets.symmetric(vertical: 16),
                                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -193,10 +193,11 @@ class ValueScreen extends StatelessWidget {
                                 child: Center(
                                   child: Text(
                                     'MAX',
-                                    style: TextStyle(color: ArborColors.white,fontWeight: FontWeight.w600),
+                                    style: TextStyle(
+                                        color: ArborColors.white,
+                                        fontWeight: FontWeight.w600),
                                   ),
                                 ),
-
                               ),
                             ),
                           ),

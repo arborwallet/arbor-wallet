@@ -5,7 +5,6 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:flutter/material.dart';
 
 class AddressScanner extends StatefulWidget {
-
   @override
   _AddressScannerState createState() => _AddressScannerState();
 }
@@ -14,7 +13,6 @@ class _AddressScannerState extends State<AddressScanner> {
   final Key key = GlobalKey(debugLabel: 'QR');
   Barcode? result;
   QRViewController? controller;
-  // String forkTicker;
 
   @override
   void initState() {

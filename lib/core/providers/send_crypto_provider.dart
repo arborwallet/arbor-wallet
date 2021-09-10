@@ -19,8 +19,8 @@ class SendCryptoProvider extends ChangeNotifier {
   String get appBarTitle => _appBarTitle;
 
   Wallet? _userWallet;
-  setUserWallet(Wallet wallet){
-    _userWallet=wallet;
+  setUserWallet(Wallet wallet) {
+    _userWallet = wallet;
     notifyListeners();
   }
 
@@ -44,20 +44,22 @@ class SendCryptoProvider extends ChangeNotifier {
   bool get enableButton => _validAddress && double.parse(_transactionValue) > 0;
 
   double get convertedBalance => _walletBalance / chiaPrecision;
-  String get readableBalance=>convertedBalance.toStringAsFixed(_userWallet!.fork.precision);
+  String get readableBalance =>
+      convertedBalance.toStringAsFixed(_userWallet!.fork.precision);
 
   double _amount = 0;
   double get amount => _amount;
 
   bool _validAddress = false;
 
-
   bool validAddress(String address) {
     // format and length are from
     // https://github.com/Chia-Network/chia-blockchain/blob/main/chia/util/bech32m.py
     // https://github.com/sipa/bips/blob/bip-taproot/bip-0136.mediawiki
-    int _maxPossibleLength = _userWallet!.fork.ticker.length+1+58;
-    _validAddress = address.startsWith('${_userWallet!.fork.ticker}1') &&  Regex.chiaAddressRegex.hasMatch(_receiverAddress)&& address.length==_maxPossibleLength ;
+    int _maxPossibleLength = _userWallet!.fork.ticker.length + 1 + 58;
+    _validAddress = address.startsWith('${_userWallet!.fork.ticker}1') &&
+        Regex.chiaAddressRegex.hasMatch(_receiverAddress) &&
+        address.length == _maxPossibleLength;
 
     //Print to console only in debug mode
     debugPrint('Address is valid $_validAddress');
@@ -65,12 +67,12 @@ class SendCryptoProvider extends ChangeNotifier {
     return _validAddress;
   }
 
-  getClipBoardData()async{
+  getClipBoardData() async {
     ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
-    if(data!=null){
+    if (data != null) {
       setReceiverAddress(data.text!);
-    }else{
-      _addressErrorMessage='Clipboard is empty';
+    } else {
+      _addressErrorMessage = 'Clipboard is empty';
       notifyListeners();
     }
   }
@@ -97,9 +99,9 @@ class SendCryptoProvider extends ChangeNotifier {
       return;
     }
 
-
     if (_transactionValue.contains('.') &&
-        _transactionValue.split('.').last.length == _userWallet!.fork.precision) {
+        _transactionValue.split('.').last.length ==
+            _userWallet!.fork.precision) {
       return;
     }
 
@@ -117,12 +119,14 @@ class SendCryptoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  useMax(){
-    _transactionValue=readableBalance;
+  useMax() {
+    _transactionValue = readableBalance;
     notifyListeners();
   }
 
-  setReceiverAddress(String value,) {
+  setReceiverAddress(
+    String value,
+  ) {
     _receiverAddress = value;
     if (value.length >= 1) {
       bool addressIsValid = validAddress(value);
@@ -193,11 +197,11 @@ class SendCryptoProvider extends ChangeNotifier {
     }
   }
 
-  clearInput(){
-    _transactionValue='0';
-    _receiverAddress='';
-    _errorMessage='';
-    _addressErrorMessage='';
+  clearInput() {
+    _transactionValue = '0';
+    _receiverAddress = '';
+    _errorMessage = '';
+    _addressErrorMessage = '';
     notifyListeners();
   }
 
