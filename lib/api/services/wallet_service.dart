@@ -1,3 +1,5 @@
+import 'package:arbor/api/responses/send_response.dart';
+
 import '/models/models.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -234,6 +236,39 @@ class WalletService extends ApiService {
       }
     } catch (e) {
       throw Exception('${e.toString()}');
+    }
+  }
+
+  // @POST("/v1/send")
+  Future<dynamic> sendXCH(
+      {required String privateKey,required var amount,required String address})async{
+    try{
+      final responseData = await http.post(
+        Uri.parse('${baseURL}/api/v1/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'private_key': privateKey,
+          'amount':amount,
+          'destination':address
+        }),
+      );
+
+      print('RESPONSE: ${responseData.body.toString()}');
+      if(responseData.statusCode==200){
+        if(responseData.body.toString().contains('fork')){
+          return 'success';
+        }else{
+          BaseResponse sendResponse = BaseResponse.fromJson(jsonDecode(responseData.body));
+          return sendResponse;
+        }
+      }else{
+        return responseData.body.toString();
+      }
+    }on Exception catch(e){
+      //throw Exception(e.toString());
+      return e.toString();
     }
   }
 }

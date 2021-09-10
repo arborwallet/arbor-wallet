@@ -1,3 +1,4 @@
+import 'package:arbor/views/screens/send/value_screen.dart';
 import 'package:arbor/views/screens/wallet_receive_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -173,7 +174,14 @@ class _InfoScreenState extends State<InfoScreen> {
                                     SizedBox(width: 10),
                                     Expanded(
                                         child: OutlinedButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => ValueScreen(wallet: walletData,),
+                                                ),
+                                              );
+                                            },
                                             child: Text("Send"))),
                                   ],
                                 ),
