@@ -129,7 +129,7 @@ class StatusScreen extends StatelessWidget {
           ),
         ),
         Text(
-          'Chia(XCH) sent',
+          'Chia(${model.forkTicker.toUpperCase()}) sent',
           style: TextStyle(
             color: ArborColors.white,
             fontWeight: FontWeight.w400,
@@ -198,7 +198,7 @@ class StatusScreen extends StatelessWidget {
           loading: false,
           title: 'Go Back',
           onPressed: () {
-            Navigator.pop(context, true);
+            Navigator.pop(context, false);
             model.close();
           },
         ),
@@ -247,7 +247,7 @@ class StatusScreen extends StatelessWidget {
                 ),
               ),
               Text(
-                '-${model.transactionValue}XCH',
+                '-${model.transactionValue}${model.forkTicker.toUpperCase()}',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: ArborColors.white,
