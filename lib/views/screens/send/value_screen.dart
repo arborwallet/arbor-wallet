@@ -108,7 +108,7 @@ class ValueScreen extends StatelessWidget {
                             width: 10,
                           ),
                           Expanded(
-                            flex: 1,
+                            flex: 2,
                             child: Text(
                               model.walletBalanceStatus == Status.LOADING
                                   ? 'Loading...'
