@@ -28,7 +28,6 @@ class ValueScreen extends StatelessWidget {
           model.setWalletBalance(wallet.balance);
           model.privateKey = wallet.privateKey;
           model.currentUserAddress = wallet.address;
-          //model.getBalance();
         }
       });
       return Container(
@@ -37,6 +36,7 @@ class ValueScreen extends StatelessWidget {
           child: SafeArea(
             child: Scaffold(
               backgroundColor: ArborColors.green,
+              resizeToAvoidBottomInset: false,
               appBar: AppBar(
                 centerTitle: true,
                 title: Text(
@@ -162,7 +162,7 @@ class ValueScreen extends StatelessWidget {
                                   color: ArborColors.white,
                                 ),
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly),
+                                    MainAxisAlignment.spaceBetween,),
                           ),
                           Expanded(
                             flex: 1,
@@ -177,20 +177,23 @@ class ValueScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    ArborButton(
-                      backgroundColor: ArborColors.logoGreen,
-                      disabled: !model.enableButton,
-                      loading: false,
-                      title: 'Continue',
-                      onPressed: () async {
-                        bool status = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => StatusScreen(),
-                          ),
-                        );
-                        if (status == true) model.getBalance();
-                      },
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: ArborButton(
+                        backgroundColor: ArborColors.logoGreen,
+                        disabled: !model.enableButton,
+                        loading: false,
+                        title: 'Continue',
+                        onPressed: () async {
+                          bool status = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => StatusScreen(),
+                            ),
+                          );
+                          if (status == true) model.getBalance();
+                        },
+                      ),
                     ),
                   ],
                 ),

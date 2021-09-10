@@ -60,11 +60,9 @@ class InputPasswordFinalScreen extends StatelessWidget
                       ),
                     ),
                   ),
+                  //xch1n9vdyc04hwtkwtcwnfzpharhrxvf828ynvc0w66ktxnhu2qx68hq67y5uz
                   Expanded(
                     child: ListView(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 20,
-                      ),
                       children: [
                         SizedBox(
                           height: 20,
