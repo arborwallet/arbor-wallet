@@ -19,6 +19,7 @@ class SendCryptoProvider extends ChangeNotifier {
   String get appBarTitle => _appBarTitle;
 
   Wallet? _userWallet;
+  Wallet? get userWallet=>_userWallet;
   setUserWallet(Wallet wallet) {
     _userWallet = wallet;
     notifyListeners();

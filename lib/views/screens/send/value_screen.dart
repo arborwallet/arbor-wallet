@@ -25,7 +25,7 @@ class ValueScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<SendCryptoProvider>(builder: (_, model, __) {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
-        if (model.walletBalanceStatus == Status.IDLE) {
+        if (model.walletBalanceStatus == Status.IDLE && model.userWallet==null) {
           model.setUserWallet(wallet);
           model.setWalletBalance(wallet.balance);
         }
