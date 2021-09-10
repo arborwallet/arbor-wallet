@@ -435,10 +435,10 @@ class RestoreWalletProvider extends ChangeNotifier {
       print('${recoveredWallet.toString()}');
       box.add(recoveredWallet);
     } on Exception catch (e) {
-      print('Error');
+      print('Recover Wallet Error: ${e.toString()}');
       recoverWalletStatus = Status.ERROR;
       notifyListeners();
-      throw Exception('${e.toString()}');
+      return;
     }
     recoverWalletStatus = Status.SUCCESS;
     notifyListeners();
