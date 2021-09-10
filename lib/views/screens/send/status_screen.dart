@@ -13,7 +13,10 @@ class StatusScreen extends StatelessWidget {
     return Consumer<SendCryptoProvider>(builder: (_, model, __) {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (model.sendCryptoStatus == Status.ERROR) {
+
           //showErrorDialog(context, model);
+          showAlertDialog(context);
+
         }
         if (model.sendCryptoStatus == Status.CLOSE) {
           Navigator.pop(context, false);
@@ -265,7 +268,7 @@ class StatusScreen extends StatelessWidget {
     showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context) => AlertDialog(
+        builder: (context) => AlertDialog(
               actionsPadding: EdgeInsets.all(20),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -293,5 +296,27 @@ class StatusScreen extends StatelessWidget {
                 ),
               ],
             ));
+  }
+
+  showAlertDialog(BuildContext context) {
+
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () { },
+    );
+
+    // set up the AlertDialog
+    Dialog alert = Dialog(
+      child: Text("My title"),
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }
