@@ -231,8 +231,7 @@ class WalletService extends ApiService {
                 BaseResponse.fromJson(jsonDecode(getWalletResponse.body));
             return baseResponse.error;
           }
-        }
-        {
+        } else {
           BaseResponse baseResponse =
               BaseResponse.fromJson(jsonDecode(recoverKeyResponse.body));
           return baseResponse.error;
@@ -263,13 +262,13 @@ class WalletService extends ApiService {
         }),
       );
 
-      print('RESPONSE: ${responseData.body.toString()}');
+      print(
+          'RESPONSE: ${responseData.body.toString()}  ${responseData.statusCode}');
       if (responseData.statusCode == 200) {
-          return 'success';
-
+        return 'success';
       } else {
         BaseResponse sendResponse =
-        BaseResponse.fromJson(jsonDecode(responseData.body));
+            BaseResponse.fromJson(jsonDecode(responseData.body));
         return sendResponse.error;
       }
     } on Exception catch (e) {
