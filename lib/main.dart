@@ -1,12 +1,16 @@
 import 'dart:convert';
 
+import 'package:arbor/constants.dart';
+import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/providers/restore_wallet_provider.dart';
+import 'package:arbor/screens/info_screen.dart';
 import 'package:arbor/views/screens/no_encryption_available_sccreen.dart';
 import 'package:arbor/core/providers/send_crypto_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'core/constants/hive_constants.dart';
 import 'models/fork.dart';
 import 'models/transaction.dart';
@@ -14,7 +18,6 @@ import 'models/transactions.dart';
 import 'models/wallet.dart';
 import 'themes/arbor_theme_data.dart';
 import 'views/screens/splash_screen.dart';
-
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -80,6 +83,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+  Future<bool> _isFirstTimeUser() async {
+    bool _isFirstTime;
+    final prefs = await SharedPreferences.getInstance();
+    _isFirstTime = (prefs.getBool(ArborConstants.IS_FIRST_TIME_USER_KEY) ?? true);
+    return Future<bool>.value(_isFirstTime);
+  }
+
   @override
   void dispose() {
     // Closes all Hive boxes
@@ -98,7 +109,23 @@ class _MyAppState extends State<MyApp> {
         title: 'Arbor',
         theme:ArborThemeData.lightTheme,
         debugShowCheckedModeBanner: false,
-        home: SplashScreen(),
+        home: FutureBuilder <bool>(
+            future: _isFirstTimeUser(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                bool _isFirstTime = snapshot.data as bool;
+                if (_isFirstTime) {
+                  return SplashScreen();
+                } else {
+                  return InfoScreen();
+                }
+              } else {
+                return Container(
+                  color: ArborColors.lightGreen,
+                );
+              }
+            }
+        )
       ),
     );
   }
