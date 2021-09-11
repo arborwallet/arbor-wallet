@@ -23,10 +23,10 @@ class _RestoreWalletScreenState extends State<RestoreWalletScreen> {
         title: Text('Restore Wallet'),
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16,vertical: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 16,),
           children: [
+            SizedBox(height: 10,),
             _OptionCard(
               iconPath: AssetPaths.qr,
               description: 'Scan a QR Code on Arbor Wallet on another device.',
@@ -53,6 +53,7 @@ class _RestoreWalletScreenState extends State<RestoreWalletScreen> {
                 );
               },
             ),
+            SizedBox(height: 20,),
           ],
         ),
       ),

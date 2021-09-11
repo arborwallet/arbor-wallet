@@ -34,19 +34,23 @@ main() async {
     await secureStorage.readAll();
 
     String? keyFromSecureStorage = await secureStorage.read(key: hiveEncryptionKeyKey);
-    if (keyFromSecureStorage != null) {
+    if (keyFromSecureStorage != null && keyFromSecureStorage!='') {
       var encryptionKey = base64Url.decode(keyFromSecureStorage);
 
       _hiveAdaptersRegistration();
       // Opening the box
-      await Hive.openBox(
-          HiveConstants.walletBox,
-          encryptionCipher: HiveAesCipher(encryptionKey)
-      );
-      await Hive.openBox(
-          HiveConstants.transactionsBox,
-          encryptionCipher: HiveAesCipher(encryptionKey)
-      );
+     try{
+       await Hive.openBox(
+           HiveConstants.walletBox,
+           encryptionCipher: HiveAesCipher(encryptionKey)
+       );
+       await Hive.openBox(
+           HiveConstants.transactionsBox,
+           encryptionCipher: HiveAesCipher(encryptionKey)
+       );
+     }on Exception catch(e){
+       print("Error: ${e.toString()}");
+     }
 
       runApp(MyApp());
     } else {
