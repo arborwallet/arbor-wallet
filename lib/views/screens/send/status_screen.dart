@@ -27,14 +27,14 @@ class StatusScreen extends StatelessWidget {
               leading: model.sendCryptoStatus == Status.IDLE
                   ? IconButton(
                       onPressed: () {
-
                         Navigator.pop(context, false);
                         model.close();
                       },
                       icon: Icon(
                         Icons.arrow_back,
                         color: ArborColors.white,
-                      ),)
+                      ),
+                    )
                   : null,
               backgroundColor: ArborColors.green,
             ),
@@ -309,7 +309,4 @@ class StatusScreen extends StatelessWidget {
       ],
     );
   }
-
-
-
 }

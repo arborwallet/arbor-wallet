@@ -191,8 +191,9 @@ class ValueScreen extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(horizontal: 10),
                                 height: double.infinity,
                                 decoration: BoxDecoration(
-                                  color: ArborColors.deepGreen,
-                                  borderRadius: BorderRadius.circular(20),
+                                    color: ArborColors.transparent,
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(color: ArborColors.lightGreen)
                                 ),
                                 child: Center(
                                   child: Text(
