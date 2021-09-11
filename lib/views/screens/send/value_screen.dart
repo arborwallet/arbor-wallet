@@ -26,7 +26,11 @@ class ValueScreen extends StatelessWidget {
     return Consumer<SendCryptoProvider>(builder: (_, model, __) {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (model.walletBalanceStatus == Status.IDLE) {
-          model.setUserWallet(wallet);
+          model.privateKey=wallet.privateKey;
+          model.currentUserAddress=wallet.address;
+          model.forkPrecision=wallet.fork.precision;
+          model.forkName=wallet.fork.name;
+          model.forkTicker=wallet.fork.ticker;
           model.setWalletBalance(wallet.balance);
         }
       });
@@ -219,7 +223,10 @@ class ValueScreen extends StatelessWidget {
                               builder: (context) => StatusScreen(),
                             ),
                           );
-                          if (status == true) model.getBalance();
+                          if (status == true){
+                            //model.getBalance();
+                            Navigator.pop(context);
+                          }
                         },
                       ),
                     ),
