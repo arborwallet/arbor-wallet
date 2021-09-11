@@ -7,6 +7,7 @@ import 'package:arbor/views/screens/send/address_scanner.dart';
 import 'package:arbor/views/screens/send/status_screen.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:arbor/views/widgets/arbor_textfield.dart';
+import 'package:arbor/views/widgets/editting_controller.dart';
 import 'package:arbor/views/widgets/layout/hide_keyboard_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ import 'package:provider/provider.dart';
 
 class ValueScreen extends StatelessWidget {
   final addressFocusNode = FocusNode();
-  final addressController = TextEditingController();
+  final addressController = CustomTextEditingController();
 
   final Wallet wallet;
   ValueScreen({required this.wallet});
@@ -25,10 +26,12 @@ class ValueScreen extends StatelessWidget {
     return Consumer<SendCryptoProvider>(builder: (_, model, __) {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (model.walletBalanceStatus == Status.IDLE) {
+          model.privateKey=wallet.privateKey;
+          model.currentUserAddress=wallet.address;
+          model.forkPrecision=wallet.fork.precision;
+          model.forkName=wallet.fork.name;
+          model.forkTicker=wallet.fork.ticker;
           model.setWalletBalance(wallet.balance);
-          model.privateKey = wallet.privateKey;
-          model.currentUserAddress = wallet.address;
-          //model.getBalance();
         }
       });
       return Container(
@@ -37,8 +40,19 @@ class ValueScreen extends StatelessWidget {
           child: SafeArea(
             child: Scaffold(
               backgroundColor: ArborColors.green,
+              resizeToAvoidBottomInset: false,
               appBar: AppBar(
                 centerTitle: true,
+                leading: IconButton(
+                  onPressed: () {
+                    model.clearInput();
+                    Navigator.pop(context, false);
+                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: ArborColors.white,
+                  ),
+                ),
                 title: Text(
                   'Enter Amount',
                   style: TextStyle(
@@ -86,7 +100,7 @@ class ValueScreen extends StatelessWidget {
                           Expanded(
                             flex: 1,
                             child: Text(
-                              'XCH Wallet',
+                              '${wallet.fork.name}',
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.left,
                               style: TextStyle(
@@ -97,11 +111,11 @@ class ValueScreen extends StatelessWidget {
                             width: 10,
                           ),
                           Expanded(
-                            flex: 1,
+                            flex: 2,
                             child: Text(
                               model.walletBalanceStatus == Status.LOADING
                                   ? 'Loading...'
-                                  : 'XCH ${model.readableBalance}',
+                                  : '${model.readableBalance} ${wallet.fork.ticker.toUpperCase()}',
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.end,
                               style: TextStyle(
@@ -115,18 +129,22 @@ class ValueScreen extends StatelessWidget {
                       height: 20,
                     ),
                     Text(
-                      '${model.transactionValue} XCH',
+                      '${model.transactionValue} ${wallet.fork.ticker.toUpperCase()}',
                       style:
                           TextStyle(fontSize: 30, color: ArborColors.deepGreen),
                     ),
                     SizedBox(
-                      height: 40,
+                      height: 20,
                     ),
                     ArborTextField(
-                      hintText: "Enter Recipient's Address",
+                      hintText: "Tap to paste Recipient's Address",
                       focusNode: addressFocusNode,
                       controller: addressController
                         ..text = model.receiverAddress,
+                      isDisabled: true,
+                      onTextFieldTapped: () {
+                        model.getClipBoardData();
+                      },
                       errorMessage: model.addressErrorMessage,
                       onChanged: (v) => model.setReceiverAddress(v),
                       onIconPressed: () {
@@ -147,50 +165,70 @@ class ValueScreen extends StatelessWidget {
                           Expanded(
                             flex: 4,
                             child: NumericKeyboard(
-                                onKeyboardTap: (_) =>
-                                    model.setTransactionValue(_),
-                                textColor: ArborColors.white,
-                                rightButtonFn: () => model.deleteCharacter(),
-                                rightIcon: Icon(
-                                  Icons.arrow_back,
-                                  color: ArborColors.white,
-                                ),
-                                leftButtonFn: () =>
-                                    model.setTransactionValue('.'),
-                                leftIcon: Icon(
-                                  Icons.adjust_sharp,
-                                  color: ArborColors.white,
-                                ),
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly),
+                              onKeyboardTap: (_) =>
+                                  model.setTransactionValue(_),
+                              textColor: ArborColors.white,
+                              rightButtonFn: () => model.deleteCharacter(),
+                              rightIcon: Icon(
+                                Icons.arrow_back,
+                                color: ArborColors.white,
+                              ),
+                              leftButtonFn: () =>
+                                  model.setTransactionValue('.'),
+                              leftIcon: Icon(
+                                Icons.adjust_sharp,
+                                color: ArborColors.white,
+                              ),
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            ),
                           ),
                           Expanded(
                             flex: 1,
-                            child: IconButton(
-                              onPressed: ()=>model.useMax(),
-                              icon: Text(
-                                'MAX',
-                                style: TextStyle(color: ArborColors.white),
+                            child: GestureDetector(
+                              onTap: () => model.useMax(),
+                              child: Container(
+                                margin: EdgeInsets.symmetric(vertical: 16),
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                    color: ArborColors.transparent,
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(color: ArborColors.lightGreen)
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'MAX',
+                                    style: TextStyle(
+                                        color: ArborColors.white,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    ArborButton(
-                      backgroundColor: ArborColors.logoGreen,
-                      disabled: !model.enableButton,
-                      loading: false,
-                      title: 'Continue',
-                      onPressed: () async {
-                        bool status = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => StatusScreen(),
-                          ),
-                        );
-                        if (status == true) model.getBalance();
-                      },
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: ArborButton(
+                        backgroundColor: ArborColors.logoGreen,
+                        disabled: !model.enableButton,
+                        loading: false,
+                        title: 'Continue',
+                        onPressed: () async {
+                          bool status = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => StatusScreen(),
+                            ),
+                          );
+                          if (status == true){
+                            //model.getBalance();
+                            Navigator.pop(context);
+                          }
+                        },
+                      ),
                     ),
                   ],
                 ),

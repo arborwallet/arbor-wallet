@@ -16,7 +16,6 @@ class WalletService extends ApiService {
         await http.get(Uri.parse('${baseURL}/api/v1/keygen'));
 
     // print('HEADERS: ${keygenResponse.headers}');
-    // print('BODY: ${keygenResponse.body}');
 
     if (keygenResponse.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -166,7 +165,12 @@ class WalletService extends ApiService {
           'phrase': phrase,
         }),
       );
-      if (recoverKeyResponse.statusCode == 200) {
+
+      print(
+          'BODY: ${recoverKeyResponse.body} ${recoverKeyResponse.statusCode}');
+
+      if (recoverKeyResponse.statusCode == 200 &&
+          recoverKeyResponse.body.toString().contains('public_key')) {
         KeygenResponse keygen =
             KeygenResponse.fromJson(jsonDecode(recoverKeyResponse.body));
         if (keygen.success == true) {
@@ -181,7 +185,11 @@ class WalletService extends ApiService {
             }),
           );
 
-          if (getWalletResponse.statusCode == 200) {
+          print(
+              'BODY: ${getWalletResponse.body} ${getWalletResponse.statusCode}');
+
+          if (getWalletResponse.statusCode == 200 &&
+              getWalletResponse.body.toString().contains('address')) {
             WalletResponse walletResponse =
                 WalletResponse.fromJson(jsonDecode(getWalletResponse.body));
 
@@ -195,7 +203,8 @@ class WalletService extends ApiService {
               }),
             );
             // temp wallet model to be filled out/persisted later
-            if (getWalletBalanceResponse.statusCode == 200) {
+            if (getWalletBalanceResponse.statusCode == 200 &&
+                getWalletBalanceResponse.body.toString().contains('balance')) {
               BalanceResponse balanceResponse = BalanceResponse.fromJson(
                   jsonDecode(getWalletBalanceResponse.body));
 
@@ -216,18 +225,20 @@ class WalletService extends ApiService {
 
               return wallet;
             } else {
-              String apiError =
-                  jsonDecode(getWalletBalanceResponse.body)['error'];
-              throw Exception('Error: $apiError');
+              BaseResponse baseResponse = BaseResponse.fromJson(
+                  jsonDecode(getWalletBalanceResponse.body));
+              throw Exception('Error: ${baseResponse.error}');
             }
           } else {
-            String apiError = jsonDecode(recoverKeyResponse.body)[0]['error'];
-            throw Exception('Error: $apiError');
+            BaseResponse baseResponse =
+                BaseResponse.fromJson(jsonDecode(getWalletResponse.body));
+            throw Exception('Error: ${baseResponse.error}');
           }
         }
         {
-          String apiError = jsonDecode(recoverKeyResponse.body)[0]['error'];
-          throw Exception('Error: $apiError');
+          BaseResponse baseResponse =
+              BaseResponse.fromJson(jsonDecode(recoverKeyResponse.body));
+          throw Exception('Error: ${baseResponse.error}');
         }
       } else {
         throw Exception('Failed to restore wallet.');
@@ -239,8 +250,10 @@ class WalletService extends ApiService {
 
   // @POST("/v1/send")
   Future<dynamic> sendXCH(
-      {required String privateKey,required var amount,required String address})async{
-    try{
+      {required String privateKey,
+      required var amount,
+      required String address}) async {
+    try {
       final responseData = await http.post(
         Uri.parse('${baseURL}/api/v1/send'),
         headers: <String, String>{
@@ -248,23 +261,24 @@ class WalletService extends ApiService {
         },
         body: jsonEncode(<String, dynamic>{
           'private_key': privateKey,
-          'amount':amount,
-          'destination':address
+          'amount': amount,
+          'destination': address
         }),
       );
 
       print('RESPONSE: ${responseData.body.toString()}');
-      if(responseData.statusCode==200){
-        if(responseData.body.toString().contains('fork')){
+      if (responseData.statusCode == 200) {
+        if (responseData.body.toString().contains('fork')) {
           return 'success';
-        }else{
-          BaseResponse sendResponse = BaseResponse.fromJson(jsonDecode(responseData.body));
+        } else {
+          BaseResponse sendResponse =
+              BaseResponse.fromJson(jsonDecode(responseData.body));
           return sendResponse;
         }
-      }else{
-        return responseData.body.toString();
+      } else {
+        return 'Transaction failed';
       }
-    }on Exception catch(e){
+    } on Exception catch (e) {
       return e.toString();
     }
   }
