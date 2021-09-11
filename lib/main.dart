@@ -8,6 +8,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'core/constants/hive_constants.dart';
+import 'core/providers/create_wallet_provider.dart';
 import 'models/fork.dart';
 import 'models/transaction.dart';
 import 'models/transactions.dart';
@@ -95,6 +96,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => CreateWalletProvider()),
         ChangeNotifierProvider(create: (_) => RestoreWalletProvider()),
         ChangeNotifierProvider(create: (_) => SendCryptoProvider()),
       ],

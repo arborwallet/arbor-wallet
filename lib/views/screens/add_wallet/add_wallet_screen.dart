@@ -1,16 +1,11 @@
+import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/constants/asset_paths.dart';
-import 'package:arbor/views/screens/input_password_screen.dart';
-import 'package:arbor/views/screens/scanner_screen.dart';
 import 'package:arbor/views/widgets/cards/option_card.dart';
-import '../../core/constants/arbor_colors.dart';
 import 'package:flutter/material.dart';
 
-class RestoreWalletScreen extends StatefulWidget {
-  @override
-  _RestoreWalletScreenState createState() => _RestoreWalletScreenState();
-}
+import '../input_password_screen.dart';
 
-class _RestoreWalletScreenState extends State<RestoreWalletScreen> {
+class AddWalletScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,25 +17,16 @@ class _RestoreWalletScreenState extends State<RestoreWalletScreen> {
             backgroundColor: ArborColors.green,
             centerTitle: true,
             elevation: 0,
-            title: Text('Restore Wallet'),
+            title: Text('Add Wallet'),
           ),
           body: Container(
             child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 16,),
+              padding: EdgeInsets.symmetric(
+                horizontal: 16,
+              ),
               children: [
-                SizedBox(height: 10,),
-                OptionCard(
-                  iconPath: AssetPaths.qr,
-                  description: 'Scan a QR Code on Arbor Wallet on another device.',
-                  actionText: 'Scan QR Code',
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ScannerScreen(),
-                      ),
-                    );
-                  },
+                SizedBox(
+                  height: 10,
                 ),
                 OptionCard(
                   iconPath: AssetPaths.restore,
@@ -55,7 +41,15 @@ class _RestoreWalletScreenState extends State<RestoreWalletScreen> {
                     );
                   },
                 ),
-                SizedBox(height: 20,),
+                OptionCard(
+                  iconPath: AssetPaths.wallet,
+                  description: 'Generate a new wallet.',
+                  actionText: 'Generate New Wallet',
+                  onPressed: () {},
+                ),
+                SizedBox(
+                  height: 20,
+                ),
               ],
             ),
           ),
@@ -64,5 +58,3 @@ class _RestoreWalletScreenState extends State<RestoreWalletScreen> {
     );
   }
 }
-
-

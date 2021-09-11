@@ -15,6 +15,8 @@ class AssetPaths {
   static const String restore = '$baseIconPath/restore.svg';
   static const String send = '$baseIconPath/send.svg';
   static const String transactionSend = '$baseIconPath/transaction-send.svg';
+  static const String wallet = '$baseIconPath/wallet.svg';
+  static const String walletCreated = '$baseIconPath/wallet-created.svg';
   static const String walletSendError = '$baseIconPath/wallet-send-error.svg';
   static const String walletSendSuccess = '$baseIconPath/wallet-send-success.svg';
   static const String wealth = '$baseIconPath/wealth.svg';
