@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:arbor/constants.dart';
+import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/providers/restore_wallet_provider.dart';
 import 'package:arbor/screens/info_screen.dart';
 import 'package:arbor/views/screens/no_encryption_available_sccreen.dart';
@@ -82,19 +83,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool _isFirstTimeUser = true;
 
-  void _checkIfFirstTimeUser() async {
+  Future<bool> _isFirstTimeUser() async {
+    bool _isFirstTime;
     final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _isFirstTimeUser = (prefs.getBool(ArborConstants.IS_FIRST_TIME_USER_KEY) ?? true);
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _checkIfFirstTimeUser();
+    _isFirstTime = (prefs.getBool(ArborConstants.IS_FIRST_TIME_USER_KEY) ?? true);
+    return Future<bool>.value(_isFirstTime);
   }
 
   @override
@@ -115,7 +109,23 @@ class _MyAppState extends State<MyApp> {
         title: 'Arbor',
         theme:ArborThemeData.lightTheme,
         debugShowCheckedModeBanner: false,
-        home: _isFirstTimeUser ? SplashScreen() : InfoScreen(),
+        home: FutureBuilder <bool>(
+            future: _isFirstTimeUser(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                bool _isFirstTime = snapshot.data as bool;
+                if (_isFirstTime) {
+                  return SplashScreen();
+                } else {
+                  return InfoScreen();
+                }
+              } else {
+                return Container(
+                  color: ArborColors.lightGreen,
+                );
+              }
+            }
+        )
       ),
     );
   }
