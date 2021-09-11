@@ -12,7 +12,7 @@ class PhraseText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      '${itemNumber+1}. ${visible ? word : '*' * word.length}',
+      '${itemNumber+1}. ${visible ? word : '********'}',
       style: TextStyle(color: ArborColors.white, fontSize: 14),
     );
   }

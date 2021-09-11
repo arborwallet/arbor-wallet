@@ -55,7 +55,7 @@ class AddWalletCompleteScreen extends StatelessWidget {
                   child: Container(),
                 ),
                 ArborButton(
-                  backgroundColor: ArborColors.logoGreen,
+                  backgroundColor: ArborColors.deepGreen,
                   disabled: false,
                   loading: false,
                   title: 'Go Back',
@@ -67,7 +67,7 @@ class AddWalletCompleteScreen extends StatelessWidget {
                   height: 10,
                 ),
                 ArborButton(
-                  backgroundColor: ArborColors.logoGreen,
+                  backgroundColor: ArborColors.deepGreen,
                   disabled: false,
                   loading: false,
                   title: 'I wrote down the secret phrase',

@@ -1,6 +1,7 @@
 import 'package:arbor/api/services.dart';
 import 'package:arbor/core/constants/hive_constants.dart';
 import 'package:arbor/core/enums/status.dart';
+import 'package:arbor/core/models/phrase.dart';
 import 'package:arbor/models/models.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
@@ -12,8 +13,10 @@ class CreateWalletProvider extends ChangeNotifier {
   Wallet? newWallet;
   String seedPhrase = '';
 
-  List<String> _phrasesList = [];
-  List<String> get phrasesList=>_phrasesList;
+  List<String> _wordsList = [];
+
+  List<Phrase> _phrasesList = [];
+  List<Phrase> get phrasesList=>_phrasesList;
 
   String _errorMessage='';
   String get errorMessage=>_errorMessage;
@@ -23,6 +26,9 @@ class CreateWalletProvider extends ChangeNotifier {
 
   String _appBarTitle='';
   String get appBarTitle=>_appBarTitle;
+
+  String _revealButtonTitle='Reveal the Phrase';
+  String get revealButtonTitle=>_revealButtonTitle;
   
   setRevealPhrase(){
     
@@ -30,6 +36,11 @@ class CreateWalletProvider extends ChangeNotifier {
       _tappedRevealButton=true;
     }
     _revealPhrase=!_revealPhrase;
+    if(_revealPhrase==true){
+      _revealButtonTitle='Hide the Phrase';
+    }else{
+      _revealButtonTitle='Reveal the Phrase';
+    }
     notifyListeners();
   }
   
@@ -43,7 +54,12 @@ class CreateWalletProvider extends ChangeNotifier {
     try {
       newWallet = await walletService.fetchWalletKeys();
       seedPhrase=newWallet!.phrase;
-      _phrasesList=seedPhrase.split(' ').toList();
+      _wordsList=seedPhrase.split(' ').toList();
+
+      for(int i=0;i<_wordsList.length;i++){
+        _phrasesList.add(Phrase(index: i, phrase: _wordsList[i]));
+      }
+
       debugPrint('${newWallet.toString()}');
       box.add(newWallet);
     } on Exception catch (e) {

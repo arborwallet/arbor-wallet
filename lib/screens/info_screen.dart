@@ -1,3 +1,4 @@
+import 'package:arbor/views/screens/add_wallet/add_wallet_screen.dart';
 import 'package:arbor/views/screens/send/value_screen.dart';
 import 'package:arbor/views/screens/wallet_receive_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -90,7 +91,7 @@ class _InfoScreenState extends State<InfoScreen> {
           floatingActionButton: FloatingActionButton(
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => AddScreen(),
+                builder: (context) => AddWalletScreen(),
               ),
             ),
             child: const Icon(Icons.add),
