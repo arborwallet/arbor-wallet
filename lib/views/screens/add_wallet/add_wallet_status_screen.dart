@@ -28,6 +28,7 @@ class AddWalletStatusScreen extends StatelessWidget {
                   ? IconButton(
                       onPressed: () {
                         Navigator.pop(context, false);
+                        model.clearAll();
                       },
                       icon: Icon(
                         Icons.arrow_back,

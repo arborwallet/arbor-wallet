@@ -77,6 +77,10 @@ class CreateWalletProvider extends ChangeNotifier {
 
   
   clearAll(){
+    _wordsList=[];
+    _phrasesList=[];
+    _appBarTitle='Generating';
+    _revealButtonTitle='Reveal the Phrase';
     createWalletStatus = Status.IDLE;
     _revealPhrase=false;
     _tappedRevealButton=false;

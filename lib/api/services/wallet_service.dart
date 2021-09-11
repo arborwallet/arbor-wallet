@@ -154,7 +154,7 @@ class WalletService extends ApiService {
   }
 
   // @POST("/v1/recover") and @POST("v1/wallet")
-  Future<Wallet> recoverWallet(String phrase) async {
+  Future<dynamic> recoverWallet(String phrase) async {
     try {
       final recoverKeyResponse = await http.post(
         Uri.parse('${baseURL}/api/v1/recover'),
@@ -169,8 +169,7 @@ class WalletService extends ApiService {
       print(
           'BODY: ${recoverKeyResponse.body} ${recoverKeyResponse.statusCode}');
 
-      if (recoverKeyResponse.statusCode == 200 &&
-          recoverKeyResponse.body.toString().contains('public_key')) {
+      if (recoverKeyResponse.statusCode == 200) {
         KeygenResponse keygen =
             KeygenResponse.fromJson(jsonDecode(recoverKeyResponse.body));
         if (keygen.success == true) {
@@ -188,8 +187,7 @@ class WalletService extends ApiService {
           print(
               'BODY: ${getWalletResponse.body} ${getWalletResponse.statusCode}');
 
-          if (getWalletResponse.statusCode == 200 &&
-              getWalletResponse.body.toString().contains('address')) {
+          if (getWalletResponse.statusCode == 200) {
             WalletResponse walletResponse =
                 WalletResponse.fromJson(jsonDecode(getWalletResponse.body));
 
@@ -203,8 +201,7 @@ class WalletService extends ApiService {
               }),
             );
             // temp wallet model to be filled out/persisted later
-            if (getWalletBalanceResponse.statusCode == 200 &&
-                getWalletBalanceResponse.body.toString().contains('balance')) {
+            if (getWalletBalanceResponse.statusCode == 200) {
               BalanceResponse balanceResponse = BalanceResponse.fromJson(
                   jsonDecode(getWalletBalanceResponse.body));
 
@@ -227,24 +224,24 @@ class WalletService extends ApiService {
             } else {
               BaseResponse baseResponse = BaseResponse.fromJson(
                   jsonDecode(getWalletBalanceResponse.body));
-              throw Exception('Error: ${baseResponse.error}');
+              return baseResponse.error;
             }
           } else {
             BaseResponse baseResponse =
                 BaseResponse.fromJson(jsonDecode(getWalletResponse.body));
-            throw Exception('Error: ${baseResponse.error}');
+            return baseResponse.error;
           }
         }
         {
           BaseResponse baseResponse =
               BaseResponse.fromJson(jsonDecode(recoverKeyResponse.body));
-          throw Exception('Error: ${baseResponse.error}');
+          return baseResponse.error;
         }
       } else {
-        throw Exception('Failed to restore wallet.');
+        return 'Failed to restore wallet.';
       }
     } catch (e) {
-      throw Exception('${e.toString()}');
+      return e.toString();
     }
   }
 
@@ -268,15 +265,12 @@ class WalletService extends ApiService {
 
       print('RESPONSE: ${responseData.body.toString()}');
       if (responseData.statusCode == 200) {
-        if (responseData.body.toString().contains('fork')) {
           return 'success';
-        } else {
-          BaseResponse sendResponse =
-              BaseResponse.fromJson(jsonDecode(responseData.body));
-          return sendResponse;
-        }
+
       } else {
-        return 'Transaction failed';
+        BaseResponse sendResponse =
+        BaseResponse.fromJson(jsonDecode(responseData.body));
+        return sendResponse.error;
       }
     } on Exception catch (e) {
       return e.toString();
