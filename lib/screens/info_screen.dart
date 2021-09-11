@@ -4,6 +4,8 @@ import 'package:arbor/views/screens/wallet_receive_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../constants.dart';
 import '/models/models.dart';
 import '../core/constants/hive_constants.dart';
 import '/api/services.dart';
@@ -65,11 +67,20 @@ class _InfoScreenState extends State<InfoScreen> {
     );
   }
 
+  void _setNotFirstTimeUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool(ArborConstants.IS_FIRST_TIME_USER_KEY, false);
+  }
+
   @override
   void initState() {
     super.initState();
     // Get reference to an already opened box
     walletBox = Hive.box(HiveConstants.walletBox);
+
+    // Since the user has seen this screen we assume they don't
+    // need to see the Splash/On-Boarding views
+    _setNotFirstTimeUser();
   }
 
   @override
