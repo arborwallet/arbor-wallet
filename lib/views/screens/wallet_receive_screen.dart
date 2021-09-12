@@ -67,6 +67,7 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
                 color: ArborColors.white,
               ),
           ),
+          centerTitle: true,
           backgroundColor: ArborColors.green,
         ),
         body: RepaintBoundary(
