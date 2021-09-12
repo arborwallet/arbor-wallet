@@ -131,7 +131,10 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                             SizedBox(height: 30),
                             Text(
                               'You have not sent or received anything yet. Go to a faucet and get some mojo.',
-                              style: TextStyle(fontSize: 20.0),
+                              style: TextStyle(
+                                  fontSize: 20.0,
+                                  color: ArborColors.white,
+                              ),
                             ),
                           ],
                         ));
