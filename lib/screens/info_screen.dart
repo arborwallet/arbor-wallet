@@ -247,7 +247,7 @@ class _InfoScreenState extends State<InfoScreen> {
                                               _showReceiveView(walletIndex: index);
                                             },
                                             title: 'Receive',
-                                            backgroundColor: ArborColors.lightGreen,
+                                            backgroundColor: ArborColors.deepGreen,
                                         )
                                     ),
                                     SizedBox(width: 10),
@@ -262,7 +262,7 @@ class _InfoScreenState extends State<InfoScreen> {
                                               );
                                             },
                                             title: 'Send',
-                                            backgroundColor: ArborColors.lightGreen,
+                                            backgroundColor: ArborColors.deepGreen,
                                         ),
                                     ),
                                   ],
