@@ -24,18 +24,6 @@ class AddWalletStatusScreen extends StatelessWidget {
                 '${model.appBarTitle}',
                 style: TextStyle(color: ArborColors.white),
               ),
-              leading: model.createWalletStatus == Status.SUCCESS
-                  ? IconButton(
-                      onPressed: () {
-                        Navigator.pop(context, false);
-                        model.clearAll();
-                      },
-                      icon: Icon(
-                        Icons.arrow_back,
-                        color: ArborColors.white,
-                      ),
-                    )
-                  : null,
               elevation: 0,
               automaticallyImplyLeading: false,
               backgroundColor: ArborColors.green,
@@ -72,7 +60,7 @@ class AddWalletStatusScreen extends StatelessWidget {
           child: Container(),
         ),
         SvgPicture.asset(
-          AssetPaths.transactionSend,
+          AssetPaths.wallet,
           fit: BoxFit.cover,
           height: 100,
         ),
