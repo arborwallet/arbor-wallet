@@ -10,7 +10,7 @@ class ArborTextField extends StatelessWidget {
   final String errorMessage;
   final bool isDisabled;
   final ValueChanged<String>? onChanged;
-  final VoidCallback? onIconPressed;
+  final VoidCallback onIconPressed;
   final VoidCallback? onTextFieldTapped;
 
   ArborTextField(
@@ -21,7 +21,7 @@ class ArborTextField extends StatelessWidget {
       this.errorMessage = '',
       this.onChanged,
         this.onTextFieldTapped,
-      this.onIconPressed});
+      required this.onIconPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +75,7 @@ class ArborTextField extends StatelessWidget {
                     contentPadding:
                         EdgeInsets.fromLTRB(20,20,0,20),
                     suffixIcon: IconButton(
-                      onPressed: () => onIconPressed!(),
+                      onPressed: () => onIconPressed,
                       icon: Padding(
                         padding: const EdgeInsets.all(5.0),
                         child: SvgPicture.asset(

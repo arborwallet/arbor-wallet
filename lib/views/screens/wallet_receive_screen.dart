@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:arbor/core/constants/arbor_colors.dart';
+import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -83,7 +84,7 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
                       child: QrImage(
                         data: widget.wallet.address,
                         version: QrVersions.auto,
-                        embeddedImage: AssetImage('assets/images/logo.png'),
+                        embeddedImage: AssetImage('${AssetPaths.logo}',),
                         backgroundColor: ArborColors.white,
                         foregroundColor: Colors.black,
                         gapless: false,
