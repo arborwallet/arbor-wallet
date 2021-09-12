@@ -215,7 +215,8 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
               },
             );
           },
-          title: 'All Transactions'
+          title: 'All Transactions',
+          backgroundColor: ArborColors.deepGreen,
       ),
       ListTile(
         contentPadding: EdgeInsets.fromLTRB(0, 10, 0, 10),

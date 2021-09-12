@@ -127,13 +127,19 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Image.asset('assets/images/transaction-light.png'),
+                            Flexible(
+                              flex: 1,
+                              child: Image.asset('assets/images/transaction-light.png'),
+                            ),
                             SizedBox(height: 30),
-                            Text(
-                              'You have not sent or received anything yet. Go to a faucet and get some mojo.',
-                              style: TextStyle(
+                            Flexible(
+                              flex: 2,
+                              child: Text(
+                                'You have not sent or received anything yet. Go to a faucet and get some mojo.',
+                                style: TextStyle(
                                   fontSize: 20.0,
                                   color: ArborColors.white,
+                                ),
                               ),
                             ),
                           ],
