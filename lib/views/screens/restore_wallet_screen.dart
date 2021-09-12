@@ -21,8 +21,21 @@ class _RestoreWalletScreenState extends State<RestoreWalletScreen> {
           appBar: AppBar(
             backgroundColor: ArborColors.green,
             centerTitle: true,
-            elevation: 0,
-            title: Text('Restore Wallet'),
+              title: Text(
+                'Restore Wallet',
+                style: TextStyle(
+                  color: ArborColors.white,
+                ),
+              ),
+              leading:  IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: ArborColors.white,
+                ),
+              )
           ),
           body: Container(
             child: ListView(

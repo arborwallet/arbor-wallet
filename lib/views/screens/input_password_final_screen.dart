@@ -35,7 +35,6 @@ class InputPasswordFinalScreen extends StatelessWidget
           resizeToAvoidBottomInset: true,
           appBar: AppBar(
             backgroundColor: ArborColors.green,
-            elevation: 0,
             centerTitle: true,
             leading: IconButton(
               onPressed: () {
@@ -44,7 +43,9 @@ class InputPasswordFinalScreen extends StatelessWidget
               },
               icon: Icon(Icons.arrow_back),
             ),
-            title: Text('Restore Wallet'),
+            title: Text('Restore Wallet',style: TextStyle(
+              color: ArborColors.white,
+            ),),
           ),
           body: HideKeyboardContainer(
             child: Container(

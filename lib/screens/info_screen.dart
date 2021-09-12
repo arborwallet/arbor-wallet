@@ -242,6 +242,7 @@ class _InfoScreenState extends State<InfoScreen> {
                                   children: <Widget>[
                                     Expanded(
                                         child: ArborButton(
+
                                             onPressed: () {
                                               _showReceiveView(walletIndex: index);
                                             },

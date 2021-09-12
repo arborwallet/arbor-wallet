@@ -28,8 +28,21 @@ class _AddressScannerState extends State<AddressScanner> {
           backgroundColor: ArborColors.green,
           appBar: AppBar(
             backgroundColor: ArborColors.green,
-            title: Text('Scan Address'),
-            elevation: 0,
+            title: Text(
+              'Scan Address',
+              style: TextStyle(
+                color: ArborColors.white,
+              ),
+            ),
+            leading:  IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.arrow_back,
+                color: ArborColors.white,
+              ),
+            ),
             centerTitle: true,
           ),
           body: Container(
