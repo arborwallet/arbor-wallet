@@ -9,4 +9,5 @@ class ArborColors{
   static Color errorRed=Colors.redAccent;
   static Color transparent=Colors.transparent;
   static Color white=Colors.white;
+  static Color white70=Colors.white70;
 }

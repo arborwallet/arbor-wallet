@@ -1,6 +1,8 @@
+import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/views/screens/add_wallet/add_wallet_screen.dart';
 import 'package:arbor/views/screens/send/value_screen.dart';
 import 'package:arbor/views/screens/wallet_receive_screen.dart';
+import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -40,7 +42,6 @@ class _InfoScreenState extends State<InfoScreen> {
 
       Wallet newWallet = Wallet(
         name: existingWallet.name,
-        password: existingWallet.password,
         phrase: existingWallet.phrase,
         privateKey: existingWallet.privateKey,
         publicKey: existingWallet.publicKey,
@@ -71,6 +72,17 @@ class _InfoScreenState extends State<InfoScreen> {
     prefs.setBool(ArborConstants.IS_FIRST_TIME_USER_KEY, false);
   }
 
+  void _popupMenuItemSelected(String value, int walletBoxIndex) {
+    switch (value) {
+      case 'delete': {
+        _deleteInfo(walletBoxIndex);
+        break;
+      }
+      default:
+        break;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -95,8 +107,16 @@ class _InfoScreenState extends State<InfoScreen> {
         return Future.value(true);
       },
       child: Scaffold(
+          backgroundColor: ArborColors.green,
           appBar: AppBar(
-            title: const Text('Arbor Wallet'),
+            title: Text(
+                'Arbor Wallet',
+                style: TextStyle(
+                  color: ArborColors.white,
+                ),
+            ),
+            centerTitle: true,
+            backgroundColor: ArborColors.green,
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () => Navigator.of(context).push(
@@ -104,7 +124,8 @@ class _InfoScreenState extends State<InfoScreen> {
                 builder: (context) => AddWalletScreen(),
               ),
             ),
-            child: const Icon(Icons.add),
+            child: const Icon(Icons.add, color: Colors.white,),
+            backgroundColor: ArborColors.deepGreen,
           ),
           body: RefreshIndicator(
             onRefresh: _reloadWalletBalances,
@@ -112,8 +133,15 @@ class _InfoScreenState extends State<InfoScreen> {
               valueListenable: walletBox.listenable(),
               builder: (context, Box box, widget) {
                 if (box.isEmpty) {
-                  return const Center(
-                    child: Text('Tap + to create a new wallet.'),
+                  return Center(
+                    child: Text(
+                        'Tap + to create a new wallet.',
+                        style: TextStyle(
+                          color: ArborColors.white,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 20,
+                        ),
+                    ),
                   );
                 } else {
                   return ListView.builder(
@@ -134,6 +162,7 @@ class _InfoScreenState extends State<InfoScreen> {
                               ),
                             ),
                         child: Card(
+                          color: ArborColors.green,
                           elevation: 8,
                           shadowColor: Colors.lightGreen,
                           margin: EdgeInsets.all(16),
@@ -153,16 +182,40 @@ class _InfoScreenState extends State<InfoScreen> {
                                   ),
                                 ),
                                 title: Text(
-                                    '${walletData.fork.name} (${walletData.name})'
+                                    // '${walletData.fork.name} (${walletData.name})'
+                                    '${walletData.fork.name}',
+                                    style: TextStyle(
+                                      color: ArborColors.white,
+                                    ),
                                 ),
                                 subtitle:
-                                    Text(walletData.fork.ticker.toUpperCase()),
-                                trailing: IconButton(
-                                  onPressed: () => _deleteInfo(index),
-                                  icon: const Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
-                                  ),
+                                    Text(
+                                      walletData.fork.ticker.toUpperCase(),
+                                      style: TextStyle(
+                                        color: ArborColors.white70,
+                                      ),
+                                    ),
+                                trailing: PopupMenuButton(
+                                  itemBuilder: (context) {
+                                    return [
+                                      PopupMenuItem(
+                                        value: 'delete',
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
+                                            ),
+                                            SizedBox(width: 10,),
+                                            Text('Delete'),
+                                          ],
+                                        )
+                                      )
+                                    ];
+                                  },
+                                  onSelected: (String value){
+                                    _popupMenuItemSelected(value, index);
+                                  },
                                 ),
                               ),
                               ListTile(
@@ -170,8 +223,18 @@ class _InfoScreenState extends State<InfoScreen> {
                                 title: FittedBox(
                                     fit: BoxFit.contain,
                                     child:
-                                        Text(walletData.balanceForDisplay())),
-                                subtitle: Text(walletData.address.toString()),
+                                        Text(
+                                          walletData.balanceForDisplay(),
+                                          style: TextStyle(
+                                            color: ArborColors.white,
+                                          ),
+                                        )),
+                                subtitle: Text(
+                                    walletData.address.toString(),
+                                    style: TextStyle(
+                                      color: ArborColors.white70,
+                                    ),
+                                ),
                               ),
                               ListTile(
                                 contentPadding: EdgeInsets.all(
@@ -179,12 +242,18 @@ class _InfoScreenState extends State<InfoScreen> {
                                 title: Row(
                                   children: <Widget>[
                                     Expanded(
-                                        child: OutlinedButton(
-                                            onPressed: () {},
-                                            child: Text("Receive"))),
+                                        child: ArborButton(
+
+                                            onPressed: () {
+                                              _showReceiveView(walletIndex: index);
+                                            },
+                                            title: 'Receive',
+                                            backgroundColor: ArborColors.deepGreen,
+                                        )
+                                    ),
                                     SizedBox(width: 10),
                                     Expanded(
-                                        child: OutlinedButton(
+                                        child: ArborButton(
                                             onPressed: () {
                                               Navigator.push(
                                                 context,
@@ -193,7 +262,10 @@ class _InfoScreenState extends State<InfoScreen> {
                                                 ),
                                               );
                                             },
-                                            child: Text("Send"))),
+                                            title: 'Send',
+                                            backgroundColor: ArborColors.deepGreen,
+                                        ),
+                                    ),
                                   ],
                                 ),
                               )

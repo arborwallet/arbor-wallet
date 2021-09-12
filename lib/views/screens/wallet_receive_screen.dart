@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -53,19 +54,28 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: ArborColors.green,
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.close),
+            icon: Icon(Icons.close,color: ArborColors.white,),
             onPressed: () => Navigator.of(context).pop(),
           ),
-          title: Text('Receive ${widget.wallet.fork.name} (${widget.wallet.name})'),
+          // title: Text('Receive ${widget.wallet.fork.name} (${widget.wallet.name})'),
+          title: Text(
+              'Receive ${widget.wallet.fork.name}',
+              style: TextStyle(
+                color: ArborColors.white,
+              ),
+          ),
+          centerTitle: true,
+          backgroundColor: ArborColors.green,
         ),
         body: RepaintBoundary(
             key: globalKey,
             child: Padding(
-              padding: EdgeInsets.fromLTRB(PASSWORD_PADDING, 0.0, PASSWORD_PADDING, 0.0),
+              padding: EdgeInsets.fromLTRB(PASSWORD_PADDING, PASSWORD_PADDING, PASSWORD_PADDING, 0.0),
               child: Container(
-                color: Colors.white,
+                color: ArborColors.green,
                 child: Column(
                   children: <Widget>[
                     Flexible(
@@ -74,7 +84,7 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
                         data: widget.wallet.address,
                         version: QrVersions.auto,
                         embeddedImage: AssetImage('assets/images/logo.png'),
-                        backgroundColor: Colors.white,
+                        backgroundColor: ArborColors.white,
                         foregroundColor: Colors.black,
                         gapless: false,
                       ),
@@ -87,12 +97,20 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
                               children: [
                                 Text(
                                   'Tap to copy your ${widget.wallet.fork.name} light wallet address:',
-                                  style: TextStyle(fontSize: 20.0),),
+                                  style:
+                                    TextStyle(
+                                        color: ArborColors.white,
+                                        fontSize: 20.0
+                                    ),
+                                ),
                                 InkWell(
                                   child: ListTile(
                                     title: Text(
                                       widget.wallet.address,
-                                      style: TextStyle(fontSize: 16.0),
+                                      style: TextStyle(
+                                          fontSize: 16.0,
+                                          color: ArborColors.white70,
+                                      ),
                                     ),
                                     trailing: Icon(Icons.copy),
                                     onTap: () {
@@ -115,6 +133,7 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
                               _showShareSheet();
                             },
                             title: 'Share',
+                            backgroundColor: ArborColors.deepGreen,
                           ),
                         ),
                       ],

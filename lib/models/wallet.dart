@@ -11,31 +11,26 @@ class Wallet {
   @HiveField(0)
   final String name;
 
-  @HiveField(1)
-  final String password;
-
-  @HiveField(2)
   final String phrase;
 
-  @HiveField(3)
+  @HiveField(1)
   final String privateKey;
 
-  @HiveField(4)
+  @HiveField(2)
   final String publicKey;
 
-  @HiveField(5)
+  @HiveField(3)
   final String address;
 
-  @HiveField(6)
+  @HiveField(4)
   final Fork fork;
 
-  @HiveField(7)
+  @HiveField(5)
   final int balance;
 
   Wallet({
     required this.name,
-    required this.password,
-    required this.phrase,
+    this.phrase = '',
     required this.privateKey,
     required this.publicKey,
     required this.address,

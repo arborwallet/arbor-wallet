@@ -59,7 +59,6 @@ class ValueScreen extends StatelessWidget {
                     color: ArborColors.white,
                   ),
                 ),
-                elevation: 0,
                 backgroundColor: ArborColors.green,
               ),
               body: Container(

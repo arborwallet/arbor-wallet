@@ -43,7 +43,6 @@ class WalletService extends ApiService {
           // temp wallet model to be filled out/persisted later
           Wallet walletModel = Wallet(
             name: '',
-            password: '',
             phrase: keygen.phrase,
             privateKey: keygen.privateKey,
             publicKey: keygen.publicKey,
@@ -207,7 +206,6 @@ class WalletService extends ApiService {
 
               Wallet wallet = Wallet(
                 name: '',
-                password: '',
                 phrase: keygen.phrase,
                 privateKey: keygen.privateKey,
                 publicKey: keygen.publicKey,

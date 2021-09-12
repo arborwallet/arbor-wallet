@@ -22,7 +22,6 @@ class StatusScreen extends StatelessWidget {
                 '${model.appBarTitle}',
                 style: TextStyle(color: ArborColors.white),
               ),
-              elevation: 0,
               automaticallyImplyLeading: false,
               leading: model.sendCryptoStatus == Status.IDLE
                   ? IconButton(

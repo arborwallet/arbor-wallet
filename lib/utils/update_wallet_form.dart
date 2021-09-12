@@ -38,7 +38,6 @@ class _UpdateWalletFormState extends State<UpdateWalletForm> {
     Wallet existingWallet = widget.wallet;
     Wallet newWallet = Wallet(
       name: _nameController.text,
-      password: _passwordController.text,
       phrase: existingWallet.phrase,
       privateKey: existingWallet.privateKey,
       publicKey: existingWallet.publicKey,
@@ -58,7 +57,6 @@ class _UpdateWalletFormState extends State<UpdateWalletForm> {
     // Get reference to an already opened box
     box = Hive.box(HiveConstants.walletBox);
     _nameController = TextEditingController(text: widget.wallet.name);
-    _passwordController = TextEditingController(text: widget.wallet.password);
   }
 
   @override
@@ -74,11 +72,6 @@ class _UpdateWalletFormState extends State<UpdateWalletForm> {
             validator: _fieldValidator,
           ),
           SizedBox(height: 24.0),
-          Text('Wallet password'),
-          TextFormField(
-            controller: _passwordController,
-            validator: _fieldValidator,
-          ),
           Spacer(),
           Padding(
             padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 24.0),

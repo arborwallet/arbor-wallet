@@ -18,7 +18,6 @@ class AddWalletCompleteScreen extends StatelessWidget {
               'All Done',
               style: TextStyle(color: ArborColors.white),
             ),
-            elevation: 0,
             automaticallyImplyLeading: false,
             backgroundColor: ArborColors.green,
           ),

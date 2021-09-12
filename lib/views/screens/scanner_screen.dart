@@ -45,8 +45,21 @@ class _ScannerScreenState extends State<ScannerScreen> {
           backgroundColor: ArborColors.green,
           appBar: AppBar(
             backgroundColor: ArborColors.green,
-            title: Text('Sync Devices'),
-            elevation: 0,
+            title: Text(
+              'Sync Devices',
+              style: TextStyle(
+                color: ArborColors.white,
+              ),
+            ),
+            leading:  IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.arrow_back,
+                color: ArborColors.white,
+              ),
+            ),
             centerTitle: true,
           ),
           body: Container(

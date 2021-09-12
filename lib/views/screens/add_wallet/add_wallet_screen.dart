@@ -21,8 +21,21 @@ class AddWalletScreen extends StatelessWidget {
             appBar: AppBar(
               backgroundColor: ArborColors.green,
               centerTitle: true,
-              elevation: 0,
-              title: Text('Add Wallet'),
+              title: Text(
+                  'Add Wallet',
+                  style: TextStyle(
+                    color: ArborColors.white,
+                  ),
+              ),
+              leading:  IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: ArborColors.white,
+                  ),
+                )
             ),
             body: Container(
               child: ListView(
