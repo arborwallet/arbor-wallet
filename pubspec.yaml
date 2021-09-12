@@ -25,6 +25,9 @@ dependencies:
   flutter_secure_storage: ^4.2.1
   url_launcher: ^6.0.10
 
+  #Alert
+  flash: ^2.0.1
+
   #QR
   qr_code_scanner: ^0.5.2
   qr_flutter: ^4.0.0
