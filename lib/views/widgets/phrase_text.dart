@@ -18,7 +18,7 @@ class PhraseText extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Text(
-            '${itemNumber+1}. ',
+            '${itemNumber+1} ',
             textAlign: TextAlign.right,
             style: TextStyle(color: ArborColors.white, fontSize: 14),
           ),
