@@ -1,4 +1,6 @@
+import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/views/screens/send/value_screen.dart';
+import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '/api/services.dart';
@@ -85,8 +87,18 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
                       ),
                     ),
                     // title: Text('${walletData.fork.name} (${walletData.name})'),
-                    title: Text('${walletData.fork.name}'),
-                    subtitle: Text(walletData.fork.ticker.toUpperCase()),
+                    title: Text(
+                        '${walletData.fork.name}',
+                        style: TextStyle(
+                          color: ArborColors.white,
+                        ),
+                    ),
+                    subtitle: Text(
+                        walletData.fork.ticker.toUpperCase(),
+                        style: TextStyle(
+                          color: ArborColors.white70,
+                        ),
+                    ),
                     // trailing: IconButton(
                     //   onPressed: () => _deleteInfo(index),
                     //   icon: const Icon(
@@ -96,11 +108,17 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
                     // ),
                   ),
                   Card(
+                    color: Colors.green,
                     child: ListTile(
                       title: FittedBox(
                           fit: BoxFit.contain,
                           child: Text(
-                              '${walletData.fork.ticker.toUpperCase()}: ${walletData.balanceForDisplay()}')),
+                              '${walletData.fork.ticker.toUpperCase()}: ${walletData.balanceForDisplay()}',
+                              style: TextStyle(
+                                color: ArborColors.white,
+                              ),
+                          ),
+                      ),
                       trailing: Icon(Icons.copy),
                       onTap: () {
                         Clipboard.setData(ClipboardData(
@@ -109,9 +127,20 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
                     ),
                   ),
                   Card(
+                    color: Colors.green,
                     child: ListTile(
-                      title: Text('Address'),
-                      subtitle: Text(walletData.address),
+                      title: Text(
+                          'Address',
+                          style: TextStyle(
+                            color: ArborColors.white,
+                          ),
+                      ),
+                      subtitle: Text(
+                          walletData.address,
+                          style: TextStyle(
+                            color: ArborColors.white70,
+                          ),
+                      ),
                       trailing: Icon(Icons.copy),
                       onTap: () {
                         Clipboard.setData(
@@ -120,9 +149,20 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
                     ),
                   ),
                   Card(
+                    color: Colors.green,
                     child: ListTile(
-                      title: Text('Public Key'),
-                      subtitle: Text(walletData.publicKey),
+                      title: Text(
+                          'Public Key',
+                          style: TextStyle(
+                            color: ArborColors.white,
+                          ),
+                      ),
+                      subtitle: Text(
+                          walletData.publicKey,
+                          style: TextStyle(
+                            color: ArborColors.white70,
+                          ),
+                      ),
                       trailing: Icon(Icons.copy),
                       onTap: () {
                         Clipboard.setData(
@@ -131,10 +171,21 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
                     ),
                   ),
                   Card(
+                    color: Colors.green,
                     child: ListTile(
-                      title: Text('Private Key'),
+                      title: Text(
+                          'Private Key',
+                          style: TextStyle(
+                            color: ArborColors.white,
+                          ),
+                      ),
                       subtitle:
-                          Text('*' * walletData.privateKey.toString().length),
+                          Text(
+                              '*' * walletData.privateKey.toString().length,
+                              style: TextStyle(
+                                color: ArborColors.white70,
+                              ),
+                          ),
                       trailing: Icon(Icons.copy),
                       onTap: () {
                         Clipboard.setData(
@@ -148,11 +199,11 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
           },
         ),
       ),
-      OutlinedButton(
-          style: ElevatedButton.styleFrom(
-            minimumSize: Size(double.infinity,
-                30), // double.infinity is the width and 30 is the height
-          ),
+      ArborButton(
+          // style: ElevatedButton.styleFrom(
+          //   minimumSize: Size(double.infinity,
+          //       30), // double.infinity is the width and 30 is the height
+          // ),
           onPressed: () {
             showModalBottomSheet(
               context: context,
@@ -163,20 +214,23 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
               },
             );
           },
-          child: Text('All Transactions')),
+          title: 'All Transactions'
+      ),
       ListTile(
-        contentPadding: EdgeInsets.all(10.0), //change for side padding
+        contentPadding: EdgeInsets.fromLTRB(0, 10, 0, 10),
         title: Row(
           children: <Widget>[
             Expanded(
-                child: ElevatedButton(
+                child: ArborButton(
+                    backgroundColor: ArborColors.deepGreen,
                     onPressed: () {
                       _showReceiveView();
                     },
-                    child: Text('Receive'))),
+                    title: 'Receive')),
             SizedBox(width: 10),
             Expanded(
-                child: ElevatedButton(
+                child: ArborButton(
+                    backgroundColor: ArborColors.deepGreen,
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -185,7 +239,7 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
                         ),
                       );
                     },
-                    child: Text('Send'))),
+                    title: 'Send')),
           ],
         ),
       )

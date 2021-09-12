@@ -1,4 +1,5 @@
 
+import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:flutter/material.dart';
 import '/models/models.dart';
 import '/utils/expanded_info_page.dart';
@@ -20,9 +21,15 @@ class _ExpandedInfoScreenState extends State<ExpandedInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: ArborColors.green,
       appBar: AppBar(
-        title: Text('Send It BRO'),
+        title: Text(
+            'Your Wallet',
+            style: TextStyle(
+              color: ArborColors.white,
+            ),
+        ),
+        backgroundColor: ArborColors.green,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
