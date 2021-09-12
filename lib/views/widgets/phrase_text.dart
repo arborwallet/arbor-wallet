@@ -26,7 +26,7 @@ class PhraseText extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Text(
-            '${visible ? word : '********'}',
+            '${visible ? ' $word' : ' ********'}',
             textAlign: TextAlign.left,
             style: TextStyle(color: ArborColors.white, fontSize: 14),
           ),
