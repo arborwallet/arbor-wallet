@@ -64,7 +64,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
             backgroundColor: ArborColors.green,
             appBar: AppBar(
               leading: IconButton(
-                icon: Icon(Icons.close),
+                icon: Icon(Icons.close,color: ArborColors.white,),
                 onPressed: () => Navigator.of(context).pop(),
               ),
               title: Text(
@@ -73,6 +73,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                   color: ArborColors.white,
                 ),
               ),
+              centerTitle: true,
               backgroundColor: ArborColors.green,
             ),
             floatingActionButton: Stack(
@@ -136,6 +137,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                               flex: 2,
                               child: Text(
                                 'You have not sent or received anything yet. Go to a faucet and get some mojo.',
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 20.0,
                                   color: ArborColors.white,
