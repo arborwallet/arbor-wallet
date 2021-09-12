@@ -152,7 +152,8 @@ class _InfoScreenState extends State<InfoScreen> {
                                   ),
                                 ),
                                 title: Text(
-                                    '${walletData.fork.name} (${walletData.name})'
+                                    // '${walletData.fork.name} (${walletData.name})'
+                                    '${walletData.fork.name}',
                                 ),
                                 subtitle:
                                     Text(walletData.fork.ticker.toUpperCase()),

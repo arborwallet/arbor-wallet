@@ -84,15 +84,16 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
                         ),
                       ),
                     ),
-                    title: Text('${walletData.fork.name} (${walletData.name})'),
+                    // title: Text('${walletData.fork.name} (${walletData.name})'),
+                    title: Text('${walletData.fork.name}'),
                     subtitle: Text(walletData.fork.ticker.toUpperCase()),
-                    trailing: IconButton(
-                      onPressed: () => _deleteInfo(index),
-                      icon: const Icon(
-                        Icons.delete,
-                        color: Colors.red,
-                      ),
-                    ),
+                    // trailing: IconButton(
+                    //   onPressed: () => _deleteInfo(index),
+                    //   icon: const Icon(
+                    //     Icons.delete,
+                    //     color: Colors.red,
+                    //   ),
+                    // ),
                   ),
                   Card(
                     child: ListTile(
