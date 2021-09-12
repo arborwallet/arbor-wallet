@@ -12,7 +12,6 @@ import '/api/services.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'add_screen.dart';
 import 'expanded_info_screen.dart';
 
 class InfoScreen extends StatefulWidget {
@@ -41,7 +40,6 @@ class _InfoScreenState extends State<InfoScreen> {
 
       Wallet newWallet = Wallet(
         name: existingWallet.name,
-        password: existingWallet.password,
         phrase: existingWallet.phrase,
         privateKey: existingWallet.privateKey,
         publicKey: existingWallet.publicKey,

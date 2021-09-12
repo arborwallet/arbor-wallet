@@ -7,7 +7,6 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:flutter/services.dart';
-import 'package:arbor/views/screens/password_qr_share_screen.dart';
 import 'package:arbor/views/screens/wallet_receive_screen.dart';
 
 import '../core/constants/hive_constants.dart';
@@ -139,25 +138,6 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
                       onTap: () {
                         Clipboard.setData(
                             ClipboardData(text: walletData.privateKey));
-                      },
-                    ),
-                  ),
-                  Card(
-                    child: ListTile(
-                      title: Text('Password Phrase (mnemonic)'),
-                      subtitle: Text('*' * walletData.phrase.toString().length),
-                      trailing: Icon(Icons.qr_code),
-                      onTap: () {
-                        // Clipboard.setData(ClipboardData(text: walletData.phrase));
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          builder: (BuildContext context) {
-                            return PasswordQRShareSheet(
-                                walletPhrase:
-                                    (walletBox.getAt(index) as Wallet).phrase);
-                          },
-                        );
                       },
                     ),
                   ),
