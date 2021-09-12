@@ -180,7 +180,9 @@ class _InfoScreenState extends State<InfoScreen> {
                                   children: <Widget>[
                                     Expanded(
                                         child: OutlinedButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              _showReceiveView(walletIndex: index);
+                                            },
                                             child: Text("Receive"))),
                                     SizedBox(width: 10),
                                     Expanded(
