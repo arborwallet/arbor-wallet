@@ -57,7 +57,7 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
         backgroundColor: ArborColors.green,
         appBar: AppBar(
           leading: IconButton(
-            icon: Icon(Icons.close),
+            icon: Icon(Icons.close,color: ArborColors.white,),
             onPressed: () => Navigator.of(context).pop(),
           ),
           // title: Text('Receive ${widget.wallet.fork.name} (${widget.wallet.name})'),

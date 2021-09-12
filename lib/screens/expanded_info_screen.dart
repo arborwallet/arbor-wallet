@@ -24,11 +24,21 @@ class _ExpandedInfoScreenState extends State<ExpandedInfoScreen> {
       backgroundColor: ArborColors.green,
       appBar: AppBar(
         title: Text(
-            'Your Wallet',
-            style: TextStyle(
-              color: ArborColors.white,
-            ),
+          'Your Wallet',
+          style: TextStyle(
+            color: ArborColors.white,
+          ),
         ),
+        leading:  IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back,
+            color: ArborColors.white,
+          ),
+        ),
+        centerTitle: true,
         backgroundColor: ArborColors.green,
       ),
       body: Padding(
