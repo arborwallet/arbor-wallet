@@ -1,3 +1,4 @@
+import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:arbor/core/constants/hive_constants.dart';
@@ -15,7 +16,8 @@ class TransactionsSheet extends StatefulWidget {
   final String walletAddress;
 
   @override
-  _TransactionsSheetState createState() => _TransactionsSheetState(walletAddress);
+  _TransactionsSheetState createState() =>
+      _TransactionsSheetState(walletAddress);
 }
 
 class _TransactionsSheetState extends State<TransactionsSheet> {
@@ -41,7 +43,8 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
       setState(() {
         _fetchingTransactions = true;
       });
-      Transactions tr = await walletService.fetchWalletTransactions(walletAddress);
+      Transactions tr =
+      await walletService.fetchWalletTransactions(walletAddress);
       if (transactionsBox.containsKey(walletAddress)) {
         transactionsBox.delete(walletAddress);
       }
@@ -58,12 +61,19 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
         maxChildSize: 1.0,
         builder: (context, scrollController) {
           return Scaffold(
+            backgroundColor: ArborColors.green,
             appBar: AppBar(
               leading: IconButton(
                 icon: Icon(Icons.close),
                 onPressed: () => Navigator.of(context).pop(),
               ),
-              title: Text('Transactions'),
+              title: Text(
+                'Transactions',
+                style: TextStyle(
+                  color: ArborColors.white,
+                ),
+              ),
+              backgroundColor: ArborColors.green,
             ),
             floatingActionButton: Stack(
               children: <Widget>[
@@ -73,8 +83,8 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                     alignment: Alignment.bottomLeft,
                     child: FloatingActionButton(
                         heroTag: "refresh",
-                        backgroundColor: Colors.lightGreen,
-                        child: Icon(Icons.refresh),
+                        backgroundColor: ArborColors.deepGreen,
+                        child: Icon(Icons.refresh, color: ArborColors.white),
                         onPressed: () {
                           _updateTransactions();
                         }),
@@ -84,8 +94,8 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                   alignment: Alignment.bottomRight,
                   child: FloatingActionButton(
                       heroTag: "btn2",
-                      backgroundColor: Colors.lightGreen,
-                      child: Icon(Icons.close),
+                      backgroundColor: ArborColors.deepGreen,
+                      child: Icon(Icons.close, color: ArborColors.white),
                       onPressed: () {
                         Navigator.of(context).pop();
                       }),
@@ -96,11 +106,10 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
               child: ValueListenableBuilder(
                 valueListenable: transactionsBox.listenable(),
                 builder: (context, Box box, widget) {
-
                   Transactions? transactionsModel;
                   List<Transaction>? transactionsList;
 
-                  for (int i=0; i < box.length; i++) {
+                  for (int i = 0; i < box.length; i++) {
                     Transactions tr = box.getAt(i);
                     if (tr.walletAddress == walletAddress) {
                       transactionsModel = tr;
@@ -110,7 +119,8 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                   }
 
                   // if (box.isEmpty) {
-                  if (transactionsList == null || transactionsList.length == 0) {
+                  if (transactionsList == null ||
+                      transactionsList.length == 0) {
                     return Container(
                         padding: EdgeInsets.all(50),
                         child: Column(
@@ -124,19 +134,20 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                               style: TextStyle(fontSize: 20.0),
                             ),
                           ],
-                        )
-                    );
+                        ));
                   } else {
                     return Container(
-                      child:
-                      ListView.builder(
-                        padding: const EdgeInsets.only(bottom: kFloatingActionButtonMargin+100),
+                      child: ListView.builder(
+                        padding: const EdgeInsets.only(
+                            bottom: kFloatingActionButtonMargin + 100),
                         shrinkWrap: false,
                         itemCount: transactionsList.length,
                         itemBuilder: (context, index) {
-                          Transaction transaction = transactionsList!.elementAt(index);
+                          Transaction transaction =
+                          transactionsList!.elementAt(index);
 
-                          return Card (
+                          return Card(
+                            color: ArborColors.green,
                             elevation: 1,
                             shadowColor: Colors.lightGreen,
                             margin: EdgeInsets.all(4),
@@ -154,11 +165,28 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                                       ),
                                     ),
                                   ),
-                                  title: Text('${transaction.typeForDisplay()}'),
-                                  subtitle: Text(transaction.timeForDisplay()),
+                                  title:
+                                    Text(
+                                      '${transaction.typeForDisplay()}',
+                                      style: TextStyle(
+                                        color: ArborColors.white,
+                                      ),
+                                    ),
+                                  subtitle: Text(
+                                      transaction.timeForDisplay(),
+                                      style: TextStyle(
+                                        color: ArborColors.white70,
+                                      ),
+                                  ),
                                   trailing: Text(
-                                    transaction.amountForDisplay(transactionsModel!.fork.precision),
-                                    style: TextStyle(fontWeight: FontWeight.bold),),
+                                    transaction.amountForDisplay(
+                                        transactionsModel!.fork.precision),
+                                    style:
+                                      TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: ArborColors.white,
+                                      ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -171,7 +199,6 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
               ),
             ),
           );
-        }
-    );
+        });
   }
 }
