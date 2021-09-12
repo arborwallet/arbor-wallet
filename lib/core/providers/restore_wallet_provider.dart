@@ -445,6 +445,34 @@ class RestoreWalletProvider extends ChangeNotifier {
   }
 
   clearStatus() {
+    currentState = CrossFadeState.showFirst;
+
+    _password1IsCorrect = false;
+    _password2IsCorrect = false;
+    _password3IsCorrect = false;
+    _password4IsCorrect = false;
+    _password5IsCorrect = false;
+    _password6IsCorrect = false;
+    _password7IsCorrect = false;
+    _password8IsCorrect = false;
+    _password9IsCorrect = false;
+    _password10IsCorrect = false;
+    _password11IsCorrect = false;
+    _password12IsCorrect = false;
+
+    allPassword = '';
+    firstPassword = '';
+    secondPassword = '';
+    thirdPassword = '';
+    fourthPassword = '';
+    fifthPassword = '';
+    sixthPassword = '';
+    seventhPassword = '';
+    eighthPassword = '';
+    ninthPassword = '';
+    tenthPassword = '';
+    eleventhPassword = '';
+    twelfthPassword = '';
     recoverWalletStatus = Status.IDLE;
   }
 

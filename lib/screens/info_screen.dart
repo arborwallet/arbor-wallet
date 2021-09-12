@@ -1,3 +1,4 @@
+import 'package:arbor/views/screens/add_wallet/add_wallet_screen.dart';
 import 'package:arbor/views/screens/send/value_screen.dart';
 import 'package:arbor/views/screens/wallet_receive_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +12,6 @@ import '/api/services.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'add_screen.dart';
 import 'expanded_info_screen.dart';
 
 class InfoScreen extends StatefulWidget {
@@ -101,7 +101,7 @@ class _InfoScreenState extends State<InfoScreen> {
           floatingActionButton: FloatingActionButton(
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => AddScreen(),
+                builder: (context) => AddWalletScreen(),
               ),
             ),
             child: const Icon(Icons.add),

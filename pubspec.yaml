@@ -22,7 +22,6 @@ dependencies:
   intl: ^0.17.0
   introduction_screen: ^2.1.0
   numeric_keyboard: ^1.1.0
-  simple_autocomplete_formfield: ^0.3.0
   flutter_secure_storage: ^4.2.1
   url_launcher: ^6.0.10
 

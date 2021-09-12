@@ -115,59 +115,6 @@ class InputPasswordScreen extends StatelessWidget {
             errorMessage: model.errorMessage4,
             onChanged: (v) => model.setFourthPassword(v),
           ),
-          /*Autocomplete<String>(
-            optionsBuilder: (TextEditingValue textEditingValue) {
-              return model.bipList
-                  .where(
-                      (e) => e.startsWith(textEditingValue.text.toLowerCase()))
-                  .toList();
-            },
-            onSelected: (String selection) {
-              //print('Selected: ${selection.name}');
-            },
-            fieldViewBuilder: (BuildContext context,
-                TextEditingController fieldTextEditingController,
-                FocusNode fieldFocusNode,
-                VoidCallback onFieldSubmitted) {
-              return TextField(
-                controller: fieldTextEditingController,
-                focusNode: fieldFocusNode,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-
-              );
-            },
-            */ /*optionsViewBuilder: (BuildContext context,
-                AutocompleteOnSelected<String> onSelected,
-                Iterable<String> options) {
-              return  Material(
-                  child: Container(
-                    width: 200,
-                    color: Colors.white,
-                    child: ListView.builder(
-                      padding: EdgeInsets.all(10.0),
-                      itemCount: options.length,
-                      //itemCount: options.where((e) => e.startsWith(model.firstPassword!.trim().toLowerCase())).length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final String option = options.elementAt(index);
-                        return GestureDetector(
-                          onTap: () {
-                            onSelected(option);
-                          },
-                          child: ListTile(
-                            title: Text(
-                              option,
-                              style: const TextStyle(
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                );
-            },*/ /*
-          ),*/
           SizedBox(
             height: 40,
           ),

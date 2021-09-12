@@ -1,7 +1,6 @@
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:simple_autocomplete_formfield/simple_autocomplete_formfield.dart';
 
 class PasswordBox extends StatelessWidget {
   final int? index;
@@ -87,7 +86,7 @@ class PasswordBox extends StatelessWidget {
   }
 }
 
-class NewPasswordBox extends StatelessWidget {
+/*class NewPasswordBox extends StatelessWidget {
   final int? index;
   final ValueChanged<String?>? onChanged;
   final String errorMessage;
@@ -179,4 +178,4 @@ class NewPasswordBox extends StatelessWidget {
       ),
     );
   }
-}
+}*/

@@ -12,6 +12,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/constants/hive_constants.dart';
+import 'core/providers/create_wallet_provider.dart';
 import 'models/fork.dart';
 import 'models/transaction.dart';
 import 'models/transactions.dart';
@@ -37,19 +38,23 @@ main() async {
     await secureStorage.readAll();
 
     String? keyFromSecureStorage = await secureStorage.read(key: hiveEncryptionKeyKey);
-    if (keyFromSecureStorage != null) {
+    if (keyFromSecureStorage != null && keyFromSecureStorage!='') {
       var encryptionKey = base64Url.decode(keyFromSecureStorage);
 
       _hiveAdaptersRegistration();
       // Opening the box
-      await Hive.openBox(
-          HiveConstants.walletBox,
-          encryptionCipher: HiveAesCipher(encryptionKey)
-      );
-      await Hive.openBox(
-          HiveConstants.transactionsBox,
-          encryptionCipher: HiveAesCipher(encryptionKey)
-      );
+     try{
+       await Hive.openBox(
+           HiveConstants.walletBox,
+           encryptionCipher: HiveAesCipher(encryptionKey)
+       );
+       await Hive.openBox(
+           HiveConstants.transactionsBox,
+           encryptionCipher: HiveAesCipher(encryptionKey)
+       );
+     }on Exception catch(e){
+       print("Error: ${e.toString()}");
+     }
 
       runApp(MyApp());
     } else {
@@ -102,6 +107,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => CreateWalletProvider()),
         ChangeNotifierProvider(create: (_) => RestoreWalletProvider()),
         ChangeNotifierProvider(create: (_) => SendCryptoProvider()),
       ],
