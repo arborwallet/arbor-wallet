@@ -137,6 +137,8 @@ class _InfoScreenState extends State<InfoScreen> {
                         'Tap + to create a new wallet.',
                         style: TextStyle(
                           color: ArborColors.white,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 20,
                         ),
                     ),
                   );

@@ -22,7 +22,12 @@ class AddWalletScreen extends StatelessWidget {
               backgroundColor: ArborColors.green,
               centerTitle: true,
               elevation: 0,
-              title: Text('Add Wallet'),
+              title: Text(
+                  'Add Wallet',
+                  style: TextStyle(
+                    color: ArborColors.white,
+                  ),
+              ),
             ),
             body: Container(
               child: ListView(

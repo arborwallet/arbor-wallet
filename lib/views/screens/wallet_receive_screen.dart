@@ -61,7 +61,12 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
             onPressed: () => Navigator.of(context).pop(),
           ),
           // title: Text('Receive ${widget.wallet.fork.name} (${widget.wallet.name})'),
-          title: Text('Receive ${widget.wallet.fork.name}'),
+          title: Text(
+              'Receive ${widget.wallet.fork.name}',
+              style: TextStyle(
+                color: ArborColors.white,
+              ),
+          ),
           backgroundColor: ArborColors.green,
         ),
         body: RepaintBoundary(
