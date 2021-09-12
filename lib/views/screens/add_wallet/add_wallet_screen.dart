@@ -51,8 +51,9 @@ class AddWalletScreen extends StatelessWidget {
                     description: 'Generate a new wallet.',
                     actionText: 'Generate New Wallet',
                     onPressed: ()async {
+                      model.clearAll();
                       model.createNewWallet();
-                     bool result=await  Navigator.push(
+                     var result=await  Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => AddWalletStatusScreen(),
