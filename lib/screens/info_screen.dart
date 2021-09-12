@@ -115,6 +115,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   color: ArborColors.white,
                 ),
             ),
+            centerTitle: true,
             backgroundColor: ArborColors.green,
           ),
           floatingActionButton: FloatingActionButton(
