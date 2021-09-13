@@ -12,7 +12,7 @@
 
 ## Arbor Wallet
 
-Arbor Wallet v1 is focused on brining a light wallet that doesn't store your secret phrase (mnemonic) in the app and lets you transfer Chia (XCH) to yourself or others with ease.
+Arbor Wallet v1 is focused on bringing a light wallet that doesn't store your secret phrase (mnemonic) in the app and lets you transfer Chia (XCH) to yourself or others with ease.
 
 ## Releases
 
