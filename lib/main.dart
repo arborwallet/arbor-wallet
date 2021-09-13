@@ -7,6 +7,7 @@ import 'package:arbor/screens/info_screen.dart';
 import 'package:arbor/views/screens/no_encryption_available_sccreen.dart';
 import 'package:arbor/core/providers/send_crypto_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
@@ -105,26 +106,28 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => RestoreWalletProvider()),
         ChangeNotifierProvider(create: (_) => SendCryptoProvider()),
       ],
-      child: MaterialApp(
-          title: 'Arbor',
-          theme: ArborThemeData.lightTheme,
-          debugShowCheckedModeBanner: false,
-          home: FutureBuilder<bool>(
-              future: _isFirstTimeUser(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  bool _isFirstTime = snapshot.data as bool;
-                  if (_isFirstTime) {
-                    return SplashScreen();
+      child: ScreenUtilInit(
+        builder:()=> MaterialApp(
+            title: 'Arbor',
+            theme: ArborThemeData.lightTheme,
+            debugShowCheckedModeBanner: false,
+            home: FutureBuilder<bool>(
+                future: _isFirstTimeUser(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    bool _isFirstTime = snapshot.data as bool;
+                    if (_isFirstTime) {
+                      return SplashScreen();
+                    } else {
+                      return InfoScreen();
+                    }
                   } else {
-                    return InfoScreen();
+                    return Container(
+                      color: ArborColors.lightGreen,
+                    );
                   }
-                } else {
-                  return Container(
-                    color: ArborColors.lightGreen,
-                  );
-                }
-              })),
+                })),
+      ),
     );
   }
 }
