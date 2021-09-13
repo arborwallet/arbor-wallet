@@ -14,6 +14,6 @@
 
 Arbor Wallet v1 is focused on brining a light wallet that doesn't store your secret phrase (mnemonic) in the app and lets you transfer Chia (XCH) to yourself or others with ease.
 
-## Released
+## Releases
 
 - We'll add this once both the Android and iOS apps are in the respective App Stores.
