@@ -13,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:numeric_keyboard/numeric_keyboard.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ValueScreen extends StatelessWidget {
   final addressFocusNode = FocusNode();
@@ -63,174 +64,187 @@ class ValueScreen extends StatelessWidget {
               ),
               body: Container(
                 padding: EdgeInsets.fromLTRB(
-                  20,
+                  10,
+                  10,
                   10,
                   20,
-                  20,
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: ArborColors.lightGreen.withOpacity(0.3),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(
-                            8,
+                child: SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight:
+                        MediaQuery.of(context).size.height
+                        - MediaQuery.of(context).padding.top
+                        - MediaQuery.of(context).padding.bottom
+                        - MediaQuery.of(context).viewPadding.top
+                        - MediaQuery.of(context).viewPadding.bottom
+                        + 60
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: ArborColors.lightGreen.withOpacity(0.3),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(
+                                8,
+                              ),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                radius: 16,
+                                backgroundColor: ArborColors.logoGreen,
+                                backgroundImage: AssetImage(
+                                  AssetPaths.logo,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Text(
+                                  '${wallet.fork.name}',
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      color: ArborColors.white, fontSize: 14),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  model.walletBalanceStatus == Status.LOADING
+                                      ? 'Loading...'
+                                      : '${model.readableBalance} ${wallet.fork.ticker.toUpperCase()}',
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.end,
+                                  style: TextStyle(
+                                      color: ArborColors.white, fontSize: 14),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            radius: 16,
-                            backgroundColor: ArborColors.logoGreen,
-                            backgroundImage: AssetImage(
-                              AssetPaths.logo,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              '${wallet.fork.name}',
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  color: ArborColors.white, fontSize: 14),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              model.walletBalanceStatus == Status.LOADING
-                                  ? 'Loading...'
-                                  : '${model.readableBalance} ${wallet.fork.ticker.toUpperCase()}',
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.end,
-                              style: TextStyle(
-                                  color: ArborColors.white, fontSize: 14),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      '${model.transactionValue} ${wallet.fork.ticker.toUpperCase()}',
-                      style:
-                          TextStyle(fontSize: 30, color: ArborColors.deepGreen),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    ArborTextField(
-                      hintText: "Tap to paste Recipient's Address",
-                      focusNode: addressFocusNode,
-                      controller: addressController
-                        ..text = model.receiverAddress,
-                      isDisabled: true,
-                      onTextFieldTapped: () {
-                        model.getClipBoardData();
-                      },
-                      errorMessage: model.addressErrorMessage,
-                      onChanged: (v) => model.setReceiverAddress(v),
-                      onIconPressed: () {
-                        model.scannedData=false;
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddressScanner(),
-                          ),
-                        );
-                      },
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 4,
-                            child: NumericKeyboard(
-                              onKeyboardTap: (_) =>
-                                  model.setTransactionValue(_),
-                              textColor: ArborColors.white,
-                              rightButtonFn: () => model.deleteCharacter(),
-                              rightIcon: Icon(
-                                Icons.arrow_back,
-                                color: ArborColors.white,
+                        Spacer(flex: 2),
+                        Text(
+                          '${model.transactionValue} ${wallet.fork.ticker.toUpperCase()}',
+                          style:
+                          TextStyle(fontSize: 30.h, color: ArborColors.deepGreen),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        ArborTextField(
+                          hintText: "Tap to paste Recipient's Address",
+                          focusNode: addressFocusNode,
+                          controller: addressController
+                            ..text = model.receiverAddress,
+                          isDisabled: true,
+                          onTextFieldTapped: () {
+                            model.getClipBoardData();
+                          },
+                          errorMessage: model.addressErrorMessage,
+                          onChanged: (v) => model.setReceiverAddress(v),
+                          onIconPressed: () {
+                            model.scannedData=false;
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AddressScanner(),
                               ),
-                              leftButtonFn: () =>
-                                  model.setTransactionValue('.'),
-                              leftIcon: Icon(
-                                Icons.adjust_sharp,
-                                color: ArborColors.white,
-                              ),
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: GestureDetector(
-                              onTap: () => model.useMax(),
-                              child: Container(
-                                margin: EdgeInsets.symmetric(vertical: 16),
-                                padding: EdgeInsets.symmetric(horizontal: 10),
-                                height: double.infinity,
-                                decoration: BoxDecoration(
-                                    color: ArborColors.transparent,
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(color: ArborColors.lightGreen)
+                            );
+                          },
+                        ),
+                        Container(
+                          height: 300,
+                          child: Row(
+                            children: [
+                              Flexible(
+                                flex: 5,
+                                fit: FlexFit.loose,
+                                child: NumericKeyboard(
+                                  onKeyboardTap: (_) =>
+                                      model.setTransactionValue(_),
+                                  textColor: ArborColors.white,
+                                  rightButtonFn: () => model.deleteCharacter(),
+                                  rightIcon: Icon(
+                                    Icons.arrow_back,
+                                    color: ArborColors.white,
+                                  ),
+                                  leftButtonFn: () =>
+                                      model.setTransactionValue('.'),
+                                  leftIcon: Icon(
+                                    Icons.adjust_sharp,
+                                    color: ArborColors.white,
+                                  ),
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 ),
-                                child: Center(
-                                  child: Text(
-                                    'MAX',
-                                    style: TextStyle(
-                                        color: ArborColors.white,
-                                        fontWeight: FontWeight.w600),
+                              ),
+                              Flexible(
+                                flex: 1,
+                                fit: FlexFit.loose,
+                                child: GestureDetector(
+                                  onTap: () => model.useMax(),
+                                  child: Container(
+                                    // margin: EdgeInsets.symmetric(vertical: 16),
+                                    // padding: EdgeInsets.symmetric(horizontal: 10),
+                                    height: double.maxFinite * 0.75,
+                                    decoration: BoxDecoration(
+                                        color: ArborColors.transparent,
+                                        borderRadius: BorderRadius.circular(20),
+                                        border: Border.all(color: ArborColors.lightGreen)
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        'MAX',
+                                        style: TextStyle(
+                                            color: ArborColors.white,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
+                              )
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: ArborButton(
+                            backgroundColor: ArborColors.logoGreen,
+                            disabled: !model.enableButton,
+                            loading: false,
+                            title: 'Continue',
+                            onPressed: () async {
+                              bool status = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => StatusScreen(),
+                                ),
+                              );
+                              if (status == true){
+                                //model.getBalance();
+                                Navigator.pop(context);
+                              }
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: ArborButton(
-                        backgroundColor: ArborColors.logoGreen,
-                        disabled: !model.enableButton,
-                        loading: false,
-                        title: 'Continue',
-                        onPressed: () async {
-                          bool status = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => StatusScreen(),
-                            ),
-                          );
-                          if (status == true){
-                            //model.getBalance();
-                            Navigator.pop(context);
-                          }
-                        },
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
