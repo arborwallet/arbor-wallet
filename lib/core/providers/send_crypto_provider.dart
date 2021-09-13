@@ -5,6 +5,7 @@ import 'package:arbor/core/enums/status.dart';
 import 'package:arbor/core/utils/regex.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class SendCryptoProvider extends ChangeNotifier {
   Status sendCryptoStatus = Status.IDLE;
@@ -46,6 +47,7 @@ class SendCryptoProvider extends ChangeNotifier {
   double _amount = 0;
   double get amount => _amount;
 
+  bool scannedData = false;
   bool _validAddress = false;
 
   bool validAddress(String address) {
@@ -217,5 +219,14 @@ class SendCryptoProvider extends ChangeNotifier {
       str = '0';
     }
     return str;
+  }
+
+  void onAddressQRCreated(QRViewController controller) {
+    controller.scannedDataStream.listen((scanData) {
+      controller.pauseCamera();
+      _receiverAddress = scanData.code;
+      scannedData = true;
+      notifyListeners();
+    });
   }
 }

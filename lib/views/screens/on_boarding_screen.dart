@@ -1,12 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '/views/widgets/layout/arbor_on_boarding_layout.dart';
+import '../../views/widgets/layout/arbor_on_boarding_layout.dart';
 import '../../core/constants/arbor_colors.dart';
-import '/core/models/onboarding_text.dart';
+import '../../core/models/onboarding_text.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
 import 'welcome_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   final pageDecoration = const PageDecoration(
@@ -24,22 +25,23 @@ class OnBoardingScreen extends StatelessWidget {
       pages: onBoardingTextList
           .map(
             (e) => PageViewModel(
-              titleWidget: Container(
-                padding: const EdgeInsets.all(20),
-                height: MediaQuery.of(context).size.height * 0.55,
-                child: Center(
-                  child: SvgPicture.asset(
-                    e.assetPath,
-                    height: MediaQuery.of(context).size.height * 0.5,
-                  ),
-                ),
-              ),
-              bodyWidget: _OnBoardingTextWidget(
-                onBoardingText: e,
-                onNextPressed: () {},
+          titleWidget: Container(
+            padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
+            height: 0.45.sh,
+            child: Center(
+              child: SvgPicture.asset(
+                e.assetPath,
+                height: 0.4.sh,
+                //height: MediaQuery.of(context).size.height * 0.5,
               ),
             ),
-          )
+          ),
+          bodyWidget: _OnBoardingTextWidget(
+            onBoardingText: e,
+            onNextPressed: () {},
+          ),
+        ),
+      )
           .toList(),
       onDone: () => Navigator.pushReplacement(
         context,
@@ -58,20 +60,20 @@ class OnBoardingScreen extends StatelessWidget {
       showDoneButton: true,
       skipFlex: 0,
       nextFlex: 0,
-      skip: const Text(
+      skip: Text(
         'SKIP',
         style: TextStyle(
           fontWeight: FontWeight.w600,
           color: Colors.white,
-          fontSize: 18,
+          fontSize: 18.sp,
         ),
       ),
-      next: const Text(
+      next: Text(
         'NEXT',
         style: TextStyle(
           fontWeight: FontWeight.w600,
           color: Colors.white,
-          fontSize: 18,
+          fontSize: 18.sp,
         ),
       ),
       done: const Text('SKIP',
@@ -114,7 +116,7 @@ class _OnBoardingTextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -123,27 +125,27 @@ class _OnBoardingTextWidget extends StatelessWidget {
           Text(
             '${onBoardingText.title}',
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 24,
+            style: TextStyle(
+              fontSize: 24.sp,
               color: Colors.white,
               fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(
-            height: 20,
+          SizedBox(
+            height: 20.h,
           ),
           Text(
             '${onBoardingText.description}',
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 16,
+            style: TextStyle(
+              fontSize: 16.sp,
               color: Colors.white,
               fontWeight: FontWeight.w400,
             ),
             softWrap: true,
           ),
-          const SizedBox(
-            height: 30,
+          SizedBox(
+            height: 40.h,
           ),
         ],
       ),

@@ -3,6 +3,7 @@ import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AddWalletCompleteScreen extends StatelessWidget {
   @override
@@ -34,7 +35,7 @@ class AddWalletCompleteScreen extends StatelessWidget {
                 SvgPicture.asset(
                   AssetPaths.walletCreated,
                   fit: BoxFit.cover,
-                  height: 150,
+                  height: 150.h,
                 ),
                 Expanded(
                   flex: 3,

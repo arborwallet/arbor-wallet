@@ -306,9 +306,6 @@ class _InfoScreenState extends State<InfoScreen> {
     );
     if(result==true){
       walletBox.deleteAt(index);
-      print('Item deleted from box at index: $index');
-    }else{
-      print('Item');
     }
 
   }

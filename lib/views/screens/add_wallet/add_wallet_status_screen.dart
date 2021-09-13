@@ -28,7 +28,7 @@ class AddWalletStatusScreen extends StatelessWidget {
               backgroundColor: ArborColors.green,
             ),
             body: Container(
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              padding: EdgeInsets.symmetric(horizontal: 40, vertical: model.createWalletStatus == Status.SUCCESS?1:20),
               child: Builder(
                 builder: (_) {
                   if (model.createWalletStatus == Status.LOADING) {
@@ -64,7 +64,7 @@ class AddWalletStatusScreen extends StatelessWidget {
           height: 100,
         ),
         Expanded(
-          flex: 2,
+          flex: 1,
           child: Container(),
         ),
         Text(
@@ -97,6 +97,7 @@ class AddWalletStatusScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          SizedBox(height: 20,),
           Container(
             decoration: BoxDecoration(
               color: ArborColors.logoGreen,
@@ -122,15 +123,15 @@ class AddWalletStatusScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                
+
                 ...model.phrasesList
                     .map(
                       (e) => PhraseText(
-                        itemNumber: e.index,
-                        word: e.phrase,
-                        visible: model.revealPhrase,
-                      ),
-                    )
+                    itemNumber: e.index,
+                    word: e.phrase,
+                    visible: model.revealPhrase,
+                  ),
+                )
                     .toList(),
                 SizedBox(
                   height: 20,
@@ -139,7 +140,7 @@ class AddWalletStatusScreen extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Text(
               'Do not create a digital copy such as a screenshot, text file or email.',
               textAlign: TextAlign.center,
@@ -158,7 +159,7 @@ class AddWalletStatusScreen extends StatelessWidget {
             onPressed: () => model.setRevealPhrase(),
           ),
           SizedBox(
-            height: 10,
+            height: 16,
           ),
           ArborButton(
             disabled: !model.tappedRevealButton,
@@ -178,6 +179,7 @@ class AddWalletStatusScreen extends StatelessWidget {
               }
             },
           ),
+          SizedBox(height: 20,),
         ],
       ),
     );

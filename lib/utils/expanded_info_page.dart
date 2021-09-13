@@ -61,145 +61,144 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Expanded(
-        child: ValueListenableBuilder(
-          valueListenable: walletBox.listenable(),
-          builder: (context, Box box, widget) {
-            if (box.isEmpty) {
-              return const Center(
-                child: Text(
-                    'Hmm. We could not find a wallet to show. Please try again'),
-              );
-            } else {
-              var walletData = walletBox.getAt(index);
-              return Column(
-                children: [
-                  ListTile(
-                    leading: Container(
-                      width: 50,
-                      height: 50,
-                      decoration: new BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: new DecorationImage(
-                          image: AssetImage("assets/images/chia-logo.png"),
-                          fit: BoxFit.fitHeight,
+      ValueListenableBuilder(
+        valueListenable: walletBox.listenable(),
+        builder: (context, Box box, widget) {
+          if (box.isEmpty) {
+            return const Center(
+              child: Text(
+                  'Hmm. We could not find a wallet to show. Please try again'),
+            );
+          } else {
+            var walletData = walletBox.getAt(index);
+            return Column(
+              children: [
+                ListTile(
+                  leading: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: new BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: new DecorationImage(
+                        image: AssetImage("assets/images/chia-logo.png"),
+                        fit: BoxFit.fitHeight,
+                      ),
+                    ),
+                  ),
+                  // title: Text('${walletData.fork.name} (${walletData.name})'),
+                  title: Text(
+                    '${walletData.fork.name}',
+                    style: TextStyle(
+                      color: ArborColors.white,
+                    ),
+                  ),
+                  subtitle: Text(
+                    walletData.fork.ticker.toUpperCase(),
+                    style: TextStyle(
+                      color: ArborColors.white70,
+                    ),
+                  ),
+                ),
+                Card(
+                  color: Colors.green,
+                  child: ListTile(
+                    title: FittedBox(
+                      fit: BoxFit.contain,
+                      child: Text(
+                        '${walletData.fork.ticker.toUpperCase()}: ${walletData.balanceForDisplay()}',
+                        style: TextStyle(
+                          color: ArborColors.white,
                         ),
                       ),
                     ),
-                    // title: Text('${walletData.fork.name} (${walletData.name})'),
+                    trailing: Icon(Icons.copy),
+                    onTap: () {
+                      Clipboard.setData(ClipboardData(
+                          text: walletData.balanceForDisplay()));
+                      showSnackBar(context, 'Balance copied');
+
+
+                    },
+                  ),
+                ),
+                Card(
+                  color: Colors.green,
+                  child: ListTile(
                     title: Text(
-                      '${walletData.fork.name}',
+                      'Address',
                       style: TextStyle(
                         color: ArborColors.white,
                       ),
                     ),
                     subtitle: Text(
-                      walletData.fork.ticker.toUpperCase(),
+                      walletData.address,
                       style: TextStyle(
                         color: ArborColors.white70,
                       ),
                     ),
-                  ),
-                  Card(
-                    color: Colors.green,
-                    child: ListTile(
-                      title: FittedBox(
-                        fit: BoxFit.contain,
-                        child: Text(
-                          '${walletData.fork.ticker.toUpperCase()}: ${walletData.balanceForDisplay()}',
-                          style: TextStyle(
-                            color: ArborColors.white,
-                          ),
-                        ),
-                      ),
-                      trailing: Icon(Icons.copy),
-                      onTap: () {
-                        Clipboard.setData(ClipboardData(
-                            text: walletData.balanceForDisplay()));
-                        showSnackBar(context, 'Balance copied');
+                    trailing: Icon(Icons.copy),
+                    onTap: () {
+                      Clipboard.setData(
+                          ClipboardData(text: walletData.address));
+                      showSnackBar(context, 'Wallet address copied');
 
 
-                      },
-                    ),
+                    },
                   ),
-                  Card(
-                    color: Colors.green,
-                    child: ListTile(
-                      title: Text(
-                        'Address',
-                        style: TextStyle(
-                          color: ArborColors.white,
-                        ),
+                ),
+                Card(
+                  color: Colors.green,
+                  child: ListTile(
+                    title: Text(
+                      'Public Key',
+                      style: TextStyle(
+                        color: ArborColors.white,
                       ),
-                      subtitle: Text(
-                        walletData.address,
-                        style: TextStyle(
-                          color: ArborColors.white70,
-                        ),
-                      ),
-                      trailing: Icon(Icons.copy),
-                      onTap: () {
-                        Clipboard.setData(
-                            ClipboardData(text: walletData.address));
-                        showSnackBar(context, 'Wallet address copied');
-
-
-                      },
                     ),
-                  ),
-                  Card(
-                    color: Colors.green,
-                    child: ListTile(
-                      title: Text(
-                        'Public Key',
-                        style: TextStyle(
-                          color: ArborColors.white,
-                        ),
+                    subtitle: Text(
+                      walletData.publicKey,
+                      style: TextStyle(
+                        color: ArborColors.white70,
                       ),
-                      subtitle: Text(
-                        walletData.publicKey,
-                        style: TextStyle(
-                          color: ArborColors.white70,
-                        ),
-                      ),
-                      trailing: Icon(Icons.copy),
-                      onTap: () {
-                        Clipboard.setData(
-                            ClipboardData(text: walletData.publicKey));
-                        showSnackBar(context, 'Public key copied');
-                      },
                     ),
+                    trailing: Icon(Icons.copy),
+                    onTap: () {
+                      Clipboard.setData(
+                          ClipboardData(text: walletData.publicKey));
+                      showSnackBar(context, 'Public key copied');
+                    },
                   ),
-                  Card(
-                    color: Colors.green,
-                    child: ListTile(
-                      title: Text(
-                        'Private Key',
-                        style: TextStyle(
-                          color: ArborColors.white,
-                        ),
+                ),
+                Card(
+                  color: Colors.green,
+                  child: ListTile(
+                    title: Text(
+                      'Private Key',
+                      style: TextStyle(
+                        color: ArborColors.white,
                       ),
-                      subtitle:
-                      Text(
-                        '*' * walletData.privateKey.toString().length,
-                        style: TextStyle(
-                          color: ArborColors.white70,
-                        ),
-                      ),
-                      trailing: Icon(Icons.copy),
-                      onTap: () {
-                        Clipboard.setData(
-                            ClipboardData(text: walletData.privateKey));
-                        showSnackBar(context, 'Private key copied');
-                      },
                     ),
+                    subtitle:
+                    Text(
+                      '*' * walletData.privateKey.toString().length,
+                      style: TextStyle(
+                        color: ArborColors.white70,
+                      ),
+                    ),
+                    trailing: Icon(Icons.copy),
+                    onTap: () {
+                      Clipboard.setData(
+                          ClipboardData(text: walletData.privateKey));
+                      showSnackBar(context, 'Private key copied');
+                    },
                   ),
-                ],
-              );
-            }
-          },
-        ),
+                ),
+              ],
+            );
+          }
+        },
       ),
+      SizedBox(height: 40,),
       ArborButton(
         // style: ElevatedButton.styleFrom(
         //   minimumSize: Size(double.infinity,
