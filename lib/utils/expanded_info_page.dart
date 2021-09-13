@@ -31,13 +31,6 @@ class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
 
   int get index => widget.index;
 
-  // Delete info from wallet box
-  void _deleteInfo(int index) {
-    walletBox.deleteAt(index);
-
-    print('Item deleted from box at index: $index');
-  }
-
   void _showReceiveView() {
     Wallet walletData = walletBox.getAt(index) as Wallet;
 

@@ -35,7 +35,7 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
 
   static const double PASSWORD_PADDING = 40;
 
-  void _showShareSheet() async {
+  /*void _showShareSheet() async {
     RenderRepaintBoundary boundary =
     globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
 
@@ -51,7 +51,7 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
 
       await Share.shareFiles([file.path]);
     }
-  }
+  }*/
 
   void shareQrCode(String address) async {
     try {
@@ -62,12 +62,14 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
       if (qrValidationResult.isValid) {
         final _qrCode = qrValidationResult.qrCode;
 
+        ui.Image logoImage = await getLogoImage();
+
         //Paint QR code
         final _qrPainter = QrPainter.withQr(
           qr: _qrCode!,
           color: ArborColors.white,
           gapless: true,
-          //embeddedImage: ui.Image
+          embeddedImage: logoImage,
         );
 
         //Save in a temporary directory
@@ -227,8 +229,7 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
     image.decodeImage(imageByteData.buffer.asUint8List())!;
     image.Image resizeImage =
     image.copyResize(baseImageSize, height: 30, width: 30);
-    ui.Codec codec = await ui.instantiateImageCodec(resizeImage.getBytes());
-
+    ui.Codec codec = await ui.instantiateImageCodec(image.encodePng(resizeImage)as Uint8List);
     ui.FrameInfo frameInfo = await codec.getNextFrame();
     return frameInfo.image;
   }
