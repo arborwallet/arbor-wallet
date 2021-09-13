@@ -147,6 +147,7 @@ class ValueScreen extends StatelessWidget {
                       errorMessage: model.addressErrorMessage,
                       onChanged: (v) => model.setReceiverAddress(v),
                       onIconPressed: () {
+                        model.scannedData=false;
                         Navigator.push(
                           context,
                           MaterialPageRoute(
