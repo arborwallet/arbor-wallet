@@ -140,6 +140,8 @@ class _InfoScreenState extends State<InfoScreen> {
                   );
                 } else {
                   return ListView.builder(
+                    padding: const EdgeInsets.only(
+                        bottom: kFloatingActionButtonMargin + 60),
                     itemCount: box.length,
                     itemBuilder: (context, index) {
                       var currentBox = box;
