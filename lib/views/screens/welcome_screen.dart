@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/constants/arbor_colors.dart';
 import '/core/constants/asset_paths.dart';
 import '/screens/info_screen.dart';
@@ -13,47 +15,47 @@ class WelcomeScreen extends StatelessWidget {
       backgroundColor: ArborColors.green,
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
+          padding: EdgeInsets.symmetric(horizontal: 40.w),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Container(
-                padding: const EdgeInsets.all(20),
-                height: MediaQuery.of(context).size.height * 0.55,
+                padding:  EdgeInsets.symmetric(vertical: 20.h,horizontal: 20.w),
+                height: 0.45.sh,
                 child: Center(
                   child: SvgPicture.asset(
                     AssetPaths.wealth,
-                    height: MediaQuery.of(context).size.height * 0.5,
+                    height: 0.4.sh,
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 20,
+               SizedBox(
+                height: 20.h,
               ),
-              const Text(
+              Text(
                 'Control Your Wealth',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 24.sp,
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(
-                height: 20,
+               SizedBox(
+                height: 20.h,
               ),
-              const Text(
+              Text(
                 'Funds are under your control and your privacy is protected, no account required',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   color: Colors.white,
                   fontWeight: FontWeight.w400,
                 ),
                 softWrap: true,
               ),
-              const SizedBox(
-                height: 40,
+               SizedBox(
+                height: 40.h,
               ),
               ArborButton(
                 title: 'Get Started',
@@ -65,8 +67,8 @@ class WelcomeScreen extends StatelessWidget {
                   );
                 },
               ),
-              const SizedBox(
-                height: 20,
+             SizedBox(
+                height: 20.h,
               ),
               ArborButton(
                 backgroundColor: ArborColors.deepGreen,
@@ -78,8 +80,8 @@ class WelcomeScreen extends StatelessWidget {
                           builder: (context) => RestoreWalletScreen()));
                 },
               ),
-              const SizedBox(
-                height: 40,
+             SizedBox(
+                height: 40.h,
               ),
             ],
           ),
