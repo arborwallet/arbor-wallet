@@ -13,6 +13,7 @@ class AssetPaths {
   static const String qr = '$baseIconPath/qr.svg';
   static const String receive = '$baseIconPath/receive.svg';
   static const String restore = '$baseIconPath/restore.svg';
+  static const String safeWallet = '$baseIconPath/safe-wallet-chia.svg';
   static const String send = '$baseIconPath/send.svg';
   static const String transactionSend = '$baseIconPath/transaction-send.svg';
   static const String wallet = '$baseIconPath/wallet.svg';
