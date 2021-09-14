@@ -75,9 +75,6 @@ class ValueScreen extends StatelessWidget {
                         MediaQuery.of(context).size.height
                         - MediaQuery.of(context).padding.top
                         - MediaQuery.of(context).padding.bottom
-                        - MediaQuery.of(context).viewPadding.top
-                        - MediaQuery.of(context).viewPadding.bottom
-                        + 60
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -219,7 +216,7 @@ class ValueScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          width: 10,
+                          width: 20,
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -242,6 +239,7 @@ class ValueScreen extends StatelessWidget {
                             },
                           ),
                         ),
+                        Spacer(flex: 1,),
                       ],
                     ),
                   ),
