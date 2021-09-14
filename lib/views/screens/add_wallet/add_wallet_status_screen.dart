@@ -28,7 +28,7 @@ class AddWalletStatusScreen extends StatelessWidget {
               backgroundColor: ArborColors.green,
             ),
             body: Container(
-              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+              padding: EdgeInsets.symmetric(horizontal: 40, vertical: model.createWalletStatus == Status.SUCCESS?1:20),
               child: Builder(
                 builder: (_) {
                   if (model.createWalletStatus == Status.LOADING) {
@@ -64,7 +64,7 @@ class AddWalletStatusScreen extends StatelessWidget {
           height: 100,
         ),
         Expanded(
-          flex: 2,
+          flex: 1,
           child: Container(),
         ),
         Text(
@@ -92,107 +92,96 @@ class AddWalletStatusScreen extends StatelessWidget {
   }
 
   Widget _successView(BuildContext context, CreateWalletProvider model) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            color: ArborColors.logoGreen,
-            borderRadius: BorderRadius.all(
-              Radius.circular(
-                10,
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(height: 20,),
+          Container(
+            decoration: BoxDecoration(
+              color: ArborColors.logoGreen,
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  10,
+                ),
               ),
             ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  'We will not save or store this secret phrase. Write it down. Keep it safe.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: ArborColors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Text(
-                  'Write down your secret phrase in the correct order on paper.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: ArborColors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              ...model.phrasesList
-                  .map(
-                    (e) => PhraseText(
-                      itemNumber: e.index,
-                      word: e.phrase,
-                      visible: model.revealPhrase,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text(
+                    'We will not save or store this secret phrase. Write it down. Keep it safe.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: ArborColors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
                     ),
-                  )
-                  .toList(),
-              SizedBox(
-                height: 20,
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: Text(
-            'Do not create a digital copy such as a screenshot, text file or email.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: ArborColors.white,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
+                  ),
+                ),
+
+                ...model.phrasesList
+                    .map(
+                      (e) => PhraseText(
+                    itemNumber: e.index,
+                    word: e.phrase,
+                    visible: model.revealPhrase,
+                  ),
+                )
+                    .toList(),
+                SizedBox(
+                  height: 20,
+                ),
+              ],
             ),
           ),
-        ),
-        ArborButton(
-          backgroundColor: ArborColors.deepGreen,
-          disabled: false,
-          loading: false,
-          title: model.revealButtonTitle,
-          onPressed: () => model.setRevealPhrase(),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        ArborButton(
-          disabled: !model.tappedRevealButton,
-          backgroundColor: ArborColors.deepGreen,
-          loading: false,
-          title: 'Continue',
-          onPressed: () async {
-            bool result = await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AddWalletCompleteScreen(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: Text(
+              'Do not create a digital copy such as a screenshot, text file or email.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: ArborColors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
               ),
-            );
+            ),
+          ),
+          ArborButton(
+            backgroundColor: ArborColors.deepGreen,
+            disabled: false,
+            loading: false,
+            title: model.revealButtonTitle,
+            onPressed: () => model.setRevealPhrase(),
+          ),
+          SizedBox(
+            height: 16,
+          ),
+          ArborButton(
+            disabled: !model.tappedRevealButton,
+            backgroundColor: ArborColors.deepGreen,
+            loading: false,
+            title: 'Continue',
+            onPressed: () async {
+              bool result = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddWalletCompleteScreen(),
+                ),
+              );
 
-            if (result == true) {
-              Navigator.pop(context, result);
-            }
-          },
-        ),
-      ],
+              if (result == true) {
+                Navigator.pop(context, result);
+              }
+            },
+          ),
+          SizedBox(height: 20,),
+        ],
+      ),
     );
   }
 

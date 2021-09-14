@@ -23,3 +23,5 @@ const splashPageAnimationDurationInMilliseconds = 300;
 const firstHeaderDesktopTopPadding = 5.0;
 
 const chiaPrecision=1000000000000;
+
+//2560*1440

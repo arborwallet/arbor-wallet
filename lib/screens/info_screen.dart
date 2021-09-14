@@ -1,3 +1,5 @@
+import 'package:arbor/api/services.dart';
+import 'package:arbor/models/models.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/views/screens/add_wallet/add_wallet_screen.dart';
 import 'package:arbor/views/screens/send/value_screen.dart';
@@ -8,9 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants.dart';
-import '/models/models.dart';
 import '../core/constants/hive_constants.dart';
-import '/api/services.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -24,12 +24,6 @@ class InfoScreen extends StatefulWidget {
 class _InfoScreenState extends State<InfoScreen> {
   late final Box walletBox;
 
-  // Delete info from wallet box
-  _deleteInfo(int index) {
-    walletBox.deleteAt(index);
-
-    print('Item deleted from box at index: $index');
-  }
 
   // Pull to refresh wallet data
   Future<void> _reloadWalletBalances() async {
@@ -38,7 +32,7 @@ class _InfoScreenState extends State<InfoScreen> {
     for (int index = 0; index < walletBox.length; index++) {
       Wallet existingWallet = walletBox.getAt(index);
       int newBalance =
-          await walletService.fetchWalletBalance(existingWallet.address);
+      await walletService.fetchWalletBalance(existingWallet.address);
 
       Wallet newWallet = Wallet(
         name: existingWallet.name,
@@ -75,7 +69,7 @@ class _InfoScreenState extends State<InfoScreen> {
   void _popupMenuItemSelected(String value, int walletBoxIndex) {
     switch (value) {
       case 'delete': {
-        _deleteInfo(walletBoxIndex);
+        deleteWallet(walletBoxIndex);
         break;
       }
       default:
@@ -110,10 +104,10 @@ class _InfoScreenState extends State<InfoScreen> {
           backgroundColor: ArborColors.green,
           appBar: AppBar(
             title: Text(
-                'Arbor Wallet',
-                style: TextStyle(
-                  color: ArborColors.white,
-                ),
+              'Arbor Wallet',
+              style: TextStyle(
+                color: ArborColors.white,
+              ),
             ),
             centerTitle: true,
             backgroundColor: ArborColors.green,
@@ -135,16 +129,19 @@ class _InfoScreenState extends State<InfoScreen> {
                 if (box.isEmpty) {
                   return Center(
                     child: Text(
-                        'Tap + to create a new wallet.',
-                        style: TextStyle(
-                          color: ArborColors.white,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 20,
-                        ),
+                      'Tap + to create a new wallet.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: ArborColors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 20,
+                      ),
                     ),
                   );
                 } else {
                   return ListView.builder(
+                    padding: const EdgeInsets.only(
+                        bottom: kFloatingActionButtonMargin + 60),
                     itemCount: box.length,
                     itemBuilder: (context, index) {
                       var currentBox = box;
@@ -182,34 +179,34 @@ class _InfoScreenState extends State<InfoScreen> {
                                   ),
                                 ),
                                 title: Text(
-                                    // '${walletData.fork.name} (${walletData.name})'
-                                    '${walletData.fork.name}',
-                                    style: TextStyle(
-                                      color: ArborColors.white,
-                                    ),
+                                  // '${walletData.fork.name} (${walletData.name})'
+                                  '${walletData.fork.name}',
+                                  style: TextStyle(
+                                    color: ArborColors.white,
+                                  ),
                                 ),
                                 subtitle:
-                                    Text(
-                                      walletData.fork.ticker.toUpperCase(),
-                                      style: TextStyle(
-                                        color: ArborColors.white70,
-                                      ),
-                                    ),
+                                Text(
+                                  walletData.fork.ticker.toUpperCase(),
+                                  style: TextStyle(
+                                    color: ArborColors.white70,
+                                  ),
+                                ),
                                 trailing: PopupMenuButton(
                                   itemBuilder: (context) {
                                     return [
                                       PopupMenuItem(
-                                        value: 'delete',
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.delete,
-                                              color: Colors.red,
-                                            ),
-                                            SizedBox(width: 10,),
-                                            Text('Delete'),
-                                          ],
-                                        )
+                                          value: 'delete',
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.delete,
+                                                color: Colors.red,
+                                              ),
+                                              SizedBox(width: 10,),
+                                              Text('Delete'),
+                                            ],
+                                          )
                                       )
                                     ];
                                   },
@@ -223,17 +220,17 @@ class _InfoScreenState extends State<InfoScreen> {
                                 title: FittedBox(
                                     fit: BoxFit.contain,
                                     child:
-                                        Text(
-                                          walletData.balanceForDisplay(),
-                                          style: TextStyle(
-                                            color: ArborColors.white,
-                                          ),
-                                        )),
+                                    Text(
+                                      walletData.balanceForDisplay(),
+                                      style: TextStyle(
+                                        color: ArborColors.white,
+                                      ),
+                                    )),
                                 subtitle: Text(
-                                    walletData.address.toString(),
-                                    style: TextStyle(
-                                      color: ArborColors.white70,
-                                    ),
+                                  walletData.address.toString(),
+                                  style: TextStyle(
+                                    color: ArborColors.white70,
+                                  ),
                                 ),
                               ),
                               ListTile(
@@ -244,27 +241,27 @@ class _InfoScreenState extends State<InfoScreen> {
                                     Expanded(
                                         child: ArborButton(
 
-                                            onPressed: () {
-                                              _showReceiveView(walletIndex: index);
-                                            },
-                                            title: 'Receive',
-                                            backgroundColor: ArborColors.deepGreen,
+                                          onPressed: () {
+                                            _showReceiveView(walletIndex: index);
+                                          },
+                                          title: 'Receive',
+                                          backgroundColor: ArborColors.deepGreen,
                                         )
                                     ),
                                     SizedBox(width: 10),
                                     Expanded(
-                                        child: ArborButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) => ValueScreen(wallet: walletData,),
-                                                ),
-                                              );
-                                            },
-                                            title: 'Send',
-                                            backgroundColor: ArborColors.deepGreen,
-                                        ),
+                                      child: ArborButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => ValueScreen(wallet: walletData,),
+                                            ),
+                                          );
+                                        },
+                                        title: 'Send',
+                                        backgroundColor: ArborColors.deepGreen,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -281,4 +278,38 @@ class _InfoScreenState extends State<InfoScreen> {
           )),
     );
   }
+
+
+  // Delete info from wallet box
+  deleteWallet(int index)async{
+
+    bool result =await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Delete Wallet",style: TextStyle(fontSize: 14,color: ArborColors.black),),
+          content: Text("You cannot undo this action. Do you want to proceed to delete wallet?",style: TextStyle(fontSize: 12,color: ArborColors.black),),
+          actions: [
+            TextButton(
+              child: Text("Cancel"),
+              onPressed:  () {
+                Navigator.pop(context,false);
+              },
+            ),
+            TextButton(
+              child: Text("Yes",style: TextStyle(color: ArborColors.errorRed),),
+              onPressed:  () {
+                Navigator.pop(context,true);
+              },
+            ),
+          ],
+        );
+      },
+    );
+    if(result==true){
+      walletBox.deleteAt(index);
+    }
+
+  }
+
 }

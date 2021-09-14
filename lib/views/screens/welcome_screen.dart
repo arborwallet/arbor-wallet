@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/constants/arbor_colors.dart';
-import '/core/constants/asset_paths.dart';
-import '/screens/info_screen.dart';
-import '/views/widgets/arbor_button.dart';
+import '../../core/constants/asset_paths.dart';
+import '../../screens/info_screen.dart';
+import '../../views/widgets/arbor_button.dart';
 import 'restore_wallet_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -11,78 +12,71 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ArborColors.green,
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(20),
-                height: MediaQuery.of(context).size.height * 0.55,
-                child: Center(
-                  child: SvgPicture.asset(
-                    AssetPaths.wealth,
-                    height: MediaQuery.of(context).size.height * 0.5,
-                  ),
-                ),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 40.w,vertical: 20.h),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Spacer(),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20.h),
+              child:  SvgPicture.asset(
+                AssetPaths.safeWallet,
+                height: 0.3.sh,
               ),
-              const SizedBox(
-                height: 20,
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            Text(
+              'Control Your Wealth',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 24.sp,
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
               ),
-              const Text(
-                'Control Your Wealth',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Text(
+              'Funds are under your control and your privacy is protected, no account required',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16.sp,
+                color: Colors.white,
+                fontWeight: FontWeight.w400,
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text(
-                'Funds are under your control and your privacy is protected, no account required',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w400,
-                ),
-                softWrap: true,
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              ArborButton(
-                title: 'Get Started',
-                onPressed: () {
-                  Navigator.pushAndRemoveUntil(
+              softWrap: true,
+            ),
+            Spacer(),
+            ArborButton(
+              backgroundColor: ArborColors.deepGreen,
+              title: 'Get Started',
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => InfoScreen()),
+                      (route) => false,
+                );
+              },
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            ArborButton(
+              backgroundColor: ArborColors.deepGreen,
+              title: 'I already have a wallet',
+              onPressed: () {
+                Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => InfoScreen()),
-                        (route) => false,
-                  );
-                },
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              ArborButton(
-                backgroundColor: ArborColors.deepGreen,
-                title: 'I already have a wallet',
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => RestoreWalletScreen()));
-                },
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-            ],
-          ),
+                    MaterialPageRoute(
+                        builder: (context) => RestoreWalletScreen()));
+              },
+            ),
+          ],
         ),
       ),
     );

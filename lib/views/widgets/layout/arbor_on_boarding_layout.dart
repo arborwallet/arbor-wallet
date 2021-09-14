@@ -349,7 +349,7 @@ class ArborOnBoardingLayoutState extends State<ArborOnBoardingLayout> {
             right: 0,
             child: Column(
               children: [
-                 _toggleBtn(nextBtn, widget.showNextButton),
+                _toggleBtn(nextBtn, widget.showNextButton),
                 const SizedBox(height: 20,),
                 Container(
                   padding: widget.controlsPadding,
@@ -361,6 +361,7 @@ class ArborOnBoardingLayoutState extends State<ArborOnBoardingLayout> {
                         flex: 2,
                         child: SizedBox(width: 10,),
                       ),
+                      //Expanded(flex: 2,child: _toggleBtn(nextBtn, widget.showNextButton),),
                       Expanded(
                         flex: widget.dotsFlex,
                         child: Center(

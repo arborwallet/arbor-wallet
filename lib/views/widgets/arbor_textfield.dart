@@ -15,13 +15,13 @@ class ArborTextField extends StatelessWidget {
 
   ArborTextField(
       {this.hintText = '',
-      this.controller,
-      this.focusNode,
-      this.isDisabled = false,
-      this.errorMessage = '',
-      this.onChanged,
+        this.controller,
+        this.focusNode,
+        this.isDisabled = false,
+        this.errorMessage = '',
+        this.onChanged,
         this.onTextFieldTapped,
-      this.onIconPressed});
+        this.onIconPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -69,11 +69,11 @@ class ArborTextField extends StatelessWidget {
                     ),
 
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      borderSide: BorderSide(color: ArborColors.logoGreen,)
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        borderSide: BorderSide(color: ArborColors.logoGreen,)
                     ),
                     contentPadding:
-                        EdgeInsets.fromLTRB(20,20,0,20),
+                    EdgeInsets.fromLTRB(20,20,0,20),
                     suffixIcon: IconButton(
                       onPressed: () => onIconPressed!(),
                       icon: Padding(

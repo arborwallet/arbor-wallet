@@ -23,7 +23,13 @@ class _AddressScannerState extends State<AddressScanner> {
   Widget build(BuildContext context) {
     return Consumer<SendCryptoProvider>(
       builder: (_, model, __) {
-        WidgetsBinding.instance!.addPostFrameCallback((_) {});
+        WidgetsBinding.instance!.addPostFrameCallback((_) {
+
+          if(model.scannedData==true){
+            Navigator.pop(context,true);
+          }
+
+        });
         return Scaffold(
           backgroundColor: ArborColors.green,
           appBar: AppBar(
@@ -36,7 +42,8 @@ class _AddressScannerState extends State<AddressScanner> {
             ),
             leading:  IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                model.scannedData=false;
+                Navigator.pop(context,false);
               },
               icon: Icon(
                 Icons.arrow_back,
@@ -56,8 +63,7 @@ class _AddressScannerState extends State<AddressScanner> {
                   height: 327,
                   child: QRView(
                     key: key,
-                    onQRViewCreated: (_) =>
-                        onQRViewCreated(context, model, controller!),
+                    onQRViewCreated: (_) =>model.onAddressQRCreated,
                     overlay: QrScannerOverlayShape(
                       overlayColor: ArborColors.green,
                       borderColor: ArborColors.white,
@@ -80,17 +86,6 @@ class _AddressScannerState extends State<AddressScanner> {
     );
   }
 
-  void onQRViewCreated(
-    BuildContext context,
-    SendCryptoProvider model,
-    QRViewController controller,
-  ) {
-    controller.scannedDataStream.listen((scanData) {
-      controller.pauseCamera();
-      model.setReceiverAddress(scanData.code);
-      Navigator.pop(context);
-    });
-  }
 
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
     if (!p) {
