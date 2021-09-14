@@ -13,7 +13,7 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: ArborColors.green,
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 40.w),
+        padding: EdgeInsets.symmetric(horizontal: 40.w,vertical: 20.h),
         child: Column(
           children: [
             Spacer(),
@@ -58,9 +58,7 @@ class SplashScreen extends StatelessWidget {
                         builder: (context) => RestoreWalletScreen()));
               },
             ),
-            SizedBox(
-              height: 20.h,
-            ),
+
           ],
         ),
       ),

@@ -25,20 +25,19 @@ class OnBoardingScreen extends StatelessWidget {
       pages: onBoardingTextList
           .map(
             (e) => PageViewModel(
-          titleWidget: Container(
-            padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
-            height: 0.45.sh,
+          titleWidget:Container(
+            margin: EdgeInsets.only(top: 120.h),
+            padding: EdgeInsets.only(left: 20.w,right: 20.w,),
             child: Center(
               child: SvgPicture.asset(
                 e.assetPath,
-                height: 0.4.sh,
+                height: 0.3.sh,
                 //height: MediaQuery.of(context).size.height * 0.5,
               ),
             ),
           ),
           bodyWidget: _OnBoardingTextWidget(
             onBoardingText: e,
-            onNextPressed: () {},
           ),
         ),
       )
@@ -108,10 +107,9 @@ class OnBoardingScreen extends StatelessWidget {
 
 class _OnBoardingTextWidget extends StatelessWidget {
   final OnBoardingText onBoardingText;
-  final VoidCallback onNextPressed;
 
   _OnBoardingTextWidget(
-      {required this.onBoardingText, required this.onNextPressed});
+      {required this.onBoardingText,});
 
   @override
   Widget build(BuildContext context) {
