@@ -142,9 +142,7 @@ class _OnBoardingTextWidget extends StatelessWidget {
             ),
             softWrap: true,
           ),
-          SizedBox(
-            height: 40.h,
-          ),
+
         ],
       ),
     );
