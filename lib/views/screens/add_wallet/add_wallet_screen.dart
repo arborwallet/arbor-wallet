@@ -61,7 +61,7 @@ class AddWalletScreen extends StatelessWidget {
                   ),
                   OptionCard(
                     iconPath: AssetPaths.wallet,
-                    description: 'Generate a new wallet.',
+                    description: 'Create a new wallet to send/receive Chia (XCH).',
                     actionText: 'Generate New Wallet',
                     onPressed: ()async {
                       model.clearAll();
