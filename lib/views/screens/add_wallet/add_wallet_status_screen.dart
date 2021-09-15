@@ -5,6 +5,7 @@ import 'package:arbor/core/providers/create_wallet_provider.dart';
 import 'package:arbor/views/screens/add_wallet/add_wallet_complete_screen.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:arbor/views/widgets/phrase_text.dart';
+import 'package:arbor/views/widgets/responsiveness/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +29,10 @@ class AddWalletStatusScreen extends StatelessWidget {
               backgroundColor: ArborColors.green,
             ),
             body: Container(
-              padding: EdgeInsets.symmetric(horizontal: 40, vertical: model.createWalletStatus == Status.SUCCESS?1:20),
+              padding: EdgeInsets.symmetric(
+                  horizontal: 40,
+                  vertical:
+                      model.createWalletStatus == Status.SUCCESS ? 1 : 20),
               child: Builder(
                 builder: (_) {
                   if (model.createWalletStatus == Status.LOADING) {
@@ -97,7 +101,9 @@ class AddWalletStatusScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           Container(
             decoration: BoxDecoration(
               color: ArborColors.logoGreen,
@@ -123,15 +129,14 @@ class AddWalletStatusScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 ...model.phrasesList
                     .map(
                       (e) => PhraseText(
-                    itemNumber: e.index,
-                    word: e.phrase,
-                    visible: model.revealPhrase,
-                  ),
-                )
+                        itemNumber: e.index,
+                        word: e.phrase,
+                        visible: model.revealPhrase,
+                      ),
+                    )
                     .toList(),
                 SizedBox(
                   height: 20,
@@ -179,61 +184,126 @@ class AddWalletStatusScreen extends StatelessWidget {
               }
             },
           ),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
         ],
       ),
     );
   }
 
   Widget _errorView(BuildContext context, CreateWalletProvider model) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          flex: 2,
-          child: Container(),
-        ),
-        SvgPicture.asset(
-          AssetPaths.walletSendError,
-          fit: BoxFit.cover,
-          height: 150,
-        ),
-        Expanded(
-          flex: 5,
-          child: Container(),
-        ),
-        Text(
-          'Oops!',
-          style: TextStyle(
-            color: ArborColors.white,
-            fontWeight: FontWeight.w600,
-            fontSize: 24,
-          ),
-        ),
-        Text(
-          '${model.errorMessage}',
-          style: TextStyle(
-            color: ArborColors.white,
-            fontWeight: FontWeight.w400,
-            fontSize: 18,
-          ),
-        ),
-        Expanded(
-          flex: 2,
-          child: Container(),
-        ),
-        ArborButton(
-          backgroundColor: ArborColors.logoGreen,
-          disabled: false,
-          loading: false,
-          title: 'Go Back',
-          onPressed: () {
-            Navigator.pop(context, false);
-            model.clearAll();
-          },
-        ),
-      ],
-    );
+    return Responsive.isDesktop(context) || Responsive.isTablet(context)
+        ? Container(
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: 400, maxWidth: 400),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Container(),
+                      ),
+                      SvgPicture.asset(
+                        AssetPaths.walletSendError,
+                        fit: BoxFit.cover,
+                        height: 150,
+                      ),
+                      Expanded(
+                        flex: 5,
+                        child: Container(),
+                      ),
+                      Text(
+                        'Oops!',
+                        style: TextStyle(
+                          color: ArborColors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 24,
+                        ),
+                      ),
+                      Text(
+                        '${model.errorMessage}',
+                        style: TextStyle(
+                          color: ArborColors.white,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 18,
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Container(),
+                      ),
+                      ArborButton(
+                        backgroundColor: ArborColors.logoGreen,
+                        disabled: false,
+                        loading: false,
+                        title: 'Go Back',
+                        onPressed: () {
+                          Navigator.pop(context, false);
+                          model.clearAll();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
+        : Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 2,
+                child: Container(),
+              ),
+              SvgPicture.asset(
+                AssetPaths.walletSendError,
+                fit: BoxFit.cover,
+                height: 150,
+              ),
+              Expanded(
+                flex: 5,
+                child: Container(),
+              ),
+              Text(
+                'Oops!',
+                style: TextStyle(
+                  color: ArborColors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 24,
+                ),
+              ),
+              Text(
+                '${model.errorMessage}',
+                style: TextStyle(
+                  color: ArborColors.white,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 18,
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Container(),
+              ),
+              ArborButton(
+                backgroundColor: ArborColors.logoGreen,
+                disabled: false,
+                loading: false,
+                title: 'Go Back',
+                onPressed: () {
+                  Navigator.pop(context, false);
+                  model.clearAll();
+                },
+              ),
+            ],
+          );
   }
 }
