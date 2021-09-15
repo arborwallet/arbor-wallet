@@ -22,6 +22,9 @@ const splashPageAnimationDurationInMilliseconds = 300;
 // The desktop top padding for a page's first header (e.g. Gallery, Settings)
 const firstHeaderDesktopTopPadding = 5.0;
 
+//Chia precision: useful for division and multiplication
 const chiaPrecision=1000000000000;
+
+const maxWidth=1440.0;
 
 //2560*1440

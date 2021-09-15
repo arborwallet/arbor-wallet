@@ -1,4 +1,3 @@
-
 import 'package:arbor/models/models.dart';
 import 'package:arbor/utils/expanded_info_page.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
