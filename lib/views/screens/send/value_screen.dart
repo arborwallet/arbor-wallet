@@ -226,7 +226,7 @@ class ValueScreen extends StatelessWidget {
                             loading: false,
                             title: 'Continue',
                             onPressed: () async {
-                              bool status = await Navigator.push(
+                              var status = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => StatusScreen(),
