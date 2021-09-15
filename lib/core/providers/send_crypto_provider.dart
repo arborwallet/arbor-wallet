@@ -208,7 +208,7 @@ class SendCryptoProvider extends ChangeNotifier {
   }
 
   close() {
-    sendCryptoStatus = Status.CLOSE;
+    sendCryptoStatus = Status.IDLE;
     notifyListeners();
   }
 

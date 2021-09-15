@@ -27,7 +27,6 @@ class StatusScreen extends StatelessWidget {
                   ? IconButton(
                       onPressed: () {
                         Navigator.pop(context, false);
-                        model.close();
                       },
                       icon: Icon(
                         Icons.arrow_back,
