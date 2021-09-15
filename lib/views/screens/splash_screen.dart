@@ -21,7 +21,7 @@ class SplashScreen extends StatelessWidget {
                   horizontal: 40,
                   vertical: 20,
                 ),
-                child: _SplashScreenBodyWidget(),
+                child: _SplashScreenBody(),
               ),
             )
           : Container(
@@ -29,13 +29,13 @@ class SplashScreen extends StatelessWidget {
                 horizontal: 40.w,
                 vertical: 20.h,
               ),
-              child: _SplashScreenBodyWidget(),
+              child: _SplashScreenBody(),
             ),
     );
   }
 }
 
-class _SplashScreenBodyWidget extends StatelessWidget {
+class _SplashScreenBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
