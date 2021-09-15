@@ -49,6 +49,7 @@ class InputPasswordFinalScreen extends StatelessWidget
           ),
           body: HideKeyboardContainer(
             child: Container(
+              constraints: BoxConstraints(maxWidth: 450),
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,

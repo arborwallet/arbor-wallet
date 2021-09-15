@@ -3,6 +3,7 @@ import 'package:arbor/core/providers/restore_wallet_provider.dart';
 import 'package:arbor/views/screens/input_password_final_screen.dart';
 import 'package:arbor/views/widgets/layout/hide_keyboard_container.dart';
 import 'package:arbor/views/widgets/password_box.dart';
+import 'package:arbor/views/widgets/responsiveness/responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '/views/widgets/arbor_button.dart';
@@ -41,42 +42,45 @@ class InputPasswordScreen extends StatelessWidget {
             ),),
           ),
           body: HideKeyboardContainer(
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 20),
-                    child: Text(
-                      'Type your 12-word password to restore your existing wallet',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: ArborColors.white,
+            child: Center(
+              child: Container(
+                constraints: BoxConstraints(maxWidth: 450),
+                child: Column(
+                  mainAxisAlignment:MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 20),
+                      child: Text(
+                        'Type your 12-word password to restore your existing wallet',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: ArborColors.white,
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: ListView(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 20,
+                    Expanded(
+                      child: ListView(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        children: [
+                          AnimatedCrossFade(
+                            firstChild: firstChild(context, model),
+                            secondChild: secondChild(context, model),
+                            crossFadeState: model.currentState,
+                            duration: const Duration(milliseconds: 300),
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                        ],
                       ),
-                      children: [
-                        AnimatedCrossFade(
-                          firstChild: firstChild(context, model),
-                          secondChild: secondChild(context, model),
-                          crossFadeState: model.currentState,
-                          duration: const Duration(milliseconds: 300),
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                      ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
