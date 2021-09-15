@@ -33,17 +33,24 @@ class RestoreWalletScreen extends StatelessWidget {
                 ),
               )),
           body: Responsive.isDesktop(context) || Responsive.isTablet(context)
-              ? Container(
-                  constraints: BoxConstraints(
-                    maxWidth: 500,
+              ? Center(
+                child: Container(
+                    constraints: BoxConstraints(
+                      maxWidth: 500,
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 40,
+                      vertical: 20,
+                    ),
+                    child: _RestoreWalletList(
+                      alignment: MainAxisAlignment.center,
+                    ),
                   ),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 20,
-                  ),
-                  child: _RestoreWalletList(),
-                )
+              )
               : Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: 16,
+              ),
                   child: _RestoreWalletList(),
                 ),
         ),
@@ -53,12 +60,18 @@ class RestoreWalletScreen extends StatelessWidget {
 }
 
 class _RestoreWalletList extends StatelessWidget {
+
+  final MainAxisAlignment alignment;
+  _RestoreWalletList({this.alignment:MainAxisAlignment.start});
+
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.symmetric(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: alignment,
+      /*padding: EdgeInsets.symmetric(
         horizontal: 16,
-      ),
+      ),*/
       children: [
         SizedBox(
           height: 10,
