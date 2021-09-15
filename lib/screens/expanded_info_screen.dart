@@ -1,6 +1,7 @@
 import 'package:arbor/models/models.dart';
 import 'package:arbor/utils/expanded_info_page.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
+import 'package:arbor/views/widgets/responsiveness/responsive.dart';
 import 'package:flutter/material.dart';
 
 class ExpandedInfoScreen extends StatefulWidget {
@@ -28,7 +29,7 @@ class _ExpandedInfoScreenState extends State<ExpandedInfoScreen> {
             color: ArborColors.white,
           ),
         ),
-        leading:  IconButton(
+        leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
@@ -40,15 +41,33 @@ class _ExpandedInfoScreenState extends State<ExpandedInfoScreen> {
         centerTitle: true,
         backgroundColor: ArborColors.green,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ExpandedInfoPage(
-            index: widget.index,
-            wallet: widget.wallet,
-          ),
-        ),
-      ),
+      body: Responsive.isDesktop(context) || Responsive.isTablet(context)
+          ? Container(
+              alignment: Alignment.center,
+              child: SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: 500,
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ExpandedInfoPage(
+                      index: widget.index,
+                      wallet: widget.wallet,
+                    ),
+                  ),
+                ),
+              ),
+            )
+          : SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.all(16.0),
+                child: ExpandedInfoPage(
+                  index: widget.index,
+                  wallet: widget.wallet,
+                ),
+              ),
+            ),
     );
   }
 }

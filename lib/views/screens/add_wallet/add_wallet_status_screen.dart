@@ -92,9 +92,9 @@ class AddWalletStatusScreen extends StatelessWidget {
   }
 
   Widget _successView(BuildContext context, CreateWalletProvider model) {
-    return SingleChildScrollView(
+    return Container(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(height: 20,),
