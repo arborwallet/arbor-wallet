@@ -1,7 +1,7 @@
 name: arbor
 description: Arbor Wallet is a fast, safe and green wallet.
 repository: https://github.com/Digital-Farming-Initiative/arbor-wallet
-version: 0.1.0+3
+version: 0.1.0+4
 
 environment:
   flutter: ^2.2.0

@@ -123,7 +123,7 @@ class _MyAppState extends State<MyApp> {
                     }
                   } else {
                     return Container(
-                      color: ArborColors.lightGreen,
+                      color: ArborColors.green,
                     );
                   }
                 })),

@@ -238,14 +238,14 @@ class StatusScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'Sending',
+                'Sending ',
                 style: TextStyle(
                   color: ArborColors.white,
                   fontSize: 12,
                 ),
               ),
               Text(
-                '-${model.transactionValue}${model.forkTicker.toUpperCase()}',
+                '${model.transactionValue} ${model.forkTicker.toUpperCase()}',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: ArborColors.white,
