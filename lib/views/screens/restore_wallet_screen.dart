@@ -1,6 +1,6 @@
 import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/views/screens/input_password_screen.dart';
-import 'package:arbor/views/screens/scanner_screen.dart';
+// import 'package:arbor/views/screens/scanner_screen.dart';
 import 'package:arbor/views/widgets/cards/option_card.dart';
 import '../../core/constants/arbor_colors.dart';
 import 'package:flutter/material.dart';
@@ -42,19 +42,19 @@ class _RestoreWalletScreenState extends State<RestoreWalletScreen> {
               padding: EdgeInsets.symmetric(horizontal: 16,),
               children: [
                 SizedBox(height: 10,),
-                OptionCard(
-                  iconPath: AssetPaths.qr,
-                  description: 'Scan a QR Code on Arbor Wallet on another device.',
-                  actionText: 'Scan QR Code',
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ScannerScreen(),
-                      ),
-                    );
-                  },
-                ),
+                // OptionCard(
+                //   iconPath: AssetPaths.qr,
+                //   description: 'Scan a QR Code on Arbor Wallet on another device.',
+                //   actionText: 'Scan QR Code',
+                //   onPressed: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => ScannerScreen(),
+                //       ),
+                //     );
+                //   },
+                // ),
                 OptionCard(
                   iconPath: AssetPaths.restore,
                   description: 'Type your 12-word secret backup phrase.',
