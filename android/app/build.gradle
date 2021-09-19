@@ -34,7 +34,8 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     compileSdkVersion 30
-//    ndkPath = "<android-sdk-dir>/Android/sdk/ndk"
+    // Manually referencing the NDK ( and installing NDK + CMake SDK Tools ) is the only way I found to include native build symbols
+    ndkVersion "23.0.7599858"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -77,9 +78,6 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            ndk {
-                debugSymbolLevel 'FULL'
-            }
         }
     }
 }
@@ -92,4 +90,4 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
-//android.buildTypes.release.ndk.debugSymbolLevel = 'full'
+android.buildTypes.release.ndk.debugSymbolLevel = 'full'

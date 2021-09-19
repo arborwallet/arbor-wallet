@@ -26,7 +26,7 @@ class SplashScreen extends StatelessWidget {
               height: 20.h,
             ),
             Text(
-              'Secure & Easy to Use Chia Light Wallet',
+              'Secure & Easy to Use Light Chia Wallet',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 24.sp,
