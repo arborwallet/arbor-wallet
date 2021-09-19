@@ -26,22 +26,19 @@ main() async {
   await Hive.initFlutter();
 
   try {
-    final String hiveEncryptionKeyKey = 'arbor_hive_key';
-    final String hiveEncryptionSchemaKey = 'arbor_hive_version_key';
-
     final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
     var containsEncryptionKey =
-        await secureStorage.containsKey(key: hiveEncryptionKeyKey);
+        await secureStorage.containsKey(key: HiveConstants.hiveEncryptionKeyKey);
     if (!containsEncryptionKey) {
       var newEncryptionKey = Hive.generateSecureKey();
       await secureStorage.write(
-          key: hiveEncryptionKeyKey, value: base64UrlEncode(newEncryptionKey));
-      await secureStorage.write(key: hiveEncryptionSchemaKey, value: "1");
+          key: HiveConstants.hiveEncryptionKeyKey, value: base64UrlEncode(newEncryptionKey));
+      await secureStorage.write(key: HiveConstants.hiveEncryptionSchemaKey, value: "1");
     }
     await secureStorage.readAll();
 
     String? keyFromSecureStorage =
-        await secureStorage.read(key: hiveEncryptionKeyKey);
+        await secureStorage.read(key: HiveConstants.hiveEncryptionKeyKey);
     if (keyFromSecureStorage != null && keyFromSecureStorage != '') {
       var encryptionKey = base64Url.decode(keyFromSecureStorage);
 
@@ -52,21 +49,40 @@ main() async {
             encryptionCipher: HiveAesCipher(encryptionKey));
         await Hive.openBox(HiveConstants.transactionsBox,
             encryptionCipher: HiveAesCipher(encryptionKey));
-      } on Exception catch (e) {
-        print("Error: ${e.toString()}");
+      } on Exception catch (error) {
+        return runApp(
+          MaterialApp(
+            home: NoEncryptionAvailableScreen(
+              message: 'We were unable to retrieve the encrypted keys to open your wallets. Please contact us.\n',
+              errorString: 'Error: ${error.toString()}',
+            ),
+            debugShowCheckedModeBanner: false,
+          ),
+        );
       }
 
       runApp(MyApp());
     } else {
-      // _showEncryptionErrorView();
-      return runApp(NoEncryptionAvailableScreen(
-          message:
-              'We were unable to retrieve the encrypted keys to open your wallets. Please contact us.'));
+      return runApp(
+        MaterialApp(
+          home: NoEncryptionAvailableScreen(
+            message: 'We were unable to retrieve the encrypted keys to open your wallets. Please contact us.',
+            errorString: ' ',
+          ),
+          debugShowCheckedModeBanner: false,
+        ),
+      );
     }
   } catch (error) {
-    return runApp(NoEncryptionAvailableScreen(
-        message:
-            'We were unable to use the encrypted storage for your wallets. Please contact us. Error: $error'));
+    return runApp(
+      MaterialApp(
+        home: NoEncryptionAvailableScreen(
+          message: 'We were unable to use the encrypted storage for your wallets. Please contact us.\n',
+          errorString: 'Error: ${error.toString()}',
+        ),
+        debugShowCheckedModeBanner: false,
+      ),
+    );
   }
 }
 
