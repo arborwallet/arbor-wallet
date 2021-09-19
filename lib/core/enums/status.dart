@@ -1,0 +1,1 @@
+enum Status{IDLE, LOADING, SUCCESS, ERROR,CLOSE}
