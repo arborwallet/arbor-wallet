@@ -7,6 +7,7 @@ import 'package:arbor/views/screens/wallet_receive_screen.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:arbor/views/widgets/responsiveness/responsive.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -129,18 +130,20 @@ class _InfoScreenState extends State<InfoScreen> {
               ],
             ),
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => AddWalletScreen(),
-              ),
-            ),
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-            backgroundColor: ArborColors.deepGreen,
-          ),
+          floatingActionButton: kIsWeb
+              ? null
+              : FloatingActionButton(
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => AddWalletScreen(),
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                  backgroundColor: ArborColors.deepGreen,
+                ),
           body: RefreshIndicator(
             onRefresh: _reloadWalletBalances,
             child: ValueListenableBuilder(
@@ -148,14 +151,35 @@ class _InfoScreenState extends State<InfoScreen> {
               builder: (context, Box box, widget) {
                 if (box.isEmpty) {
                   return Center(
-                    child: Text(
-                      'Tap + to create a new wallet.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: ArborColors.white,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 20,
-                      ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Tap + to create a new wallet.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: ArborColors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 20,
+                          ),
+                        ),
+                        kIsWeb? Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: FloatingActionButton(
+                            onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => AddWalletScreen(),
+                              ),
+                            ),
+                            child: const Icon(
+                              Icons.add,
+                              color: Colors.white,
+                            ),
+                            backgroundColor: ArborColors.deepGreen,
+                          ),
+                        ):Container(),
+                      ],
                     ),
                   );
                 } else {
