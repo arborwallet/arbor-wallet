@@ -251,26 +251,25 @@ class _InfoScreenState extends State<InfoScreen> {
                         children: [
                           kIsWeb
                               ? Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  child: FloatingActionButton(
-                                    tooltip: "Add a new wallet",
-                                    onPressed: () => Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => AddWalletScreen(),
-                                      ),
-                                    ),
-                                    child: const Icon(
-                                      Icons.add,
-                                      color: Colors.white,
-                                    ),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 20),
+                                  child: ArborButton(
                                     backgroundColor: ArborColors.deepGreen,
+                                    title: 'Add New Wallet +',
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              AddWalletScreen(),
+                                        ),
+                                      );
+                                    },
                                   ),
                                 )
                               : Container(),
                           Expanded(
                             child: ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
+                              //physics: const NeverScrollableScrollPhysics(),
                               padding: const EdgeInsets.only(
                                   bottom: kFloatingActionButtonMargin + 70),
                               itemCount: box.length,
@@ -315,7 +314,8 @@ class _InfoScreenState extends State<InfoScreen> {
                                             ),
                                           ),
                                           subtitle: Text(
-                                            walletData.fork.ticker.toUpperCase(),
+                                            walletData.fork.ticker
+                                                .toUpperCase(),
                                             style: TextStyle(
                                               color: ArborColors.white70,
                                             ),
