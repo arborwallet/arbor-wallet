@@ -1,72 +1,205 @@
+import 'package:arbor/api/responses.dart';
+import 'package:arbor/constants.dart';
+import 'package:arbor/core/constants/asset_paths.dart';
+import 'package:arbor/core/providers/settings_provider.dart';
+import 'package:arbor/views/widgets/dialog/arbor_alert_dialog.dart';
+import 'package:arbor/views/widgets/dialog/arbor_info_dialog.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+
 import '../../core/constants/arbor_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class RestoreWalletScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
+  @override
+  _SettingsScreenState createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: ArborColors.green,
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: ArborColors.green,
-          appBar: AppBar(
+    return Consumer<SettingsProvider>(builder: (_, model, __) {
+      return Container(
+        color: ArborColors.green,
+        child: SafeArea(
+          child: Scaffold(
             backgroundColor: ArborColors.green,
-            centerTitle: true,
-              title: Text(
-                'Settings',
-                style: TextStyle(
-                  color: ArborColors.white,
+            appBar: AppBar(
+                backgroundColor: ArborColors.green,
+                centerTitle: true,
+                title: Text(
+                  'Settings',
+                  style: TextStyle(
+                    color: ArborColors.white,
+                  ),
+                ),
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: ArborColors.white,
+                  ),
+                )),
+            body: Center(
+              child: Container(
+                constraints: BoxConstraints(maxWidth: 500, minWidth: 400),
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: ListView(
+                        children: [
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "General",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: ArborColors.white,
+                              fontSize: 15.sp,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          settingsItem(
+                            title: "Visit DFI Discord Channel",
+                            assetPath: AssetPaths.discord,
+                            onPressed: () => model.launchURL(
+                                url: ArborConstants.discordChannelURL),
+                          ),
+                          settingsItem(
+                            title: "View Privacy Policy",
+                            assetPath: AssetPaths.privacyPolicy,
+                            onPressed: () => model.launchURL(
+                                url: ArborConstants.baseWebsiteURL),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            "Arbor Data",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: ArborColors.white,
+                              fontSize: 15.sp,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          settingsItem(
+                            title: "Delete Arbor Data",
+                            assetPath: AssetPaths.delete,
+                            onPressed: () async {
+                              await deleteData(model);
+                            },
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      'v1.0.0b02',
+                      style: TextStyle(
+                        color: ArborColors.white,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                  ],
                 ),
               ),
-              leading:  IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: ArborColors.white,
-                ),
-              )
-          ),
-          body: Container(
-            child: ListView(
-              padding: EdgeInsets.all(16),
-              children: [
-                Text("General"),
-                settingsItem("Visit DFI Discord Channel"),
-                settingsItem("View Privacy Policy"),
-                SizedBox(height:10),
-                Text("Arbor Data"),
-                settingsItem("Delete Arbor Data"),
-                
-                
-              ],
             ),
           ),
         ),
-      ),
+      );
+    });
+  }
+
+  Widget settingsItem(
+      {required String title,
+      required String assetPath,
+      required VoidCallback onPressed}) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+          constraints: BoxConstraints(maxWidth: 500, minWidth: 400),
+          padding: EdgeInsets.all(
+            10,
+          ),
+          margin: EdgeInsets.only(bottom: 10),
+          decoration: BoxDecoration(
+            color: ArborColors.logoGreen,
+            borderRadius: BorderRadius.all(
+              Radius.circular(8),
+            ),
+          ),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: 40,
+                  height: 30,
+                  child: SvgPicture.asset(
+                    assetPath,
+                    color: ArborColors.white,
+                  ),
+                ),
+                SizedBox(width: 16),
+                Text(
+                  "$title",
+                  style: TextStyle(
+                    color: ArborColors.white,
+                    fontSize: 14.sp,
+                  ),
+                ),
+              ])),
     );
   }
-  
-  Widget settingsItem(String title){
-    return Container(
-                  padding:EdgeInsets.all(10,),
-                  margin:EdgeInsets.only(bottom:10),
-                  decoration:BoxDecoration(
-                    color: ArborColors.deepGreen,
-                    borderRadius:BorderRadius.all(Radius.circular(8),),
-                  ),
-                  child:Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children:[
-                  
-                      SizedBox(width:16),
-                      Text("Visit DFI Discord Channel"),
-                      
-                    ]
-                  )
-                );
+
+  deleteData(SettingsProvider model) async {
+    bool result = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ArborAlertDialog(
+          title: "Delete Your Data",
+          subTitle:
+              "You cannot undo this action. Do you want to proceed to delete all Arbor data?",
+          onCancelPressed: () => Navigator.pop(context, false),
+          onYesPressed: () => Navigator.pop(context, true),
+        );
+      },
+    );
+    if (result == true) {
+      BaseResponse response = await model.deleteArborData();
+      if (response.success == true) {
+        showDeleteArborInfo(context,
+            title: "Arbor Data Deleted", description: "${response.error}");
+      } else {
+        showDeleteArborInfo(context,
+            title: "Erase Arbor Data Failed", description: "${response.error}");
+      }
+    }
   }
-  
+
+  void showDeleteArborInfo(BuildContext context,
+      {required String title, required String description}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ArborInfoDialog(
+          title: title,
+          description: description,
+        );
+      },
+    );
+  }
 }

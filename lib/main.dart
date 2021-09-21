@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:arbor/constants.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/providers/restore_wallet_provider.dart';
+import 'package:arbor/core/providers/settings_provider.dart';
 import 'package:arbor/screens/info_screen.dart';
 import 'package:arbor/views/screens/no_encryption_available_sccreen.dart';
 import 'package:arbor/core/providers/send_crypto_provider.dart';
@@ -143,6 +144,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => CreateWalletProvider()),
         ChangeNotifierProvider(create: (_) => RestoreWalletProvider()),
         ChangeNotifierProvider(create: (_) => SendCryptoProvider()),
+        ChangeNotifierProvider(create: (_) => SettingsProvider()),
       ],
       child: ScreenUtilInit(
         builder: () => MaterialApp(

@@ -47,7 +47,7 @@ class _ExpandedInfoScreenState extends State<ExpandedInfoScreen> {
               child: SingleChildScrollView(
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
-                    maxWidth: 400,
+                    maxWidth: 600,
                   ),
                   child: Container(
                     padding: const EdgeInsets.all(16.0),

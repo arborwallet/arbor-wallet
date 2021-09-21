@@ -190,6 +190,12 @@ class NoEncryptionAvailableScreen extends StatelessWidget {
             "Your Arbor data was deleted. Please restart/reinstall the app.",
             style: TextStyle(fontSize: 12, color: ArborColors.black),),
           actions: [
+            TextButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+            ),
           ],
         );
       },

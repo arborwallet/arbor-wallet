@@ -1,20 +1,25 @@
 import 'package:arbor/api/services.dart';
+import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/models/models.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/views/screens/add_wallet/add_wallet_screen.dart';
 import 'package:arbor/views/screens/send/value_screen.dart';
+import 'package:arbor/views/screens/settings_screen.dart';
 import 'package:arbor/views/screens/wallet_receive_screen.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
+import 'package:arbor/views/widgets/dialog/arbor_alert_dialog.dart';
 import 'package:arbor/views/widgets/responsiveness/responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants.dart';
 import '../core/constants/hive_constants.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'expanded_info_screen.dart';
 
@@ -113,21 +118,84 @@ class _InfoScreenState extends State<InfoScreen> {
             ),
             centerTitle: true,
             backgroundColor: ArborColors.green,
+            actions: [
+              kIsWeb
+                  ? Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: FloatingActionButton(
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => AddWalletScreen(),
+                          ),
+                        ),
+                        child: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        ),
+                        backgroundColor: ArborColors.deepGreen,
+                      ),
+                    )
+                  : Container(),
+            ],
           ),
           drawer: Drawer(
-            child: ListView(
-              children: [
-                DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: ArborColors.deepGreen,
+            child: Container(
+              color: ArborColors.white,
+              child: ListView(
+                children: [
+                  DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: ArborColors.green,
+                    ),
+                    child: Container(),
                   ),
-                  child: Container(),
-                ),
-                ListTile(
-                  leading: Icon(Icons.message),
-                  title: Text('Wallets'),
-                ),
-              ],
+                  ListTile(
+                    onTap: () => Navigator.of(context).pop(),
+                    leading: SizedBox(
+                      width: 40,
+                      child: SvgPicture.asset(
+                        AssetPaths.wallet,
+                      ),
+                    ),
+                    title: Text(
+                      'Wallets',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: ArborColors.black,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Divider(thickness: 1,color: Colors.grey.withOpacity(0.2),),
+                  ),
+                  ListTile(
+                    onTap: (){
+                       Navigator.push(
+                        context,
+                        MaterialPageRoute<Widget>(
+                          builder: (context) => SettingsScreen(),
+                        ),
+                      );
+                    },
+                    leading: SizedBox(
+                      width: 40,
+                      child: SvgPicture.asset(
+                        AssetPaths.settings,
+                      ),
+                    ),
+                    title: Text(
+                      'Settings',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: ArborColors.black,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           floatingActionButton: kIsWeb
@@ -164,21 +232,23 @@ class _InfoScreenState extends State<InfoScreen> {
                             fontSize: 20,
                           ),
                         ),
-                        kIsWeb? Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: FloatingActionButton(
-                            onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => AddWalletScreen(),
-                              ),
-                            ),
-                            child: const Icon(
-                              Icons.add,
-                              color: Colors.white,
-                            ),
-                            backgroundColor: ArborColors.deepGreen,
-                          ),
-                        ):Container(),
+                        kIsWeb
+                            ? Padding(
+                                padding: const EdgeInsets.only(top: 10),
+                                child: FloatingActionButton(
+                                  onPressed: () => Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => AddWalletScreen(),
+                                    ),
+                                  ),
+                                  child: const Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                  ),
+                                  backgroundColor: ArborColors.deepGreen,
+                                ),
+                              )
+                            : Container(),
                       ],
                     ),
                   );
@@ -339,32 +409,12 @@ class _InfoScreenState extends State<InfoScreen> {
     bool result = await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            "Delete Wallet",
-            style: TextStyle(fontSize: 14, color: ArborColors.black),
-          ),
-          content: Text(
-            "You cannot undo this action. Do you want to proceed to delete wallet?",
-            style: TextStyle(fontSize: 12, color: ArborColors.black),
-          ),
-          actions: [
-            TextButton(
-              child: Text("Cancel"),
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
-            ),
-            TextButton(
-              child: Text(
-                "Yes",
-                style: TextStyle(color: ArborColors.errorRed),
-              ),
-              onPressed: () {
-                Navigator.pop(context, true);
-              },
-            ),
-          ],
+        return ArborAlertDialog(
+          title: "Delete Wallet",
+          subTitle:
+          "You cannot undo this action. Do you want to proceed to delete wallet?",
+          onCancelPressed: ()=>Navigator.pop(context, false),
+          onYesPressed: ()=>Navigator.pop(context, true),
         );
       },
     );
