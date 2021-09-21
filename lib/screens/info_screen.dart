@@ -131,7 +131,10 @@ class _InfoScreenState extends State<InfoScreen> {
                           decoration: BoxDecoration(
                             color: ArborColors.green,
                           ),
-                          child: Container(),
+                          child: Container(
+                            margin: EdgeInsets.only(bottom: 5),
+                            child: Image.asset(AssetPaths.logo),
+                          ),
                         ),
                         ListTile(
                           onTap: () => Navigator.of(context).pop(),
