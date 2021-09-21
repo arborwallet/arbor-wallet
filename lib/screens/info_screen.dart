@@ -113,6 +113,22 @@ class _InfoScreenState extends State<InfoScreen> {
             centerTitle: true,
             backgroundColor: ArborColors.green,
           ),
+          drawer: Drawer(
+            child: ListView(
+              children: [
+                DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: ArborColors.deepGreen,
+                  ),
+                  child: Container(),
+                ),
+                ListTile(
+                  leading: Icon(Icons.message),
+                  title: Text('Wallets'),
+                ),
+              ],
+            ),
+          ),
           floatingActionButton: FloatingActionButton(
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(
@@ -148,7 +164,7 @@ class _InfoScreenState extends State<InfoScreen> {
                       constraints: BoxConstraints(
                           maxWidth: Responsive.isDesktop(context) ||
                                   Responsive.isTablet(context)
-                              ? 400
+                              ? 600
                               : double.infinity),
                       alignment: Alignment.center,
                       child: ListView.builder(

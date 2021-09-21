@@ -1,4 +1,3 @@
-import 'package:arbor/core/constants/asset_paths.dart';
 import '../../core/constants/arbor_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -55,11 +54,11 @@ class RestoreWalletScreen extends StatelessWidget {
                   margin:EdgeInsets.only(bottom:10),
                   decoration:BoxDecoration(
                     color: ArborColors.deepGreen,
-                    radius:BorderRadius.all(Radius.circular(8),),
-                  )
+                    borderRadius:BorderRadius.all(Radius.circular(8),),
+                  ),
                   child:Row(
-                    mainAxisAlignment: MainAxisAlignment.start;
-                    crossAxisAlignment: CrossAxisAlignment.center;
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children:[
                   
                       SizedBox(width:16),

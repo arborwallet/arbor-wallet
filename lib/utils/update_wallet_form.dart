@@ -23,7 +23,6 @@ class _UpdateWalletFormState extends State<UpdateWalletForm> {
   final _walletFormKey = GlobalKey<FormState>();
 
   late final _nameController;
-  late final _passwordController;
   late final Box box;
 
   String? _fieldValidator(String? value) {

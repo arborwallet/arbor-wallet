@@ -3,11 +3,9 @@ import 'package:arbor/core/providers/restore_wallet_provider.dart';
 import 'package:arbor/views/screens/input_password_final_screen.dart';
 import 'package:arbor/views/widgets/layout/hide_keyboard_container.dart';
 import 'package:arbor/views/widgets/password_box.dart';
-import 'package:arbor/views/widgets/responsiveness/responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '/views/widgets/arbor_button.dart';
-
 import '../../core/constants/arbor_colors.dart';
 import 'package:flutter/material.dart';
 
