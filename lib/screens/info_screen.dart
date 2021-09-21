@@ -122,72 +122,7 @@ class _InfoScreenState extends State<InfoScreen> {
           ),
           drawer: kIsWeb
               ? Container()
-              : Drawer(
-                  child: Container(
-                    color: ArborColors.white,
-                    child: ListView(
-                      children: [
-                        DrawerHeader(
-                          decoration: BoxDecoration(
-                            color: ArborColors.green,
-                          ),
-                          child: Container(
-                            margin: EdgeInsets.only(bottom: 5),
-                            child: Image.asset(AssetPaths.logo),
-                          ),
-                        ),
-                        ListTile(
-                          onTap: () => Navigator.of(context).pop(),
-                          leading: SizedBox(
-                            width: 40,
-                            child: SvgPicture.asset(
-                              AssetPaths.wallet,
-                            ),
-                          ),
-                          title: Text(
-                            'Wallets',
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              color: ArborColors.black,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: Divider(
-                            thickness: 1,
-                            color: Colors.grey.withOpacity(0.2),
-                          ),
-                        ),
-                        ListTile(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute<Widget>(
-                                builder: (context) => SettingsScreen(),
-                              ),
-                            );
-                          },
-                          leading: SizedBox(
-                            width: 40,
-                            child: SvgPicture.asset(
-                              AssetPaths.settings,
-                            ),
-                          ),
-                          title: Text(
-                            'Settings',
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              color: ArborColors.black,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+              : _InfoScreenDrawer(onWalletsTapped: ()=>Navigator.of(context).pop(),),
           floatingActionButton: kIsWeb
               ? null
               : FloatingActionButton(
@@ -209,73 +144,7 @@ class _InfoScreenState extends State<InfoScreen> {
               kIsWeb
                   ? Padding(
                     padding: const EdgeInsets.only(right: 40),
-                    child: Drawer(
-                        child: Container(
-                          color: ArborColors.white,
-                          child: ListView(
-                            children: [
-                              DrawerHeader(
-                                decoration: BoxDecoration(
-                                  color: ArborColors.green,
-                                ),
-                                child: Container(
-                                  margin: EdgeInsets.only(bottom: 5),
-                                  child: Image.asset(AssetPaths.logo),
-                                ),
-                              ),
-                              ListTile(
-                                onTap: () {},
-                                leading: SizedBox(
-                                  width: 40,
-                                  child: SvgPicture.asset(
-                                    AssetPaths.wallet,
-                                  ),
-                                ),
-                                title: Text(
-                                  'Wallets',
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    color: ArborColors.black,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                child: Divider(
-                                  thickness: 1,
-                                  color: Colors.grey.withOpacity(0.2),
-                                ),
-                              ),
-                              ListTile(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute<Widget>(
-                                      builder: (context) => SettingsScreen(),
-                                    ),
-                                  );
-                                },
-                                leading: SizedBox(
-                                  width: 40,
-                                  child: SvgPicture.asset(
-                                    AssetPaths.settings,
-                                  ),
-                                ),
-                                title: Text(
-                                  'Settings',
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    color: ArborColors.black,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                    child: _InfoScreenDrawer(onWalletsTapped: (){},),
                   )
                   : Container(),
               RefreshIndicator(
@@ -527,3 +396,80 @@ class _InfoScreenState extends State<InfoScreen> {
     }
   }
 }
+
+class _InfoScreenDrawer extends StatelessWidget {
+
+  final VoidCallback? onWalletsTapped;
+  const _InfoScreenDrawer({Key? key,this.onWalletsTapped}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: Container(
+        color: ArborColors.white,
+        child: ListView(
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: ArborColors.green,
+              ),
+              child: Container(
+                margin: EdgeInsets.only(bottom: 5),
+                child: Image.asset(AssetPaths.logo),
+              ),
+            ),
+            ListTile(
+              onTap:onWalletsTapped,
+              leading: SizedBox(
+                width: 40,
+                child: SvgPicture.asset(
+                  AssetPaths.wallet,
+                ),
+              ),
+              title: Text(
+                'Wallets',
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: ArborColors.black,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Divider(
+                thickness: 1,
+                color: Colors.grey.withOpacity(0.2),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<Widget>(
+                    builder: (context) => SettingsScreen(),
+                  ),
+                );
+              },
+              leading: SizedBox(
+                width: 40,
+                child: SvgPicture.asset(
+                  AssetPaths.settings,
+                ),
+              ),
+              title: Text(
+                'Settings',
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: ArborColors.black,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
