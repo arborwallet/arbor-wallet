@@ -2,6 +2,8 @@ import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/core/constants/hive_constants.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
+import 'package:arbor/views/widgets/dialog/arbor_alert_dialog.dart';
+import 'package:arbor/views/widgets/dialog/arbor_info_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -132,27 +134,12 @@ class NoEncryptionAvailableScreen extends StatelessWidget {
     bool result = await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Delete Wallet",
-            style: TextStyle(fontSize: 14, color: ArborColors.black),),
-          content: Text(
-            "You cannot undo this action. Do you want to proceed to all Arbor data?",
-            style: TextStyle(fontSize: 12, color: ArborColors.black),),
-          actions: [
-            TextButton(
-              child: Text("Cancel"),
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
-            ),
-            TextButton(
-              child: Text(
-                "Yes", style: TextStyle(color: ArborColors.errorRed),),
-              onPressed: () {
-                Navigator.pop(context, true);
-              },
-            ),
-          ],
+        return ArborAlertDialog(
+          title: "Delete Wallet",
+          subTitle:
+          "You cannot undo this action. Do you want to proceed to delete all Arbor data?",
+          onCancelPressed: () => Navigator.pop(context, false),
+          onYesPressed: () => Navigator.pop(context, true),
         );
       },
     );
@@ -175,12 +162,13 @@ class NoEncryptionAvailableScreen extends StatelessWidget {
       _showDeleteArborDataSuccess(context);
     } catch (error) {
       print('Error: ${error.toString()}');
-      _showDeleteArborDataFailed(context, error.toString());
+      showDeleteArborDataStatus(context, "Erase Arbor Data Failed","We couldn't delete the data. Error: ${error.toString()}");
     }
   }
 
   void _showDeleteArborDataSuccess(BuildContext context) async {
     bool result = await showDialog(
+
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -198,30 +186,18 @@ class NoEncryptionAvailableScreen extends StatelessWidget {
             ),
           ],
         );
+
       },
     );
   }
-  void _showDeleteArborDataFailed(BuildContext context, String errorString) async {
+
+  void showDeleteArborDataStatus(BuildContext context, String title,String description) async {
     bool result = await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Erase Arbor Data Failed",
-            style: TextStyle(fontSize: 14, color: ArborColors.black),),
-          content: Text(
-            "We couldn't delete the data. Error: ${errorString}",
-            style: TextStyle(fontSize: 12, color: ArborColors.black),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 5,
-          ),
-          actions: [
-            TextButton(
-              child: Text("OK"),
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
-            ),
-          ],
+        return ArborInfoDialog(
+          title: "$title",
+          description: "$description",
         );
       },
     );

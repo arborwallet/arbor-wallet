@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class ArborInfoDialog extends StatelessWidget {
 
   final String? title,description;
-  const ArborInfoDialog({Key? key,this.title,this.description}) : super(key: key);
+  final VoidCallback? onPressed;
+  const ArborInfoDialog({Key? key,this.title,this.description,this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +18,7 @@ class ArborInfoDialog extends StatelessWidget {
       actions: [
         TextButton(
           child: Text("OK"),
-          onPressed: () {
-            Navigator.pop(context, false);
-          },
+          onPressed: ()=>onPressed?? Navigator.pop(context, false),
         ),
       ],
     );

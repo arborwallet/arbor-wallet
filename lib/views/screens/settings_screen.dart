@@ -2,6 +2,7 @@ import 'package:arbor/api/responses.dart';
 import 'package:arbor/constants.dart';
 import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/core/providers/settings_provider.dart';
+import 'package:arbor/views/screens/welcome_screen.dart';
 import 'package:arbor/views/widgets/dialog/arbor_alert_dialog.dart';
 import 'package:arbor/views/widgets/dialog/arbor_info_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -182,22 +183,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
       BaseResponse response = await model.deleteArborData();
       if (response.success == true) {
         showDeleteArborInfo(context,
-            title: "Arbor Data Deleted", description: "${response.error}");
+            title: "Arbor Data Deleted",
+            description: "${response.error}",
+            onPressed: () => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute<Widget>(
+                    builder: (context) => WelcomeScreen(),
+                  ),
+                ));
       } else {
         showDeleteArborInfo(context,
-            title: "Erase Arbor Data Failed", description: "${response.error}");
+            title: "Erase Arbor Data Failed",
+            description: "${response.error}",
+            onPressed: null);
       }
     }
   }
 
   void showDeleteArborInfo(BuildContext context,
-      {required String title, required String description}) {
+      {required String title,
+      required String description,
+      required VoidCallback? onPressed}) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return ArborInfoDialog(
           title: title,
           description: description,
+          onPressed: onPressed,
         );
       },
     );
