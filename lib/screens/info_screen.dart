@@ -204,70 +204,76 @@ class _InfoScreenState extends State<InfoScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               kIsWeb
-                  ? Drawer(
-                      child: Container(
-                        color: ArborColors.white,
-                        child: ListView(
-                          children: [
-                            DrawerHeader(
-                              decoration: BoxDecoration(
-                                color: ArborColors.green,
-                              ),
-                              child: Container(),
-                            ),
-                            ListTile(
-                              onTap: () {},
-                              leading: SizedBox(
-                                width: 40,
-                                child: SvgPicture.asset(
-                                  AssetPaths.wallet,
+                  ? Padding(
+                    padding: const EdgeInsets.only(right: 40),
+                    child: Drawer(
+                        child: Container(
+                          color: ArborColors.white,
+                          child: ListView(
+                            children: [
+                              DrawerHeader(
+                                decoration: BoxDecoration(
+                                  color: ArborColors.green,
+                                ),
+                                child: Container(
+                                  margin: EdgeInsets.only(bottom: 5),
+                                  child: Image.asset(AssetPaths.logo),
                                 ),
                               ),
-                              title: Text(
-                                'Wallets',
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: ArborColors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Divider(
-                                thickness: 1,
-                                color: Colors.grey.withOpacity(0.2),
-                              ),
-                            ),
-                            ListTile(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute<Widget>(
-                                    builder: (context) => SettingsScreen(),
+                              ListTile(
+                                onTap: () {},
+                                leading: SizedBox(
+                                  width: 40,
+                                  child: SvgPicture.asset(
+                                    AssetPaths.wallet,
                                   ),
-                                );
-                              },
-                              leading: SizedBox(
-                                width: 40,
-                                child: SvgPicture.asset(
-                                  AssetPaths.settings,
+                                ),
+                                title: Text(
+                                  'Wallets',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: ArborColors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
-                              title: Text(
-                                'Settings',
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: ArborColors.black,
-                                  fontWeight: FontWeight.w500,
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                child: Divider(
+                                  thickness: 1,
+                                  color: Colors.grey.withOpacity(0.2),
                                 ),
                               ),
-                            ),
-                          ],
+                              ListTile(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute<Widget>(
+                                      builder: (context) => SettingsScreen(),
+                                    ),
+                                  );
+                                },
+                                leading: SizedBox(
+                                  width: 40,
+                                  child: SvgPicture.asset(
+                                    AssetPaths.settings,
+                                  ),
+                                ),
+                                title: Text(
+                                  'Settings',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: ArborColors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    )
+                  )
                   : Container(),
               RefreshIndicator(
                 onRefresh: _reloadWalletBalances,
@@ -494,7 +500,8 @@ class _InfoScreenState extends State<InfoScreen> {
                 ),
               ),
             ],
-          )),
+          ),
+      ),
     );
   }
 
