@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
+import 'package:arbor/views/widgets/responsiveness/responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:arbor/models/models.dart';
@@ -31,27 +32,9 @@ class WalletReceiveScreen extends StatefulWidget {
 
 class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
   static GlobalKey globalKey =
-  new GlobalKey(debugLabel: 'wallet_receive_screen');
+      new GlobalKey(debugLabel: 'wallet_receive_screen');
 
   static const double PASSWORD_PADDING = 40;
-
-  /*void _showShareSheet() async {
-    RenderRepaintBoundary boundary =
-    globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-
-    ui.Image image = await boundary.toImage();
-    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    if (byteData != null) {
-      Uint8List pngBytes = byteData.buffer.asUint8List();
-
-      final tempDir = (await getTemporaryDirectory()).path;
-      var file =
-      await new File('${tempDir}/wallet-receive-address.png').create();
-      await file.writeAsBytes(pngBytes);
-
-      await Share.shareFiles([file.path]);
-    }
-  }*/
 
   void shareQrCode(String address) async {
     try {
@@ -77,7 +60,7 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
         String path = '${tempDirPath}/wallet-receive-address.png';
 
         final picData =
-        await _qrPainter.toImageData(2048, format: ui.ImageByteFormat.png);
+            await _qrPainter.toImageData(2048, format: ui.ImageByteFormat.png);
         await writeToFile(picData!, path);
 
         await Share.shareFiles(
@@ -85,7 +68,7 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
           mimeTypes: ['images/png'],
           subject: '${widget.wallet.fork.name} Wallet Address',
           text:
-          'My ${widget.wallet.fork.ticker.toUpperCase()} Wallet Address:  ${widget.wallet.address}',
+              'My ${widget.wallet.fork.ticker.toUpperCase()} Wallet Address:  ${widget.wallet.address}',
         );
       } else {
         String _errorMessage = qrValidationResult.error.toString();
@@ -120,74 +103,87 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
       ),
       body: SingleChildScrollView(
         child: RepaintBoundary(
-            key: globalKey,
-            child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                    PASSWORD_PADDING, PASSWORD_PADDING, PASSWORD_PADDING, 0.0),
-                child: Container(
-                  color: ArborColors.green,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        child: QrImage(
-                          data: widget.wallet.address,
-                          size: 250,
-                          version: QrVersions.auto,
-                          embeddedImage: AssetImage('assets/images/logo.png'),
-                          backgroundColor: ArborColors.white,
-                          foregroundColor: Colors.black,
-                          gapless: false,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        'Tap to copy your ${widget.wallet.fork.name} light wallet address:',
-                        textAlign: TextAlign.center,
-                        style:
-                        TextStyle(color: ArborColors.white, fontSize: 16.0),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      InkWell(
-                        child: ListTile(
-                          title: Text(
-                            widget.wallet.address,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              color: ArborColors.white70,
-                            ),
-                          ),
-                          trailing: Icon(Icons.copy),
-                          onTap: () {
-                            Clipboard.setData(
-                                ClipboardData(text: widget.wallet.address));
-                            showSnackBar(context, 'Wallet address copied',
-                                ArborColors.deepGreen);
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      ArborButton(
-                        onPressed: () {
-                          shareQrCode(widget.wallet.address);
-                        },
-                        title: 'Share',
-                        backgroundColor: ArborColors.deepGreen,
-                      ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                    ],
+          key: globalKey,
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+                PASSWORD_PADDING, PASSWORD_PADDING, PASSWORD_PADDING, 0.0),
+            child: Responsive.isDesktop(context) || Responsive.isTablet(context)
+                ? Center(
+                    child: Container(
+                      constraints:
+                          BoxConstraints(maxWidth: 400, maxHeight: 500),
+                      color: ArborColors.green,
+                      child: walletReceiveScreenBody(),
+                    ),
+                  )
+                : Container(
+                    color: ArborColors.green,
+                    child: walletReceiveScreenBody(),
                   ),
-                ))),
+          ),
+        ),
       ),
+    );
+  }
+
+  Widget walletReceiveScreenBody() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          child: QrImage(
+            data: widget.wallet.address,
+            size: 220,
+            version: QrVersions.auto,
+            embeddedImage: AssetImage('assets/images/logo.png'),
+            backgroundColor: ArborColors.white,
+            foregroundColor: Colors.black,
+            gapless: false,
+          ),
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        Text(
+          'Tap to copy your ${widget.wallet.fork.name} light wallet address:',
+          textAlign: TextAlign.center,
+          style: TextStyle(color: ArborColors.white, fontSize: 16.0),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        InkWell(
+          child: ListTile(
+            title: Text(
+              widget.wallet.address,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14.0,
+                color: ArborColors.white70,
+              ),
+            ),
+            trailing: Icon(Icons.copy),
+            onTap: () {
+              Clipboard.setData(ClipboardData(text: widget.wallet.address));
+              showSnackBar(
+                  context, 'Wallet address copied', ArborColors.deepGreen);
+            },
+          ),
+        ),
+        SizedBox(
+          height: 40,
+        ),
+        ArborButton(
+          onPressed: () {
+            shareQrCode(widget.wallet.address);
+          },
+          title: 'Share',
+          backgroundColor: ArborColors.deepGreen,
+        ),
+        SizedBox(
+          height: 20,
+        ),
+      ],
     );
   }
 
@@ -219,9 +215,9 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
   Future<ui.Image> getLogoImage() async {
     final ByteData imageByteData = await rootBundle.load(AssetPaths.logo);
     image.Image baseImageSize =
-    image.decodeImage(imageByteData.buffer.asUint8List())!;
+        image.decodeImage(imageByteData.buffer.asUint8List())!;
     image.Image resizeImage =
-    image.copyResize(baseImageSize, height: 30, width: 30);
+        image.copyResize(baseImageSize, height: 30, width: 30);
     ui.Codec codec = await ui
         .instantiateImageCodec(image.encodePng(resizeImage) as Uint8List);
     ui.FrameInfo frameInfo = await codec.getNextFrame();
