@@ -406,7 +406,7 @@ class _InfoScreenDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: ArborColors.white,
+        color: ArborColors.green,
         child: ListView(
           children: [
             DrawerHeader(
@@ -415,6 +415,7 @@ class _InfoScreenDrawer extends StatelessWidget {
               ),
               child: Container(
                 margin: EdgeInsets.only(bottom: 5),
+                padding: EdgeInsets.all(20),
                 child: Image.asset(AssetPaths.logo),
               ),
             ),
