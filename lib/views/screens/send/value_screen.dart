@@ -33,11 +33,11 @@ class ValueScreen extends StatelessWidget {
     return Consumer<SendCryptoProvider>(builder: (_, model, __) {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (model.walletBalanceStatus == Status.IDLE) {
-          model.privateKey=wallet.privateKey;
-          model.currentUserAddress=wallet.address;
-          model.forkPrecision=wallet.fork.precision;
-          model.forkName=wallet.fork.name;
-          model.forkTicker=wallet.fork.ticker;
+          model.privateKey = wallet.privateKey;
+          model.currentUserAddress = wallet.address;
+          model.forkPrecision = wallet.fork.precision;
+          model.forkName = wallet.fork.name;
+          model.forkTicker = wallet.fork.ticker;
           model.setWalletBalance(wallet.balance);
         }
       });
@@ -68,373 +68,603 @@ class ValueScreen extends StatelessWidget {
                 ),
                 backgroundColor: ArborColors.green,
               ),
-              body:kIsWeb || Responsive.isDesktop(context) ||Responsive.isTablet(context)? Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment:  MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  kIsWeb && Responsive.isDesktop(context)? WebDrawer(
-                    onWalletsTapped: ()=>Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute<Widget>(
-                        builder: (context) => InfoScreen(),
-                      ),
-                    ),
-                    onSettingsTapped: () => Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute<Widget>(
-                        builder: (context) => SettingsScreen(),
-                      ),
-                    ),
-                  ):Container(),
-                  Container(
-                    margin: EdgeInsets.all( 10),
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: ArborColors.green,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(8),
-                      ),
-                      border: Border.all(
-                        color: ArborColors.black,
-                      ),
-                    ),
-                    child: Column(
+              body: kIsWeb && Responsive.isDesktop(context)
+                  ? Row(
+                      mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        kIsWeb && Responsive.isDesktop(context)
+                            ? WebDrawer(
+                                onWalletsTapped: () {
+                                  model.clearInput();
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute<Widget>(
+                                      builder: (context) => InfoScreen(),
+                                    ),
+                                  );
+                                },
+                                onSettingsTapped: () {
+                                  model.clearInput();
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute<Widget>(
+                                      builder: (context) => SettingsScreen(),
+                                    ),
+                                  );
+                                },
+                              )
+                            : Container(),
                         Container(
-                          width:200.w,
-                          margin: EdgeInsets.all(20),
-                          padding: EdgeInsets.all(12),
+                          margin: EdgeInsets.all(10),
+                          padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: ArborColors.lightGreen.withOpacity(0.3),
+                            color: ArborColors.green,
                             borderRadius: BorderRadius.all(
-                              Radius.circular(
-                                8,
-                              ),
+                              Radius.circular(8),
+                            ),
+                            border: Border.all(
+                              color: ArborColors.black,
                             ),
                           ),
-                          child: Row(
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              CircleAvatar(
-                                radius: 16,
-                                backgroundColor: ArborColors.logoGreen,
-                                backgroundImage: AssetImage(
-                                  AssetPaths.logo,
+                              Container(
+                                width: 200.w,
+                                margin: EdgeInsets.all(20),
+                                padding: EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color:
+                                      ArborColors.lightGreen.withOpacity(0.3),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(
+                                      8,
+                                    ),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 16,
+                                      backgroundColor: ArborColors.logoGreen,
+                                      backgroundImage: AssetImage(
+                                        AssetPaths.logo,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        '${wallet.fork.name}',
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            color: ArborColors.white,
+                                            fontSize: 14),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        model.walletBalanceStatus ==
+                                                Status.LOADING
+                                            ? 'Loading...'
+                                            : '${model.readableBalance} ${wallet.fork.ticker.toUpperCase()}',
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.end,
+                                        style: TextStyle(
+                                            color: ArborColors.white,
+                                            fontSize: 14),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              SizedBox(
-                                width: 10,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: 200.w,
+                                    child: TextField(
+                                      textAlign: TextAlign.center,
+                                      onChanged: (_) =>
+                                          model.setTransactionValue(_),
+                                      //controller: valueController..text = "${model.transactionValue} XCH",
+                                      cursorColor: Colors.transparent,
+                                      style: TextStyle(
+                                          fontSize: 36.h,
+                                          color: ArborColors.logoGreen),
+                                      keyboardType: TextInputType.number,
+                                      decoration: InputDecoration(
+                                        hintText: "0 XCH",
+                                        labelStyle: TextStyle(
+                                            fontSize: 36.h,
+                                            color: ArborColors.deepGreen),
+                                        hintStyle: TextStyle(
+                                            fontSize: 36.h,
+                                            color: ArborColors.deepGreen),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: Text(
-                                  '${wallet.fork.name}',
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      color: ArborColors.white, fontSize: 14),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              GestureDetector(
+                                onTap: () => model.useMax(),
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8),
+                                    ),
+                                    border: Border.all(
+                                      color: ArborColors.white,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Send all',
+                                    style: TextStyle(
+                                        fontSize: 20.sp,
+                                        color: ArborColors.white),
+                                  ),
                                 ),
                               ),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              Expanded(
+                              Spacer(
                                 flex: 2,
-                                child: Text(
-                                  model.walletBalanceStatus == Status.LOADING
-                                      ? 'Loading...'
-                                      : '${model.readableBalance} ${wallet.fork.ticker.toUpperCase()}',
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.end,
-                                  style: TextStyle(
-                                      color: ArborColors.white, fontSize: 14),
+                              ),
+                              Container(
+                                width: 200.w,
+                                child: ArborTextField(
+                                  hintText: "Tap to paste Recipient's Address",
+                                  focusNode: addressFocusNode,
+                                  controller: addressController
+                                    ..text = model.receiverAddress,
+                                  isDisabled: true,
+                                  onTextFieldTapped: () {
+                                    model.getClipBoardData();
+                                  },
+                                  errorMessage: model.addressErrorMessage,
+                                  onChanged: (v) => model.setReceiverAddress(v),
+                                  icon: Container(),
+                                  onIconPressed: () {},
                                 ),
+                              ),
+                              Spacer(
+                                flex: 2,
+                              ),
+                              Container(
+                                width: 200.w,
+                                child: ArborButton(
+                                  backgroundColor: ArborColors.logoGreen,
+                                  disabled: !model.enableButton,
+                                  loading: false,
+                                  title: 'Continue',
+                                  onPressed: () async {
+                                    var status = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => StatusScreen(),
+                                      ),
+                                    );
+                                    if (status == true) {
+                                      //model.getBalance();
+                                      Navigator.pop(context);
+                                    }
+                                  },
+                                ),
+                              ),
+                              Spacer(
+                                flex: 1,
                               ),
                             ],
                           ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 200.w,
-                                child:
-                                     TextField(
+                        )
+                      ],
+                    )
+                  : Responsive.isTablet(context)
+                      ? Center(
+                          child: Container(
+                            margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: ArborColors.green,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(8),
+                              ),
+                              border: Border.all(
+                                color: ArborColors.black,
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 200.w,
+                                  margin: EdgeInsets.all(20),
+                                  padding: EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        ArborColors.lightGreen.withOpacity(0.3),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                        8,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 16,
+                                        backgroundColor: ArborColors.logoGreen,
+                                        backgroundImage: AssetImage(
+                                          AssetPaths.logo,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          '${wallet.fork.name}',
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color: ArborColors.white,
+                                              fontSize: 14),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Text(
+                                          model.walletBalanceStatus ==
+                                                  Status.LOADING
+                                              ? 'Loading...'
+                                              : '${model.readableBalance} ${wallet.fork.ticker.toUpperCase()}',
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.end,
+                                          style: TextStyle(
+                                              color: ArborColors.white,
+                                              fontSize: 14),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: 200.w,
+                                      child: TextField(
                                         textAlign: TextAlign.center,
-                                        onChanged:(_)=>model.setTransactionValue(_),
-                                       //controller: valueController..text = "${model.transactionValue} XCH",
+                                        onChanged: (_) =>
+                                            model.setTransactionValue(_),
+                                        //controller: valueController..text = "${model.transactionValue} XCH",
                                         cursorColor: Colors.transparent,
-                                        style: TextStyle(fontSize: 36.h, color: ArborColors.logoGreen),
+                                        style: TextStyle(
+                                            fontSize: 36.h,
+                                            color: ArborColors.logoGreen),
                                         keyboardType: TextInputType.number,
                                         decoration: InputDecoration(
                                           hintText: "0 XCH",
-                                          labelStyle: TextStyle(fontSize: 36.h, color: ArborColors.deepGreen),
-                                          hintStyle: TextStyle(fontSize: 36.h, color: ArborColors.deepGreen),
+                                          labelStyle: TextStyle(
+                                              fontSize: 36.h,
+                                              color: ArborColors.deepGreen),
+                                          hintStyle: TextStyle(
+                                              fontSize: 36.h,
+                                              color: ArborColors.deepGreen),
                                           border: OutlineInputBorder(
                                             borderSide: BorderSide.none,
                                           ),
                                         ),
                                       ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        GestureDetector(
-                          onTap: () => model.useMax(),
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8),
-                              ),
-                              border: Border.all(
-                                color: ArborColors.white,
-                              ),
-                            ),
-                            child:  Text(
-                              'Send all',
-                              style:
-                              TextStyle(fontSize:20.sp, color: ArborColors.white),
-                            ),
-                          ),
-                        ),
-                        Spacer(flex: 2,),
-                        Container(
-                          width: 200.w,
-                          child: ArborTextField(
-                            hintText: "Tap to paste Recipient's Address",
-                            focusNode: addressFocusNode,
-                            controller: addressController
-                              ..text = model.receiverAddress,
-                            isDisabled: true,
-                            onTextFieldTapped: () {
-                              model.getClipBoardData();
-                            },
-                            errorMessage: model.addressErrorMessage,
-                            onChanged: (v) => model.setReceiverAddress(v),
-                            icon: Container(),
-                            onIconPressed: () {
-
-                            },
-                          ),
-                        ),
-
-                        Spacer(flex: 2,),
-                         Container(
-                           width: 200.w,
-                           child: ArborButton(
-                              backgroundColor: ArborColors.logoGreen,
-                              disabled: !model.enableButton,
-                              loading: false,
-                              title: 'Continue',
-                              onPressed: () async {
-                                var status = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => StatusScreen(),
-                                  ),
-                                );
-                                if (status == true){
-                                  //model.getBalance();
-                                  Navigator.pop(context);
-                                }
-                              },
-                            ),
-                         ),
-                        Spacer(flex: 1,),
-                      ],
-                    ),
-                  )
-                ],
-              ):Container(
-                padding: EdgeInsets.fromLTRB(
-                  10,
-                  10,
-                  10,
-                  20,
-                ),
-                child: SingleChildScrollView(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight:
-                        MediaQuery.of(context).size.height
-                        - MediaQuery.of(context).padding.top
-                        - MediaQuery.of(context).padding.bottom
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: ArborColors.lightGreen.withOpacity(0.3),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(
-                                8,
-                              ),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              CircleAvatar(
-                                radius: 16,
-                                backgroundColor: ArborColors.logoGreen,
-                                backgroundImage: AssetImage(
-                                  AssetPaths.logo,
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Text(
-                                  '${wallet.fork.name}',
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      color: ArborColors.white, fontSize: 14),
+                                SizedBox(
+                                  height: 20.h,
                                 ),
-                              ),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Text(
-                                  model.walletBalanceStatus == Status.LOADING
-                                      ? 'Loading...'
-                                      : '${model.readableBalance} ${wallet.fork.ticker.toUpperCase()}',
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.end,
-                                  style: TextStyle(
-                                      color: ArborColors.white, fontSize: 14),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Spacer(flex: 2),
-                        Text(
-                          '${model.transactionValue} ${wallet.fork.ticker.toUpperCase()}',
-                          style:
-                          TextStyle(fontSize: 30.h, color: ArborColors.deepGreen),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        ArborTextField(
-                          hintText: "Tap to paste Recipient's Address",
-                          focusNode: addressFocusNode,
-                          controller: addressController
-                            ..text = model.receiverAddress,
-                          isDisabled: true,
-                          onTextFieldTapped: () {
-                            model.getClipBoardData();
-                          },
-                          errorMessage: model.addressErrorMessage,
-                          onChanged: (v) => model.setReceiverAddress(v),
-                          onIconPressed: () {
-                            model.scannedData=false;
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AddressScanner(),
-                              ),
-                            );
-                          },
-                        ),
-                        Container(
-                          height: 300,
-                          child: Row(
-                            children: [
-                              Flexible(
-                                flex: 5,
-                                fit: FlexFit.loose,
-                                child: NumericKeyboard(
-                                  onKeyboardTap: (_) =>
-                                      model.setTransactionValue(_),
-                                  textColor: ArborColors.white,
-                                  rightButtonFn: () => model.deleteCharacter(),
-                                  rightIcon: Icon(
-                                    Icons.arrow_back,
-                                    color: ArborColors.white,
-                                  ),
-                                  leftButtonFn: () =>
-                                      model.setTransactionValue('.'),
-                                  leftIcon: Icon(
-                                    Icons.adjust_sharp,
-                                    color: ArborColors.white,
-                                  ),
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                ),
-                              ),
-                              Flexible(
-                                flex: 1,
-                                fit: FlexFit.loose,
-                                child: GestureDetector(
+                                GestureDetector(
                                   onTap: () => model.useMax(),
                                   child: Container(
-                                    // margin: EdgeInsets.symmetric(vertical: 16),
-                                    // padding: EdgeInsets.symmetric(horizontal: 10),
-                                    height: double.maxFinite * 0.75,
+                                    padding: EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                        color: ArborColors.transparent,
-                                        borderRadius: BorderRadius.circular(20),
-                                        border: Border.all(color: ArborColors.lightGreen)
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'MAX',
-                                        style: TextStyle(
-                                            color: ArborColors.white,
-                                            fontWeight: FontWeight.w600),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(8),
                                       ),
+                                      border: Border.all(
+                                        color: ArborColors.white,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'Send all',
+                                      style: TextStyle(
+                                          fontSize: 20.sp,
+                                          color: ArborColors.white),
                                     ),
                                   ),
                                 ),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: ArborButton(
-                            backgroundColor: ArborColors.logoGreen,
-                            disabled: !model.enableButton,
-                            loading: false,
-                            title: 'Continue',
-                            onPressed: () async {
-                              var status = await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => StatusScreen(),
+                                Spacer(
+                                  flex: 2,
                                 ),
-                              );
-                              if (status == true){
-                                //model.getBalance();
-                                Navigator.pop(context);
-                              }
-                            },
+                                Container(
+                                  width: 200.w,
+                                  child: ArborTextField(
+                                    hintText:
+                                        "Tap to paste Recipient's Address",
+                                    focusNode: addressFocusNode,
+                                    controller: addressController
+                                      ..text = model.receiverAddress,
+                                    isDisabled: true,
+                                    onTextFieldTapped: () {
+                                      model.getClipBoardData();
+                                    },
+                                    errorMessage: model.addressErrorMessage,
+                                    onChanged: (v) =>
+                                        model.setReceiverAddress(v),
+                                    icon: Container(),
+                                    onIconPressed: () {},
+                                  ),
+                                ),
+                                Spacer(
+                                  flex: 2,
+                                ),
+                                Container(
+                                  width: 200.w,
+                                  child: ArborButton(
+                                    backgroundColor: ArborColors.logoGreen,
+                                    disabled: !model.enableButton,
+                                    loading: false,
+                                    title: 'Continue',
+                                    onPressed: () async {
+                                      var status = await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => StatusScreen(),
+                                        ),
+                                      );
+                                      if (status == true) {
+                                        //model.getBalance();
+                                        Navigator.pop(context);
+                                      }
+                                    },
+                                  ),
+                                ),
+                                Spacer(
+                                  flex: 1,
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : Container(
+                          padding: EdgeInsets.fromLTRB(
+                            10,
+                            10,
+                            10,
+                            20,
+                          ),
+                          child: SingleChildScrollView(
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                  maxHeight: MediaQuery.of(context)
+                                          .size
+                                          .height -
+                                      MediaQuery.of(context).padding.top -
+                                      MediaQuery.of(context).padding.bottom),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: ArborColors.lightGreen
+                                          .withOpacity(0.3),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          8,
+                                        ),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 16,
+                                          backgroundColor:
+                                              ArborColors.logoGreen,
+                                          backgroundImage: AssetImage(
+                                            AssetPaths.logo,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Text(
+                                            '${wallet.fork.name}',
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(
+                                                color: ArborColors.white,
+                                                fontSize: 14),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 4,
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Text(
+                                            model.walletBalanceStatus ==
+                                                    Status.LOADING
+                                                ? 'Loading...'
+                                                : '${model.readableBalance} ${wallet.fork.ticker.toUpperCase()}',
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.end,
+                                            style: TextStyle(
+                                                color: ArborColors.white,
+                                                fontSize: 14),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Spacer(flex: 2),
+                                  Text(
+                                    '${model.transactionValue} ${wallet.fork.ticker.toUpperCase()}',
+                                    style: TextStyle(
+                                        fontSize: 30.h,
+                                        color: ArborColors.deepGreen),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  ArborTextField(
+                                    hintText:
+                                        "Tap to paste Recipient's Address",
+                                    focusNode: addressFocusNode,
+                                    controller: addressController
+                                      ..text = model.receiverAddress,
+                                    isDisabled: true,
+                                    onTextFieldTapped: () {
+                                      model.getClipBoardData();
+                                    },
+                                    errorMessage: model.addressErrorMessage,
+                                    onChanged: (v) =>
+                                        model.setReceiverAddress(v),
+                                    onIconPressed: () {
+                                      model.scannedData = false;
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              AddressScanner(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  Container(
+                                    height: 300,
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                          flex: 5,
+                                          fit: FlexFit.loose,
+                                          child: NumericKeyboard(
+                                            onKeyboardTap: (_) =>
+                                                model.setTransactionValue(_),
+                                            textColor: ArborColors.white,
+                                            rightButtonFn: () =>
+                                                model.deleteCharacter(),
+                                            rightIcon: Icon(
+                                              Icons.arrow_back,
+                                              color: ArborColors.white,
+                                            ),
+                                            leftButtonFn: () =>
+                                                model.setTransactionValue('.'),
+                                            leftIcon: Icon(
+                                              Icons.adjust_sharp,
+                                              color: ArborColors.white,
+                                            ),
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                          ),
+                                        ),
+                                        Flexible(
+                                          flex: 1,
+                                          fit: FlexFit.loose,
+                                          child: GestureDetector(
+                                            onTap: () => model.useMax(),
+                                            child: Container(
+                                              // margin: EdgeInsets.symmetric(vertical: 16),
+                                              // padding: EdgeInsets.symmetric(horizontal: 10),
+                                              height: double.maxFinite * 0.75,
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                      ArborColors.transparent,
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  border: Border.all(
+                                                      color: ArborColors
+                                                          .lightGreen)),
+                                              child: Center(
+                                                child: Text(
+                                                  'MAX',
+                                                  style: TextStyle(
+                                                      color: ArborColors.white,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: ArborButton(
+                                      backgroundColor: ArborColors.logoGreen,
+                                      disabled: !model.enableButton,
+                                      loading: false,
+                                      title: 'Continue',
+                                      onPressed: () async {
+                                        var status = await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                StatusScreen(),
+                                          ),
+                                        );
+                                        if (status == true) {
+                                          //model.getBalance();
+                                          Navigator.pop(context);
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                  Spacer(
+                                    flex: 1,
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
-                        Spacer(flex: 1,),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
             ),
           ),
         ),
