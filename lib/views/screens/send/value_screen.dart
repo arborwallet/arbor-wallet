@@ -279,7 +279,8 @@ class ValueScreen extends StatelessWidget {
                   : Responsive.isTablet(context)
                       ? Center(
                           child: Container(
-                            margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
+                            margin: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               color: ArborColors.green,
@@ -360,9 +361,10 @@ class ValueScreen extends StatelessWidget {
                                       width: 200.w,
                                       child: TextField(
                                         textAlign: TextAlign.center,
-                                        onChanged: (_) =>
-                                            model.setTransactionValue(_),
-                                        //controller: valueController..text = "${model.transactionValue} XCH",
+                                        onChanged: (_){
+                                            model.setTransactionValue(_);
+                                        },
+                                        controller:valueController..text=model.useMaximumBalance?model.transactionValue:"",
                                         cursorColor: Colors.transparent,
                                         style: TextStyle(
                                             fontSize: 36.h,

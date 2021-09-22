@@ -47,6 +47,8 @@ class SendCryptoProvider extends ChangeNotifier {
   double _amount = 0;
   double get amount => _amount;
 
+  bool useMaximumBalance=false;
+
   bool scannedData = false;
   bool _validAddress = false;
 
@@ -118,6 +120,7 @@ class SendCryptoProvider extends ChangeNotifier {
   }
 
   useMax() {
+    useMaximumBalance=true;
     _transactionValue = readableBalance;
     notifyListeners();
   }
