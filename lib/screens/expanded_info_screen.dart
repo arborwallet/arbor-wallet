@@ -1,7 +1,10 @@
 import 'package:arbor/models/models.dart';
 import 'package:arbor/utils/expanded_info_page.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
+import 'package:arbor/views/screens/settings_screen.dart';
+import 'package:arbor/views/widgets/layout/web_drawer.dart';
 import 'package:arbor/views/widgets/responsiveness/responsive.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ExpandedInfoScreen extends StatefulWidget {
@@ -41,24 +44,46 @@ class _ExpandedInfoScreenState extends State<ExpandedInfoScreen> {
         centerTitle: true,
         backgroundColor: ArborColors.green,
       ),
-      body: Responsive.isDesktop(context) || Responsive.isTablet(context)
-          ? Container(
-              alignment: Alignment.center,
-              child: SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: 600,
+      body:Responsive.isDesktop(context)
+          ? Row(
+            children: [
+              kIsWeb & Responsive.isDesktop(context)? WebDrawer(
+                onWalletsTapped: ()=>Navigator.pop(context),
+                onSettingsTapped: () => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute<Widget>(
+                    builder: (context) => SettingsScreen(),
                   ),
-                  child: Container(
-                    padding: const EdgeInsets.all(16.0),
-                    child: ExpandedInfoPage(
-                      index: widget.index,
-                      wallet: widget.wallet,
+                ),
+              ):Container(),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(8),
+                  ),
+                  border: Border.all(
+                    color: ArborColors.black,
+                  ),
+                ),
+                  alignment: Alignment.center,
+                  child: SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: 600,
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.all(16.0),
+                        child: ExpandedInfoPage(
+                          index: widget.index,
+                          wallet: widget.wallet,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            )
+            ],
+          )
           : SingleChildScrollView(
               child: Container(
                 padding: const EdgeInsets.all(16.0),
