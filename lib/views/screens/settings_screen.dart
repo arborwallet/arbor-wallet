@@ -141,14 +141,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ):Center(
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(8),
-                  ),
-                  border: Border.all(
-                    color: ArborColors.black,
-                  ),
-                ),
                 constraints: BoxConstraints(maxWidth: 500, minWidth: 400),
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
