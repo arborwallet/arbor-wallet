@@ -32,7 +32,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       body: Responsive.isDesktop(context) || Responsive.isTablet(context)
           ? Center(
               child: Container(
-                constraints: BoxConstraints(maxWidth: 500, maxHeight: 500),
+                constraints: BoxConstraints(maxWidth: 500, maxHeight: 650),
                 padding: EdgeInsets.symmetric(
                   horizontal: 40,
                   vertical: 20,

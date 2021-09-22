@@ -2,9 +2,11 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/constants/asset_paths.dart';
+import 'package:arbor/screens/info_screen.dart';
+import 'package:arbor/views/screens/settings_screen.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
+import 'package:arbor/views/widgets/layout/web_drawer.dart';
 import 'package:arbor/views/widgets/responsiveness/responsive.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:arbor/models/models.dart';
@@ -102,13 +104,49 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
         centerTitle: true,
         backgroundColor: ArborColors.green,
       ),
-      body: SingleChildScrollView(
+      body:kIsWeb && Responsive.isDesktop(context)? Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          WebDrawer(
+            onWalletsTapped: ()=>Navigator.pushReplacement(
+              context,
+              MaterialPageRoute<Widget>(
+                builder: (context) => InfoScreen(),
+              ),
+            ),
+            onSettingsTapped: () => Navigator.pushReplacement(
+              context,
+              MaterialPageRoute<Widget>(
+                builder: (context) => SettingsScreen(),
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
+            padding: EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(
+              color: ArborColors.green,
+              borderRadius: BorderRadius.all(
+                Radius.circular(8),
+              ),
+              border: Border.all(
+                color: ArborColors.black,
+              ),
+            ),
+            constraints:
+            BoxConstraints(maxWidth: 400, maxHeight: double.infinity),
+
+            child: walletReceiveScreenBody(),
+          )
+        ],
+      ): SingleChildScrollView(
         child: RepaintBoundary(
           key: globalKey,
           child: Padding(
             padding: EdgeInsets.fromLTRB(
                 PASSWORD_PADDING, PASSWORD_PADDING, PASSWORD_PADDING, 0.0),
-            child: Responsive.isDesktop(context) || Responsive.isTablet(context)
+            child: Responsive.isMobileLarge(context) || Responsive.isTablet(context)
                 ? Center(
                     child: Container(
                       constraints:
@@ -175,14 +213,13 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
           height: 40,
         ),
         kIsWeb
-            ? ArborButton(
-                onPressed: () {
-                  shareQrCode(widget.wallet.address);
-                },
-                title: 'Share',
-                backgroundColor: ArborColors.deepGreen,
-              )
-            : Container(),
+            ? Container():ArborButton(
+          onPressed: () {
+            shareQrCode(widget.wallet.address);
+          },
+          title: 'Share',
+          backgroundColor: ArborColors.deepGreen,
+        ),
         SizedBox(
           height: 20,
         ),

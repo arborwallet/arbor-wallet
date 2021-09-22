@@ -3,13 +3,18 @@ import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/core/enums/status.dart';
 import 'package:arbor/core/providers/send_crypto_provider.dart';
 import 'package:arbor/models/models.dart';
+import 'package:arbor/screens/info_screen.dart';
 import 'package:arbor/views/screens/send/address_scanner.dart';
 import 'package:arbor/views/screens/send/status_screen.dart';
+import 'package:arbor/views/screens/settings_screen.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:arbor/views/widgets/arbor_textfield.dart';
 import 'package:arbor/views/widgets/editting_controller.dart';
 import 'package:arbor/views/widgets/layout/hide_keyboard_container.dart';
+import 'package:arbor/views/widgets/layout/web_drawer.dart';
+import 'package:arbor/views/widgets/responsiveness/responsive.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:numeric_keyboard/numeric_keyboard.dart';
 import 'package:provider/provider.dart';
@@ -62,7 +67,153 @@ class ValueScreen extends StatelessWidget {
                 ),
                 backgroundColor: ArborColors.green,
               ),
-              body: Container(
+              body:kIsWeb && Responsive.isDesktop(context)? Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  WebDrawer(
+                    onWalletsTapped: ()=>Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute<Widget>(
+                        builder: (context) => InfoScreen(),
+                      ),
+                    ),
+                    onSettingsTapped: () => Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute<Widget>(
+                        builder: (context) => SettingsScreen(),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all( 10),
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: ArborColors.green,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(8),
+                      ),
+                      border: Border.all(
+                        color: ArborColors.black,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          width:200.w,
+                          margin: EdgeInsets.all(20),
+                          padding: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: ArborColors.lightGreen.withOpacity(0.3),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(
+                                8,
+                              ),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                radius: 16,
+                                backgroundColor: ArborColors.logoGreen,
+                                backgroundImage: AssetImage(
+                                  AssetPaths.logo,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Text(
+                                  '${wallet.fork.name}',
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      color: ArborColors.white, fontSize: 14),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  model.walletBalanceStatus == Status.LOADING
+                                      ? 'Loading...'
+                                      : '${model.readableBalance} ${wallet.fork.ticker.toUpperCase()}',
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.end,
+                                  style: TextStyle(
+                                      color: ArborColors.white, fontSize: 14),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text(
+                          '${model.transactionValue} ${wallet.fork.ticker.toUpperCase()}',
+                          style:
+                          TextStyle(fontSize: 36.h, color: ArborColors.deepGreen),
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        GestureDetector(
+                          onTap: () => model.useMax(),
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(8),
+                              ),
+                              border: Border.all(
+                                color: ArborColors.white,
+                              ),
+                            ),
+                            child:  Text(
+                              'Send all',
+                              style:
+                              TextStyle(fontSize:20.sp, color: ArborColors.white),
+                            ),
+                          ),
+                        ),
+                        Spacer(flex: 2,),
+
+
+                        Spacer(flex: 2,),
+                         Container(
+                           width: 200.w,
+                           child: ArborButton(
+                              backgroundColor: ArborColors.logoGreen,
+                              disabled: !model.enableButton,
+                              loading: false,
+                              title: 'Continue',
+                              onPressed: () async {
+                                var status = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => StatusScreen(),
+                                  ),
+                                );
+                                if (status == true){
+                                  //model.getBalance();
+                                  Navigator.pop(context);
+                                }
+                              },
+                            ),
+                         ),
+                        Spacer(flex: 1,),
+                      ],
+                    ),
+                  )
+                ],
+              ):Container(
                 padding: EdgeInsets.fromLTRB(
                   10,
                   10,
