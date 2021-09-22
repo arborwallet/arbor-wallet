@@ -5,6 +5,7 @@ import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:arbor/views/widgets/responsiveness/responsive.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:arbor/models/models.dart';
 import 'package:flutter/rendering.dart';
@@ -173,13 +174,15 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
         SizedBox(
           height: 40,
         ),
-        ArborButton(
-          onPressed: () {
-            shareQrCode(widget.wallet.address);
-          },
-          title: 'Share',
-          backgroundColor: ArborColors.deepGreen,
-        ),
+        kIsWeb
+            ? ArborButton(
+                onPressed: () {
+                  shareQrCode(widget.wallet.address);
+                },
+                title: 'Share',
+                backgroundColor: ArborColors.deepGreen,
+              )
+            : Container(),
         SizedBox(
           height: 20,
         ),
