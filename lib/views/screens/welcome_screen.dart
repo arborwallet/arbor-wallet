@@ -1,14 +1,30 @@
+import 'package:arbor/core/constants/hive_constants.dart';
+import 'package:arbor/views/screens/add_wallet/add_wallet_screen.dart';
 import 'package:arbor/views/widgets/responsiveness/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive/hive.dart';
 import '../../core/constants/arbor_colors.dart';
 import '../../core/constants/asset_paths.dart';
 import '../../screens/info_screen.dart';
 import '../../views/widgets/arbor_button.dart';
 import 'restore_wallet_screen.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
+  @override
+  _WelcomeScreenState createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  late final Box walletBox;
+
+  @override
+  void initState() {
+    super.initState();
+    walletBox = Hive.box(HiveConstants.walletBox);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,18 +37,25 @@ class WelcomeScreen extends StatelessWidget {
                   horizontal: 40,
                   vertical: 20,
                 ),
-                child: _WelcomeScreenBody(),
+                child: _WelcomeScreenBody(
+                  isEmpty: walletBox.isEmpty,
+                ),
               ),
             )
           : Container(
               padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 20.h),
-              child: _WelcomeScreenBody(),
+              child: _WelcomeScreenBody(
+                isEmpty: walletBox.isEmpty,
+              ),
             ),
     );
   }
 }
 
 class _WelcomeScreenBody extends StatelessWidget {
+  final bool isEmpty;
+  _WelcomeScreenBody({this.isEmpty: true});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -77,11 +100,16 @@ class _WelcomeScreenBody extends StatelessWidget {
           backgroundColor: ArborColors.deepGreen,
           title: 'Get Started',
           onPressed: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => InfoScreen()),
-              (route) => false,
-            );
+            if (isEmpty) {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AddWalletScreen()));
+            } else {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => InfoScreen()),
+                (route) => false,
+              );
+            }
           },
         ),
         SizedBox(
