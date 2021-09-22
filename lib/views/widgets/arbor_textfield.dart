@@ -8,6 +8,7 @@ class ArborTextField extends StatelessWidget {
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final String errorMessage;
+  final Widget? icon;
   final bool isDisabled;
   final ValueChanged<String>? onChanged;
   final VoidCallback? onIconPressed;
@@ -19,6 +20,7 @@ class ArborTextField extends StatelessWidget {
         this.focusNode,
         this.isDisabled = false,
         this.errorMessage = '',
+        this.icon,
         this.onChanged,
         this.onTextFieldTapped,
         this.onIconPressed});
@@ -76,7 +78,7 @@ class ArborTextField extends StatelessWidget {
                     EdgeInsets.fromLTRB(20,20,0,20),
                     suffixIcon: IconButton(
                       onPressed: () => onIconPressed!(),
-                      icon: Padding(
+                      icon:icon?? Padding(
                         padding: const EdgeInsets.all(5.0),
                         child: SvgPicture.asset(
                           AssetPaths.qr,

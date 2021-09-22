@@ -22,6 +22,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ValueScreen extends StatelessWidget {
   final addressFocusNode = FocusNode();
+  final valueController = CustomTextEditingController();
   final addressController = CustomTextEditingController();
 
   final Wallet wallet;
@@ -67,12 +68,12 @@ class ValueScreen extends StatelessWidget {
                 ),
                 backgroundColor: ArborColors.green,
               ),
-              body:kIsWeb && Responsive.isDesktop(context)? Row(
+              body:kIsWeb || Responsive.isDesktop(context) ||Responsive.isTablet(context)? Row(
                 mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment:  MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  WebDrawer(
+                  kIsWeb && Responsive.isDesktop(context)? WebDrawer(
                     onWalletsTapped: ()=>Navigator.pushReplacement(
                       context,
                       MaterialPageRoute<Widget>(
@@ -85,7 +86,7 @@ class ValueScreen extends StatelessWidget {
                         builder: (context) => SettingsScreen(),
                       ),
                     ),
-                  ),
+                  ):Container(),
                   Container(
                     margin: EdgeInsets.all( 10),
                     padding: EdgeInsets.all(10),
@@ -156,10 +157,30 @@ class ValueScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Text(
-                          '${model.transactionValue} ${wallet.fork.ticker.toUpperCase()}',
-                          style:
-                          TextStyle(fontSize: 36.h, color: ArborColors.deepGreen),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 200.w,
+                                child:
+                                     TextField(
+                                        textAlign: TextAlign.center,
+                                        onChanged:(_)=>model.setTransactionValue(_),
+                                       //controller: valueController..text = "${model.transactionValue} XCH",
+                                        cursorColor: Colors.transparent,
+                                        style: TextStyle(fontSize: 36.h, color: ArborColors.logoGreen),
+                                        keyboardType: TextInputType.number,
+                                        decoration: InputDecoration(
+                                          hintText: "0 XCH",
+                                          labelStyle: TextStyle(fontSize: 36.h, color: ArborColors.deepGreen),
+                                          hintStyle: TextStyle(fontSize: 36.h, color: ArborColors.deepGreen),
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide.none,
+                                          ),
+                                        ),
+                                      ),
+                            ),
+                          ],
                         ),
                         SizedBox(
                           height: 20.h,
@@ -184,7 +205,25 @@ class ValueScreen extends StatelessWidget {
                           ),
                         ),
                         Spacer(flex: 2,),
+                        Container(
+                          width: 200.w,
+                          child: ArborTextField(
+                            hintText: "Tap to paste Recipient's Address",
+                            focusNode: addressFocusNode,
+                            controller: addressController
+                              ..text = model.receiverAddress,
+                            isDisabled: true,
+                            onTextFieldTapped: () {
+                              model.getClipBoardData();
+                            },
+                            errorMessage: model.addressErrorMessage,
+                            onChanged: (v) => model.setReceiverAddress(v),
+                            icon: Container(),
+                            onIconPressed: () {
 
+                            },
+                          ),
+                        ),
 
                         Spacer(flex: 2,),
                          Container(
