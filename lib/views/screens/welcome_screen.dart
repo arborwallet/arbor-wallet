@@ -71,7 +71,7 @@ class _WelcomeScreenBody extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 16.h,
+          height: 4.h,
         ),
         Text(
           'Control Your Wealth',

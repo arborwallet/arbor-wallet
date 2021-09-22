@@ -116,7 +116,7 @@ class _InfoScreenState extends State<InfoScreen> {
                 color: ArborColors.white,
               ),
             ),
-            leading: kIsWeb ? Container() : null,
+            leading: kIsWeb & Responsive.isDesktop(context)? Container() : null,
             centerTitle: true,
             backgroundColor: ArborColors.green,
           ),
@@ -141,7 +141,7 @@ class _InfoScreenState extends State<InfoScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              kIsWeb
+              kIsWeb & Responsive.isDesktop(context)
                   ? Padding(
                     padding: const EdgeInsets.only(right: 40),
                     child: _InfoScreenDrawer(onWalletsTapped: (){},),

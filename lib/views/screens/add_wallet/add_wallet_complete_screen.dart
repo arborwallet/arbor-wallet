@@ -1,5 +1,6 @@
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/constants/asset_paths.dart';
+import 'package:arbor/screens/info_screen.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:arbor/views/widgets/responsiveness/responsive.dart';
 import 'package:flutter/material.dart';
@@ -95,7 +96,13 @@ class _AddWalletCompleteScreenBody extends StatelessWidget {
           loading: false,
           title: 'I wrote down the secret phrase',
           onPressed: () {
-            Navigator.pop(context, true);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute<Widget>(
+                builder: (context) => InfoScreen(),
+              ),
+            );
+            //Navigator.pop(context, true);
           },
         ),
       ],

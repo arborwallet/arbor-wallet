@@ -5,6 +5,9 @@ import 'package:arbor/core/providers/settings_provider.dart';
 import 'package:arbor/views/screens/welcome_screen.dart';
 import 'package:arbor/views/widgets/dialog/arbor_alert_dialog.dart';
 import 'package:arbor/views/widgets/dialog/arbor_info_dialog.dart';
+import 'package:arbor/views/widgets/layout/web_drawer.dart';
+import 'package:arbor/views/widgets/responsiveness/responsive.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
@@ -44,8 +47,108 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     color: ArborColors.white,
                   ),
                 )),
-            body: Center(
+            body:kIsWeb &&
+                Responsive.isDesktop(context)
+                ? Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                 WebDrawer(
+                        onWalletsTapped: () => Navigator.pop(context),
+                        onSettingsTapped: () {},
+                      ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(8),
+                    ),
+                    border: Border.all(
+                      color: ArborColors.black,
+                    ),
+                  ),
+                  constraints: BoxConstraints(maxWidth: 500, minWidth: 400),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ListView(
+                          children: [
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "General",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: ArborColors.white,
+                                fontSize: 15.sp,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 4,
+                            ),
+                            settingsItem(
+                              title: "Visit DFI Discord Channel",
+                              assetPath: AssetPaths.discord,
+                              onPressed: () => model.launchURL(
+                                  url: ArborConstants.discordChannelURL),
+                            ),
+                            settingsItem(
+                              title: "View Privacy Policy",
+                              assetPath: AssetPaths.privacyPolicy,
+                              onPressed: () => model.launchURL(
+                                  url: ArborConstants.baseWebsiteURL),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              "Arbor Data",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: ArborColors.white,
+                                fontSize: 15.sp,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 4,
+                            ),
+                            settingsItem(
+                              title: "Delete Arbor Data",
+                              assetPath: AssetPaths.delete,
+                              onPressed: () async {
+                                await deleteData(model);
+                              },
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Text(
+                        'v1.0.0b02',
+                        style: TextStyle(
+                          color: ArborColors.white,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ):Center(
               child: Container(
+                margin: EdgeInsets.symmetric(vertical: 16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(8),
+                  ),
+                  border: Border.all(
+                    color: ArborColors.black,
+                  ),
+                ),
                 constraints: BoxConstraints(maxWidth: 500, minWidth: 400),
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -130,7 +233,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-          constraints: BoxConstraints(maxWidth: 500, minWidth: 400),
+          constraints: BoxConstraints(maxWidth: 500, minWidth: 250),
           padding: EdgeInsets.all(
             10,
           ),
