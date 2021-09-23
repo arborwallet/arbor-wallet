@@ -7,7 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 import '../../../core/constants/arbor_colors.dart';
 import '../../../core/constants/asset_paths.dart';
-import '../home/home_screen.dart';
 import '../../widgets/arbor_button.dart';
 import '../restore_wallet/restore_wallet_screen.dart';
 

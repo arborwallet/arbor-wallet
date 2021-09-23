@@ -1,7 +1,6 @@
 import 'package:arbor/core/enums/status.dart';
 import 'package:arbor/core/providers/restore_wallet_provider.dart';
 import 'package:arbor/views/screens/base/base_screen.dart';
-import 'package:arbor/views/screens/home/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 

@@ -30,8 +30,7 @@ class WalletReceiveScreen extends StatefulWidget {
 }
 
 class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
-  static GlobalKey globalKey =
-      new GlobalKey(debugLabel: 'wallet_receive_screen');
+  //static GlobalKey globalKey = new GlobalKey(debugLabel: 'wallet_receive_screen');
 
   static const double PASSWORD_PADDING = 40;
 
