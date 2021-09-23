@@ -30,7 +30,7 @@ class WalletReceiveScreen extends StatefulWidget {
 }
 
 class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
-
+  static GlobalKey globalKey = new GlobalKey(debugLabel: 'wallet_receive_screen');
   static const double PASSWORD_PADDING = 40;
 
   void shareQrCode(String address) async {
@@ -40,35 +40,26 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
           version: QrVersions.auto,
           errorCorrectionLevel: QrErrorCorrectLevel.L);
       if (qrValidationResult.isValid) {
-        final _qrCode = qrValidationResult.qrCode;
+        RenderRepaintBoundary boundary = globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
 
-        ui.Image logoImage = await getLogoImage();
+        ui.Image image = await boundary.toImage();
+        ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+        if (byteData != null) {
+          Uint8List pngBytes = byteData.buffer.asUint8List();
 
-        //Paint QR code
-        final _qrPainter = QrPainter.withQr(
-          qr: _qrCode!,
-          emptyColor: ArborColors.white,
-          color: ArborColors.black,
-          gapless: true,
-          embeddedImage: logoImage,
+          final tempDir = (await getTemporaryDirectory()).path;
+          var file =
+          await new File('${tempDir}/wallet-receive-address.png').create();
+          await file.writeAsBytes(pngBytes);
 
-        );
-
-        //Save in a temporary directory
-        final tempDirPath = (await getTemporaryDirectory()).path;
-        String path = '${tempDirPath}/wallet-receive-address.png';
-
-        final picData =
-            await _qrPainter.toImageData(2048, format: ui.ImageByteFormat.png);
-        await writeToFile(picData!, path);
-
-        await Share.shareFiles(
-          [path],
-          mimeTypes: ['images/png'],
-          subject: '${widget.wallet.fork.name} Wallet Address',
-          text:
-              '${widget.wallet.fork.name} (${widget.wallet.fork.ticker.toUpperCase()}) Address:\n${widget.wallet.address}',
-        );
+          await Share.shareFiles(
+            [file.path],
+            mimeTypes: ['images/png'],
+            subject: '${widget.wallet.fork.name} Wallet Address',
+            text:
+            '${widget.wallet.fork.name} (${widget.wallet.fork.ticker.toUpperCase()}) Address:\n${widget.wallet.address}',
+          );
+        }
       } else {
         String _errorMessage = qrValidationResult.error.toString();
         showSnackBar(context, '$_errorMessage', ArborColors.errorRed);
@@ -107,48 +98,61 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container(
-              child: QrImage(
-                data: widget.wallet.address,
-                size: 250,
-                version: QrVersions.auto,
-                embeddedImage: AssetImage('assets/images/logo.png'),
-                backgroundColor: ArborColors.white,
-                foregroundColor: Colors.black,
-                gapless: false,
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              'Tap to copy your ${widget.wallet.fork.name} light wallet address:',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: ArborColors.white, fontSize: 16.0),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            InkWell(
-              child: ListTile(
-                title: Text(
-                  widget.wallet.address,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14.0,
-                    color: ArborColors.white70,
-                  ),
+            RepaintBoundary(
+                key: globalKey,
+                child: Container(
+                  color: ArborColors.green,
+                  child: Column(
+                      children: [
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          child: QrImage(
+                            data: widget.wallet.address,
+                            size: 250,
+                            version: QrVersions.auto,
+                            embeddedImage: AssetImage('assets/images/logo.png'),
+                            backgroundColor: ArborColors.white,
+                            foregroundColor: Colors.black,
+                            gapless: false,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          'Tap to copy your ${widget.wallet.fork.name} light wallet address:',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: ArborColors.white, fontSize: 16.0),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        InkWell(
+                          child: ListTile(
+                            title: Text(
+                              widget.wallet.address,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                color: ArborColors.white70,
+                              ),
+                            ),
+                            trailing: Icon(Icons.copy),
+                            onTap: () {
+                              Clipboard.setData(ClipboardData(text: widget.wallet.address));
+                              showSnackBar(
+                                  context, 'Wallet address copied', ArborColors.deepGreen);
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 40,
+                        ),
+                  ],
                 ),
-                trailing: Icon(Icons.copy),
-                onTap: () {
-                  Clipboard.setData(ClipboardData(text: widget.wallet.address));
-                  showSnackBar(
-                      context, 'Wallet address copied', ArborColors.deepGreen);
-                },
               ),
-            ),
-            SizedBox(
-              height: 40,
             ),
             Spacer(),
             ArborButton(
@@ -183,24 +187,5 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
         ),
       ),
     );
-  }
-
-  Future<void> writeToFile(ByteData data, String path) async {
-    final buffer = data.buffer;
-    await File(path).writeAsBytes(
-      buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
-    );
-  }
-
-  Future<ui.Image> getLogoImage() async {
-    final ByteData imageByteData = await rootBundle.load(AssetPaths.logo);
-    image.Image baseImageSize =
-        image.decodeImage(imageByteData.buffer.asUint8List())!;
-    // image.Image resizeImage =
-    //     image.copyResize(baseImageSize, height: 30, width: 30);
-    ui.Codec codec = await ui
-        .instantiateImageCodec(image.encodePng(baseImageSize) as Uint8List);
-    ui.FrameInfo frameInfo = await codec.getNextFrame();
-    return frameInfo.image;
   }
 }
