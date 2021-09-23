@@ -9,7 +9,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:flutter/services.dart';
-import 'package:arbor/views/screens/wallet_receive_screen.dart';
+import 'package:arbor/views/screens/home/wallet_receive_screen.dart';
 
 import '../../../core/constants/hive_constants.dart';
 

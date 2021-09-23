@@ -4,7 +4,7 @@ import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/views/screens/add_wallet/add_wallet_screen.dart';
 import 'package:arbor/views/screens/send/value_screen.dart';
 import 'package:arbor/views/screens/settings/settings_screen.dart';
-import 'package:arbor/views/screens/wallet_receive_screen.dart';
+import 'package:arbor/views/screens/home/wallet_receive_screen.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:arbor/views/widgets/dialogs/arbor_alert_dialog.dart';
 import 'package:arbor/views/widgets/layout/arbor_drawer.dart';
@@ -103,188 +103,193 @@ class _HomeScreenState extends State<HomeScreen> {
         }
         return Future.value(true);
       },
-      child: Scaffold(
-        backgroundColor: ArborColors.green,
-        appBar: AppBar(
-          title: Text(
-            'Arbor Wallet',
-            style: TextStyle(
-              color: ArborColors.white,
+      child: Container(
+        color: ArborColors.green,
+        child: SafeArea(
+          child: Scaffold(
+            backgroundColor: ArborColors.green,
+            appBar: AppBar(
+              title: Text(
+                'Arbor Wallet',
+                style: TextStyle(
+                  color: ArborColors.white,
+                ),
+              ),
+              centerTitle: true,
+              backgroundColor: ArborColors.green,
             ),
-          ),
-          centerTitle: true,
-          backgroundColor: ArborColors.green,
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => AddWalletScreen(),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => AddWalletScreen(),
+                ),
+              ),
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+              backgroundColor: ArborColors.deepGreen,
             ),
-          ),
-          child: const Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-          backgroundColor: ArborColors.deepGreen,
-        ),
-        body: RefreshIndicator(
-          onRefresh: _reloadWalletBalances,
-          child: ValueListenableBuilder(
-            valueListenable: walletBox.listenable(),
-            builder: (context, Box box, widget) {
-              if (box.isEmpty) {
-                return Center(
-                  child: Text(
-                    'Tap + to create a new wallet.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: ArborColors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 20,
-                    ),
-                  ),
-                );
-              } else {
-                return ListView.builder(
-                  padding: const EdgeInsets.only(
-                      bottom: kFloatingActionButtonMargin + 60),
-                  itemCount: box.length,
-                  itemBuilder: (context, index) {
-                    var currentBox = box;
-                    var walletData = currentBox.getAt(index)!;
-
-                    return InkWell(
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => ExpandedHomeScreen(
-                            index: index,
-                            wallet: walletData,
-                          ),
-                        ),
-                      ),
-                      child: Card(
-                        color: ArborColors.green,
-                        elevation: 8,
-                        shadowColor: Colors.lightGreen,
-                        margin: EdgeInsets.all(16),
-                        child: Column(
-                          children: [
-                            ListTile(
-                              leading: Container(
-                                width: 50,
-                                height: 50,
-                                decoration: new BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: new DecorationImage(
-                                    image: AssetImage(
-                                        "assets/images/chia-logo.png"),
-                                    fit: BoxFit.fitHeight,
-                                  ),
-                                ),
-                              ),
-                              title: Text(
-                                // '${walletData.fork.name} (${walletData.name})'
-                                '${walletData.fork.name}',
-                                style: TextStyle(
-                                  color: ArborColors.white,
-                                ),
-                              ),
-                              subtitle: Text(
-                                walletData.fork.ticker.toUpperCase(),
-                                style: TextStyle(
-                                  color: ArborColors.white70,
-                                ),
-                              ),
-                              trailing: PopupMenuButton(
-                                itemBuilder: (context) {
-                                  return [
-                                    PopupMenuItem(
-                                        value: 'delete',
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.delete,
-                                              color: Colors.red,
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text('Delete'),
-                                          ],
-                                        ))
-                                  ];
-                                },
-                                onSelected: (String value) {
-                                  _popupMenuItemSelected(value, index);
-                                },
-                              ),
-                            ),
-                            ListTile(
-                              // title: Text(walletData.balance.toStringAsFixed(walletData.fork.precision)),
-                              title: FittedBox(
-                                  fit: BoxFit.contain,
-                                  child: Text(
-                                    walletData.balanceForDisplay(),
-                                    style: TextStyle(
-                                      color: ArborColors.white,
-                                    ),
-                                  )),
-                              subtitle: Text(
-                                walletData.address.toString(),
-                                style: TextStyle(
-                                  color: ArborColors.white70,
-                                ),
-                              ),
-                            ),
-                            ListTile(
-                              contentPadding: EdgeInsets.all(
-                                  10.0), //change for side padding
-                              title: Row(
-                                children: <Widget>[
-                                  Expanded(
-                                      child: ArborButton(
-                                    onPressed: () {
-                                      _showReceiveView(walletIndex: index);
-                                    },
-                                    title: 'Receive',
-                                    backgroundColor: ArborColors.deepGreen,
-                                  )),
-                                  SizedBox(width: 10),
-                                  Expanded(
-                                    child: ArborButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => ValueScreen(
-                                              wallet: walletData,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      title: 'Send',
-                                      backgroundColor: ArborColors.deepGreen,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
+            body: RefreshIndicator(
+              onRefresh: _reloadWalletBalances,
+              child: ValueListenableBuilder(
+                valueListenable: walletBox.listenable(),
+                builder: (context, Box box, widget) {
+                  if (box.isEmpty) {
+                    return Center(
+                      child: Text(
+                        'Tap + to create a new wallet.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: ArborColors.white,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 20,
                         ),
                       ),
                     );
-                  },
-                );
-              }
-            },
-          ),
-        ),
-        drawer: ArborDrawer(
-          onWalletsTapped: () {},
-          onSettingsTapped: () => Navigator.push(
-            context,
-            MaterialPageRoute<Widget>(
-              builder: (context) => SettingsScreen(),
+                  } else {
+                    return ListView.builder(
+                      padding: const EdgeInsets.only(
+                          bottom: kFloatingActionButtonMargin + 60),
+                      itemCount: box.length,
+                      itemBuilder: (context, index) {
+                        var currentBox = box;
+                        var walletData = currentBox.getAt(index)!;
+
+                        return InkWell(
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ExpandedHomeScreen(
+                                index: index,
+                                wallet: walletData,
+                              ),
+                            ),
+                          ),
+                          child: Card(
+                            color: ArborColors.green,
+                            elevation: 8,
+                            shadowColor: Colors.lightGreen,
+                            margin: EdgeInsets.all(16),
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  leading: Container(
+                                    width: 50,
+                                    height: 50,
+                                    decoration: new BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: new DecorationImage(
+                                        image: AssetImage(
+                                            "assets/images/chia-logo.png"),
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                    ),
+                                  ),
+                                  title: Text(
+                                    // '${walletData.fork.name} (${walletData.name})'
+                                    '${walletData.fork.name}',
+                                    style: TextStyle(
+                                      color: ArborColors.white,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    walletData.fork.ticker.toUpperCase(),
+                                    style: TextStyle(
+                                      color: ArborColors.white70,
+                                    ),
+                                  ),
+                                  trailing: PopupMenuButton(
+                                    itemBuilder: (context) {
+                                      return [
+                                        PopupMenuItem(
+                                            value: 'delete',
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.delete,
+                                                  color: Colors.red,
+                                                ),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text('Delete'),
+                                              ],
+                                            ))
+                                      ];
+                                    },
+                                    onSelected: (String value) {
+                                      _popupMenuItemSelected(value, index);
+                                    },
+                                  ),
+                                ),
+                                ListTile(
+                                  // title: Text(walletData.balance.toStringAsFixed(walletData.fork.precision)),
+                                  title: FittedBox(
+                                      fit: BoxFit.contain,
+                                      child: Text(
+                                        walletData.balanceForDisplay(),
+                                        style: TextStyle(
+                                          color: ArborColors.white,
+                                        ),
+                                      )),
+                                  subtitle: Text(
+                                    walletData.address.toString(),
+                                    style: TextStyle(
+                                      color: ArborColors.white70,
+                                    ),
+                                  ),
+                                ),
+                                ListTile(
+                                  contentPadding: EdgeInsets.all(
+                                      10.0), //change for side padding
+                                  title: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                          child: ArborButton(
+                                        onPressed: () {
+                                          _showReceiveView(walletIndex: index);
+                                        },
+                                        title: 'Receive',
+                                        backgroundColor: ArborColors.deepGreen,
+                                      )),
+                                      SizedBox(width: 10),
+                                      Expanded(
+                                        child: ArborButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => ValueScreen(
+                                                  wallet: walletData,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          title: 'Send',
+                                          backgroundColor: ArborColors.deepGreen,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
+            ),
+            drawer: ArborDrawer(
+              onWalletsTapped: () {},
+              onSettingsTapped: () => Navigator.push(
+                context,
+                MaterialPageRoute<Widget>(
+                  builder: (context) => SettingsScreen(),
+                ),
+              ),
             ),
           ),
         ),

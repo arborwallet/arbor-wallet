@@ -20,33 +20,38 @@ class ExpandedHomeScreen extends StatefulWidget {
 class _ExpandedHomeScreenState extends State<ExpandedHomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ArborColors.green,
-      appBar: AppBar(
-        title: Text(
-          'Your Wallet',
-          style: TextStyle(
-            color: ArborColors.white,
+    return Container(
+      color: ArborColors.green,
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: ArborColors.green,
+          appBar: AppBar(
+            title: Text(
+              'Your Wallet',
+              style: TextStyle(
+                color: ArborColors.white,
+              ),
+            ),
+            leading:  IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.arrow_back,
+                color: ArborColors.white,
+              ),
+            ),
+            centerTitle: true,
+            backgroundColor: ArborColors.green,
           ),
-        ),
-        leading:  IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(
-            Icons.arrow_back,
-            color: ArborColors.white,
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: ArborColors.green,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ExpandedHomePage(
-            index: widget.index,
-            wallet: widget.wallet,
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ExpandedHomePage(
+                index: widget.index,
+                wallet: widget.wallet,
+              ),
+            ),
           ),
         ),
       ),
