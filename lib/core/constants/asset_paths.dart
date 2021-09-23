@@ -10,11 +10,15 @@ class AssetPaths {
 
   ///Icons
 
+  static const String delete = '$baseIconPath/delete.svg';
+  static const String discord = '$baseIconPath/discord.svg';
+  static const String privacyPolicy = '$baseIconPath/privacy_policy.svg';
   static const String qr = '$baseIconPath/qr.svg';
   static const String receive = '$baseIconPath/receive.svg';
   static const String restore = '$baseIconPath/restore.svg';
   static const String safeWallet = '$baseIconPath/safe-wallet-chia.svg';
   static const String send = '$baseIconPath/send.svg';
+  static const String settings = '$baseIconPath/settings.svg';
   static const String transactionSend = '$baseIconPath/transaction-send.svg';
   static const String wallet = '$baseIconPath/wallet.svg';
   static const String walletCreated = '$baseIconPath/wallet-created.svg';

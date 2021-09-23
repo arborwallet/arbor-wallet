@@ -1,8 +1,8 @@
 import 'package:arbor/core/constants/asset_paths.dart';
-import 'package:arbor/views/screens/input_password_screen.dart';
-// import 'package:arbor/views/screens/scanner_screen.dart';
+import 'package:arbor/views/screens/restore_wallet/input_password_screen.dart';
+// import 'package:arbor/views/unused/scanner_screen.dart';
 import 'package:arbor/views/widgets/cards/option_card.dart';
-import '../../core/constants/arbor_colors.dart';
+import '../../../core/constants/arbor_colors.dart';
 import 'package:flutter/material.dart';
 
 class RestoreWalletScreen extends StatefulWidget {

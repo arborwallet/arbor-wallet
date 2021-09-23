@@ -6,6 +6,7 @@ import 'package:arbor/views/screens/add_wallet/add_wallet_complete_screen.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:arbor/views/widgets/phrase_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
@@ -151,6 +152,30 @@ class AddWalletStatusScreen extends StatelessWidget {
               ),
             ),
           ),
+          SizedBox(
+            height: 40,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: InkWell(
+              child: ListTile(
+                title: Text(
+                  "Copy Secret Phrase",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14.0,
+                    color: ArborColors.black,
+                  ),
+                ),
+                trailing: Icon(Icons.copy),
+                onTap: () {
+                  Clipboard.setData(ClipboardData(text: "${model.seedPhrase}"));
+                  showSnackBar(
+                      context, 'Secret Phrase copied', ArborColors.deepGreen);
+                },
+              ),
+            ),
+          ),
           ArborButton(
             backgroundColor: ArborColors.deepGreen,
             disabled: false,
@@ -167,7 +192,7 @@ class AddWalletStatusScreen extends StatelessWidget {
             loading: false,
             title: 'Continue',
             onPressed: () async {
-              bool result = await Navigator.push(
+              var result = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => AddWalletCompleteScreen(),
@@ -234,6 +259,24 @@ class AddWalletStatusScreen extends StatelessWidget {
           },
         ),
       ],
+    );
+  }
+
+  showSnackBar(BuildContext context, String message, Color color) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("$message"),
+        duration: Duration(milliseconds: 1000),
+        backgroundColor: color,
+        elevation: 2,
+        padding: EdgeInsets.all(
+          10,
+        ), // Inner padding for SnackBar content.
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+      ),
     );
   }
 }
