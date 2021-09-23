@@ -189,7 +189,7 @@ class AddWalletStatusScreen extends StatelessWidget {
             loading: false,
             title: 'Continue',
             onPressed: () async {
-              bool result = await Navigator.push(
+              var result = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => AddWalletCompleteScreen(),
