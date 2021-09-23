@@ -18,7 +18,7 @@ class ArborInfoDialog extends StatelessWidget {
       actions: [
         TextButton(
           child: Text("OK"),
-          onPressed: ()=>onPressed?? Navigator.pop(context, false),
+          onPressed:onPressed??()=> Navigator.pop(context, false),
         ),
       ],
     );

@@ -1,12 +1,14 @@
+import 'dart:io';
+
 import 'package:arbor/api/responses.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/constants/arbor_constants.dart';
 import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/core/providers/settings_provider.dart';
-import 'package:arbor/views/screens/on_boarding/welcome_screen.dart';
 import 'package:arbor/views/widgets/dialogs/arbor_alert_dialog.dart';
 import 'package:arbor/views/widgets/dialogs/arbor_info_dialog.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
@@ -55,7 +57,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       child: ListView(
                         children: [
                           SizedBox(
-                            height: 20,
+                            height: 10,
                           ),
                           Text(
                             "General",
@@ -130,7 +132,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-          constraints: BoxConstraints(maxWidth: 500, minWidth: 250),
+          //constraints: BoxConstraints(maxWidth: 500, minWidth: 250),
           padding: EdgeInsets.all(
             10,
           ),
@@ -185,12 +187,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
         showDeleteArborInfo(context,
             title: "Arbor Data Deleted",
             description: "${response.error}",
-            onPressed: () => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute<Widget>(
-                builder: (context) => WelcomeScreen(),
-              ),
-            ));
+            onPressed:(){
+              if (Platform.isAndroid) {
+                SystemNavigator.pop();
+              } else if (Platform.isIOS) {
+                exit(0);
+              }
+            }
+        );
       } else {
         showDeleteArborInfo(context,
             title: "Erase Arbor Data Failed",
@@ -205,6 +209,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         required String description,
         required VoidCallback? onPressed}) {
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return ArborInfoDialog(
