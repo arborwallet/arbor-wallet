@@ -2,8 +2,8 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/constants/asset_paths.dart';
-import 'package:arbor/screens/info_screen.dart';
-import 'package:arbor/views/screens/settings_screen.dart';
+import 'package:arbor/views/screens/home/home_screen.dart';
+import 'package:arbor/views/screens/settings/settings_screen.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:arbor/views/widgets/layout/web_drawer.dart';
 import 'package:arbor/views/widgets/responsiveness/responsive.dart';
@@ -112,7 +112,7 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
             onWalletsTapped: ()=>Navigator.pushReplacement(
               context,
               MaterialPageRoute<Widget>(
-                builder: (context) => InfoScreen(),
+                builder: (context) => HomeScreen(),
               ),
             ),
             onSettingsTapped: () => Navigator.pushReplacement(

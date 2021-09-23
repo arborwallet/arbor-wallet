@@ -1,7 +1,7 @@
 import 'package:arbor/models/models.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/views/screens/send/value_screen.dart';
-import 'package:arbor/views/screens/transactions_screen.dart';
+import 'package:arbor/views/screens/home/transactions_screen.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,12 +9,12 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:flutter/services.dart';
-import 'package:arbor/views/screens/wallet_receive_screen.dart';
+import 'package:arbor/views/screens/home/wallet_receive_screen.dart';
 
-import '../core/constants/hive_constants.dart';
+import '../../../core/constants/hive_constants.dart';
 
-class ExpandedInfoPage extends StatefulWidget {
-  const ExpandedInfoPage({
+class ExpandedHomePage extends StatefulWidget {
+  const ExpandedHomePage({
     required this.index,
     required this.wallet,
   });
@@ -23,10 +23,10 @@ class ExpandedInfoPage extends StatefulWidget {
   final Wallet wallet;
 
   @override
-  _ExpandedInfoPageState createState() => _ExpandedInfoPageState();
+  _ExpandedHomePageState createState() => _ExpandedHomePageState();
 }
 
-class _ExpandedInfoPageState extends State<ExpandedInfoPage> {
+class _ExpandedHomePageState extends State<ExpandedHomePage> {
   late final Box walletBox;
 
   int get index => widget.index;

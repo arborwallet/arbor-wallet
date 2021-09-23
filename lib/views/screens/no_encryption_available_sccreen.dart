@@ -11,7 +11,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:arbor/constants.dart';
+import 'package:arbor/core/constants/arbor_constants.dart';
 
 class NoEncryptionAvailableScreen extends StatelessWidget {
   const NoEncryptionAvailableScreen({Key? key, required this.message, required this.errorString}) : super(key: key);

@@ -1,5 +1,5 @@
 import 'package:arbor/api/responses/base_response.dart';
-import 'package:arbor/constants.dart';
+import 'package:arbor/core/constants/arbor_constants.dart';
 import 'package:arbor/core/constants/hive_constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';

@@ -1,26 +1,26 @@
 import 'package:arbor/models/models.dart';
-import 'package:arbor/utils/expanded_info_page.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
-import 'package:arbor/views/screens/settings_screen.dart';
+import 'package:arbor/views/screens/home/expanded_home_page.dart';
+import 'package:arbor/views/screens/settings/settings_screen.dart';
 import 'package:arbor/views/widgets/layout/web_drawer.dart';
 import 'package:arbor/views/widgets/responsiveness/responsive.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class ExpandedInfoScreen extends StatefulWidget {
+class ExpandedHomeScreen extends StatefulWidget {
   final int index;
   final Wallet wallet;
 
-  const ExpandedInfoScreen({
+  const ExpandedHomeScreen({
     required this.index,
     required this.wallet,
   });
 
   @override
-  _ExpandedInfoScreenState createState() => _ExpandedInfoScreenState();
+  _ExpandedHomeScreenState createState() => _ExpandedHomeScreenState();
 }
 
-class _ExpandedInfoScreenState extends State<ExpandedInfoScreen> {
+class _ExpandedHomeScreenState extends State<ExpandedHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +74,7 @@ class _ExpandedInfoScreenState extends State<ExpandedInfoScreen> {
                       ),
                       child: Container(
                         padding: const EdgeInsets.all(16.0),
-                        child: ExpandedInfoPage(
+                        child: ExpandedHomePage(
                           index: widget.index,
                           wallet: widget.wallet,
                         ),
@@ -87,7 +87,7 @@ class _ExpandedInfoScreenState extends State<ExpandedInfoScreen> {
           : SingleChildScrollView(
               child: Container(
                 padding: const EdgeInsets.all(16.0),
-                child: ExpandedInfoPage(
+                child: ExpandedHomePage(
                   index: widget.index,
                   wallet: widget.wallet,
                 ),
