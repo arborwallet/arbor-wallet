@@ -28,6 +28,9 @@ dependencies:
   #Alert
   flash: ^2.0.1
 
+  # App Version
+  package_info_plus: ^1.0.6
+
   #QR
   image: ^3.0.4
   qr_code_scanner: ^0.5.2
