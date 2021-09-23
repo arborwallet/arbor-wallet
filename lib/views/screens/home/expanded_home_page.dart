@@ -1,7 +1,7 @@
 import 'package:arbor/models/models.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/views/screens/send/value_screen.dart';
-import 'package:arbor/views/screens/transactions_screen.dart';
+import 'package:arbor/views/screens/home/transactions_screen.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
