@@ -10,6 +10,7 @@ import 'package:arbor/views/widgets/dialogs/arbor_info_dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter/material.dart';
@@ -21,6 +22,17 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+
+  PackageInfo? packageInfo;
+  String appVersion="";
+
+  @override
+  void initState() {
+    _getAppDetails();
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Consumer<SettingsProvider>(builder: (_, model, __) {
@@ -110,7 +122,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                     Text(
-                      'v1.1.0b02',
+                      'v$appVersion',
                       style: TextStyle(
                         color: ArborColors.white,
                       ),
@@ -168,6 +180,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ])),
     );
+  }
+
+  void _getAppDetails() async {
+    packageInfo = await PackageInfo.fromPlatform();
+    appVersion=packageInfo!.version;
   }
 
   deleteData(SettingsProvider model) async {
