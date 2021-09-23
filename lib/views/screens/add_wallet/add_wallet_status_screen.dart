@@ -164,7 +164,7 @@ class AddWalletStatusScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 14.0,
-                    color: ArborColors.white70,
+                    color: ArborColors.black,
                   ),
                 ),
                 trailing: Icon(Icons.copy),

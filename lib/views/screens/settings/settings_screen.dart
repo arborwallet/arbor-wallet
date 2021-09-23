@@ -94,7 +94,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             title: "View Privacy Policy",
                             assetPath: AssetPaths.privacyPolicy,
                             onPressed: () => model.launchURL(
-                                url: ArborConstants.baseWebsiteURL),
+                                url: ArborConstants.websitePrivacyURL),
                           ),
                           SizedBox(height: 10),
                           Text(
