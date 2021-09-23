@@ -152,6 +152,9 @@ class AddWalletStatusScreen extends StatelessWidget {
               ),
             ),
           ),
+          SizedBox(
+            height: 40,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: InkWell(

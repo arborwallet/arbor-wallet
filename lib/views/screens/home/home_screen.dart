@@ -93,31 +93,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        if (Navigator.of(context).canPop()) {
-          Navigator.of(context).pop();
-        } else {
-          // Android back button hack
-          SystemNavigator.pop();
-        }
-        return Future.value(true);
-      },
-      child: Container(
+    return  Container(
+      height: MediaQuery.of(context).size.height,
         color: ArborColors.green,
         child: SafeArea(
           child: Scaffold(
             backgroundColor: ArborColors.green,
-            appBar: AppBar(
-              title: Text(
-                'Arbor Wallet',
-                style: TextStyle(
-                  color: ArborColors.white,
-                ),
-              ),
-              centerTitle: true,
-              backgroundColor: ArborColors.green,
-            ),
             floatingActionButton: FloatingActionButton(
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
@@ -293,8 +274,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 
   // Delete info from wallet box

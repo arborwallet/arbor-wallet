@@ -25,11 +25,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Consumer<SettingsProvider>(builder: (_, model, __) {
       return Container(
+        height: MediaQuery.of(context).size.height,
         color: ArborColors.green,
         child: SafeArea(
           child: Scaffold(
             backgroundColor: ArborColors.green,
-            appBar: AppBar(
+            /*appBar: AppBar(
                 backgroundColor: ArborColors.green,
                 centerTitle: true,
                 title: Text(
@@ -46,8 +47,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Icons.arrow_back,
                     color: ArborColors.white,
                   ),
-                )),
+                )),*/
             body: Container(
+                height: MediaQuery.of(context).size.height,
                 margin: EdgeInsets.symmetric(vertical: 16),
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Column(

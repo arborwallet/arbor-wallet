@@ -4,6 +4,7 @@ import 'package:arbor/core/constants/arbor_constants.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/providers/restore_wallet_provider.dart';
 import 'package:arbor/core/providers/settings_provider.dart';
+import 'package:arbor/views/screens/base/base_screen.dart';
 import 'package:arbor/views/screens/home/home_screen.dart';
 import 'package:arbor/views/screens/no_encryption_available_sccreen.dart';
 import 'package:arbor/core/providers/send_crypto_provider.dart';
@@ -137,7 +138,7 @@ class _MyAppState extends State<MyApp> {
                     if (_isFirstTime) {
                       return SplashScreen();
                     } else {
-                      return HomeScreen();
+                      return BaseScreen();
                     }
                   } else {
                     return Container(
