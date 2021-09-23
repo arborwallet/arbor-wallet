@@ -108,7 +108,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                     Text(
-                      'v1.0.0b02',
+                      'v1.1.0b02',
                       style: TextStyle(
                         color: ArborColors.white,
                       ),
