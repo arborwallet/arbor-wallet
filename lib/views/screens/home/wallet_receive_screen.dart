@@ -30,7 +30,7 @@ class WalletReceiveScreen extends StatefulWidget {
 }
 
 class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
-  //static GlobalKey globalKey = new GlobalKey(debugLabel: 'wallet_receive_screen');
+  static GlobalKey globalKey = new GlobalKey(debugLabel: 'wallet_receive_screen');
 
   static const double PASSWORD_PADDING = 40;
 
@@ -117,68 +117,71 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
         centerTitle: true,
         backgroundColor: ArborColors.green,
       ),
-      body: Container(
-        padding: EdgeInsets.fromLTRB(
-            PASSWORD_PADDING, PASSWORD_PADDING, PASSWORD_PADDING, 0.0),
-        color: ArborColors.green,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              child: QrImage(
-                data: widget.wallet.address,
-                size: 250,
-                version: QrVersions.auto,
-                embeddedImage: AssetImage('assets/images/logo.png'),
-                backgroundColor: ArborColors.white,
-                foregroundColor: Colors.black,
-                gapless: false,
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              'Tap to copy your ${widget.wallet.fork.name} light wallet address:',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: ArborColors.white, fontSize: 16.0),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            InkWell(
-              child: ListTile(
-                title: Text(
-                  widget.wallet.address,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14.0,
-                    color: ArborColors.white70,
-                  ),
+      body: RepaintBoundary(
+        key: globalKey,
+        child: Container(
+          padding: EdgeInsets.fromLTRB(
+              PASSWORD_PADDING, PASSWORD_PADDING, PASSWORD_PADDING, 0.0),
+          color: ArborColors.green,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                child: QrImage(
+                  data: widget.wallet.address,
+                  size: 250,
+                  version: QrVersions.auto,
+                  embeddedImage: AssetImage('assets/images/logo.png'),
+                  backgroundColor: ArborColors.white,
+                  foregroundColor: Colors.black,
+                  gapless: false,
                 ),
-                trailing: Icon(Icons.copy),
-                onTap: () {
-                  Clipboard.setData(ClipboardData(text: widget.wallet.address));
-                  showSnackBar(
-                      context, 'Wallet address copied', ArborColors.deepGreen);
-                },
               ),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            Spacer(),
-            ArborButton(
-              onPressed: () {
-                shareQrCode(widget.wallet.address);
-              },
-              title: 'Share',
-              backgroundColor: ArborColors.deepGreen,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-          ],
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Tap to copy your ${widget.wallet.fork.name} light wallet address:',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: ArborColors.white, fontSize: 16.0),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              InkWell(
+                child: ListTile(
+                  title: Text(
+                    widget.wallet.address,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      color: ArborColors.white70,
+                    ),
+                  ),
+                  trailing: Icon(Icons.copy),
+                  onTap: () {
+                    Clipboard.setData(ClipboardData(text: widget.wallet.address));
+                    showSnackBar(
+                        context, 'Wallet address copied', ArborColors.deepGreen);
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              Spacer(),
+              ArborButton(
+                onPressed: () {
+                  shareQrCode(widget.wallet.address);
+                },
+                title: 'Share',
+                backgroundColor: ArborColors.deepGreen,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+            ],
+          ),
         ),
       ),
     );
