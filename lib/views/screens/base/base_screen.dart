@@ -102,7 +102,8 @@ class _BaseScreenState extends State<BaseScreen>
       color: ArborColors.green,
       child: Scaffold(
         body: SafeArea(
-          child: Theme(
+          child: Container(),
+          /*child: Theme(
             data: theme.copyWith(
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
@@ -111,7 +112,7 @@ class _BaseScreenState extends State<BaseScreen>
               policy: OrderedTraversalPolicy(),
               child: tabBarView,
             ),
-          ),
+          ),*/
         ),
       ),
     );

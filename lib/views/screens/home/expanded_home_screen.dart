@@ -47,7 +47,7 @@ class _ExpandedHomeScreenState extends State<ExpandedHomeScreen> {
       body:Responsive.isDesktop(context)
           ? Row(
             children: [
-              kIsWeb & Responsive.isDesktop(context)? WebDrawer(
+              kIsWeb & Responsive.isDesktop(context)? ArborDrawer(
                 onWalletsTapped: ()=>Navigator.pop(context),
                 onSettingsTapped: () => Navigator.pushReplacement(
                   context,

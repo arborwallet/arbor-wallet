@@ -75,7 +75,7 @@ class ValueScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         kIsWeb && Responsive.isDesktop(context)
-                            ? WebDrawer(
+                            ? ArborDrawer(
                                 onWalletsTapped: () {
                                   model.clearInput();
                                   Navigator.pushReplacement(

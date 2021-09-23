@@ -8,9 +8,7 @@ import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:arbor/views/widgets/dialog/arbor_alert_dialog.dart';
 import 'package:arbor/views/widgets/responsiveness/responsive.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/constants/arbor_constants.dart';
 import '../../../core/constants/hive_constants.dart';
@@ -92,17 +90,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        if (Navigator.of(context).canPop()) {
-          Navigator.of(context).pop();
-        } else {
-          // Android back button hack
-          SystemNavigator.pop();
-        }
-        return Future.value(true);
-      },
-      child: Scaffold(
+    return
+       Scaffold(
         backgroundColor: ArborColors.green,
         appBar: AppBar(
           title: Text(
@@ -111,24 +100,9 @@ class _HomeScreenState extends State<HomeScreen> {
               color: ArborColors.white,
             ),
           ),
-          leading: kIsWeb && Responsive.isDesktop(context) ? Container() : null,
           centerTitle: true,
           backgroundColor: ArborColors.green,
         ),
-        floatingActionButton: kIsWeb
-            ? null
-            : FloatingActionButton(
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => AddWalletScreen(),
-                  ),
-                ),
-                child: const Icon(
-                  Icons.add,
-                  color: Colors.white,
-                ),
-                backgroundColor: ArborColors.deepGreen,
-              ),
         body: Container(
           margin: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
           decoration: BoxDecoration(
@@ -159,8 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             fontSize: 20,
                           ),
                         ),
-                        kIsWeb
-                            ? Padding(
+                         Padding(
                                 padding: const EdgeInsets.only(top: 10),
                                 child: FloatingActionButton(
                                   tooltip: "Add a new wallet",
@@ -176,7 +149,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   backgroundColor: ArborColors.deepGreen,
                                 ),
                               )
-                            : Container(),
                       ],
                     ),
                   );
@@ -192,8 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          kIsWeb
-                              ? Padding(
+                           Padding(
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 10, horizontal: 20),
                                   child: ArborButton(
@@ -208,8 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       );
                                     },
                                   ),
-                                )
-                              : Container(),
+                                ),
                           Expanded(
                             child: ListView.builder(
                               //physics: const NeverScrollableScrollPhysics(),
@@ -358,8 +328,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 
   // Delete info from wallet box
