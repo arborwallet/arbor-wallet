@@ -1,8 +1,8 @@
-import 'package:arbor/views/screens/restore_wallet_screen.dart';
+import 'package:arbor/views/screens/restore_wallet/restore_wallet_screen.dart';
 import 'package:flutter/material.dart';
-import '../../core/constants/arbor_colors.dart';
-import '../../views/widgets/arbor_button.dart';
-import '../../core/constants/asset_paths.dart';
+import '../../../core/constants/arbor_colors.dart';
+import '../../widgets/arbor_button.dart';
+import '../../../core/constants/asset_paths.dart';
 
 import 'on_boarding_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

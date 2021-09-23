@@ -3,7 +3,7 @@ import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/constants/arbor_constants.dart';
 import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/core/providers/settings_provider.dart';
-import 'package:arbor/views/screens/welcome_screen.dart';
+import 'package:arbor/views/screens/on_boarding/welcome_screen.dart';
 import 'package:arbor/views/widgets/dialogs/arbor_alert_dialog.dart';
 import 'package:arbor/views/widgets/dialogs/arbor_info_dialog.dart';
 import 'package:flutter/foundation.dart';

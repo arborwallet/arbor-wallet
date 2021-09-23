@@ -1,23 +1,23 @@
 
 import 'package:arbor/models/models.dart';
-import 'package:arbor/utils/expanded_info_page.dart';
+import 'package:arbor/views/screens/home/expanded_home_page.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:flutter/material.dart';
 
-class ExpandedInfoScreen extends StatefulWidget {
+class ExpandedHomeScreen extends StatefulWidget {
   final int index;
   final Wallet wallet;
 
-  const ExpandedInfoScreen({
+  const ExpandedHomeScreen({
     required this.index,
     required this.wallet,
   });
 
   @override
-  _ExpandedInfoScreenState createState() => _ExpandedInfoScreenState();
+  _ExpandedHomeScreenState createState() => _ExpandedHomeScreenState();
 }
 
-class _ExpandedInfoScreenState extends State<ExpandedInfoScreen> {
+class _ExpandedHomeScreenState extends State<ExpandedHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +44,7 @@ class _ExpandedInfoScreenState extends State<ExpandedInfoScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: ExpandedInfoPage(
+          child: ExpandedHomePage(
             index: widget.index,
             wallet: widget.wallet,
           ),

@@ -4,7 +4,7 @@ import 'package:arbor/core/constants/arbor_constants.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/providers/restore_wallet_provider.dart';
 import 'package:arbor/core/providers/settings_provider.dart';
-import 'package:arbor/screens/info_screen.dart';
+import 'package:arbor/views/screens/home/home_screen.dart';
 import 'package:arbor/views/screens/no_encryption_available_sccreen.dart';
 import 'package:arbor/core/providers/send_crypto_provider.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,7 @@ import 'models/transaction.dart';
 import 'models/transactions.dart';
 import 'models/wallet.dart';
 import 'themes/arbor_theme_data.dart';
-import 'views/screens/splash_screen.dart';
+import 'views/screens/on_boarding/splash_screen.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -137,7 +137,7 @@ class _MyAppState extends State<MyApp> {
                     if (_isFirstTime) {
                       return SplashScreen();
                     } else {
-                      return InfoScreen();
+                      return HomeScreen();
                     }
                   } else {
                     return Container(

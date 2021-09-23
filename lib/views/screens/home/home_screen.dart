@@ -12,19 +12,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../core/constants/arbor_constants.dart';
-import '../core/constants/hive_constants.dart';
+import '../../../core/constants/arbor_constants.dart';
+import '../../../core/constants/hive_constants.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'expanded_info_screen.dart';
+import 'expanded_home_screen.dart';
 
-class InfoScreen extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _InfoScreenState createState() => _InfoScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _InfoScreenState extends State<InfoScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   late final Box walletBox;
 
   // Pull to refresh wallet data
@@ -156,7 +156,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     return InkWell(
                       onTap: () => Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => ExpandedInfoScreen(
+                          builder: (context) => ExpandedHomeScreen(
                             index: index,
                             wallet: walletData,
                           ),

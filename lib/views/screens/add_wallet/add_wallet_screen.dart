@@ -6,7 +6,7 @@ import 'package:arbor/views/widgets/cards/option_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../input_password_screen.dart';
+import '../restore_wallet/input_password_screen.dart';
 
 class AddWalletScreen extends StatelessWidget {
   @override
