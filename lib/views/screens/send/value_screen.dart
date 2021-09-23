@@ -68,7 +68,7 @@ class ValueScreen extends StatelessWidget {
                 ),
                 backgroundColor: ArborColors.green,
               ),
-              body: kIsWeb && Responsive.isDesktop(context)
+              body: !kIsWeb && Responsive.isDesktop(context)
                   ? Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
