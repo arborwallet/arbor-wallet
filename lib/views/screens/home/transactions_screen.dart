@@ -207,6 +207,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                                           color: ArborColors.white,
                                         ),
                                       ),
+                                      SizedBox(width: 2,),
                                       GestureDetector(
                                         onTap: ()=>launchExplorer(url: "${ArborConstants.explorerBaseURL}/${transaction.address}"),
                                         child: Padding(
