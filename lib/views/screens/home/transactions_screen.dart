@@ -171,8 +171,8 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                             child:
                                 ListTile(
                                   leading: Container(
-                                    width: 50,
-                                    height: 50,
+                                    width: 35,
+                                    height: 35,
                                     decoration: new BoxDecoration(
                                       shape: BoxShape.circle,
                                       image: new DecorationImage(
