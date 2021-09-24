@@ -2,7 +2,7 @@ import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/enums/status.dart';
 import 'package:arbor/core/providers/restore_wallet_provider.dart';
 import 'package:arbor/views/screens/base/base_screen.dart';
-import 'package:arbor/utils/password_mixin.dart';
+import 'package:arbor/core/utils/password_mixin.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:arbor/views/widgets/layout/hide_keyboard_container.dart';
 import 'package:arbor/views/widgets/password_box.dart';
