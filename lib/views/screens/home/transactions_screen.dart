@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:arbor/core/constants/hive_constants.dart';
 import 'package:arbor/models/models.dart';
+import 'package:grouped_list/grouped_list.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:arbor/api/services.dart';
@@ -154,7 +155,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                         ));
                   } else {
                     return Container(
-                      child: ListView.builder(
+                      /*child: ListView.builder(
                         padding: const EdgeInsets.only(
                             bottom: kFloatingActionButtonMargin + 100),
                         shrinkWrap: false,
@@ -170,6 +171,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                             margin: EdgeInsets.all(4),
                             child:
                                 ListTile(
+                                  //isThreeLine: true,
                                   leading: Container(
                                     width: 35,
                                     height: 35,
@@ -188,7 +190,9 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                                     ),
                                   ),
                                   subtitle: Text(
-                                    transaction.timeForDisplay(),
+                                    //transaction.timeForDisplay(),
+                                    transaction.toDateOnly(),
+                                    softWrap: false,
                                     style: TextStyle(
                                       color: ArborColors.white70,
                                     ),
@@ -222,6 +226,98 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                                   ),
                                 ),
 
+                          );
+                        },
+                      ),*/
+                      child: GroupedListView<dynamic, dynamic>(
+                        elements: transactionsList,
+                        groupBy: (element) => element.toDateOnly(),
+                        groupComparator: (value1, value2) =>
+                            value1.compareTo(value2),
+                        itemComparator: (item1, item2) =>
+                            item1.toTime().compareTo(item2.toTime()),
+                        order: GroupedListOrder.DESC,
+                        useStickyGroupSeparators: false,
+                        groupHeaderBuilder: (dynamic value) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                value.toDateOnly(),
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: ArborColors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                        itemBuilder: (c, element) {
+                          return Card(
+                            color: ArborColors.green,
+                            elevation: 1,
+                            shadowColor: Colors.lightGreen,
+                            margin: EdgeInsets.all(4),
+                            child: ListTile(
+                              //isThreeLine: true,
+                              leading: Container(
+                                width: 35,
+                                height: 35,
+                                decoration: new BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: new DecorationImage(
+                                    image: element.assetImageForType(),
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                ),
+                              ),
+                              title: Text(
+                                '${element.typeForDisplay()}',
+                                style: TextStyle(
+                                  color: ArborColors.white,
+                                ),
+                              ),
+                              subtitle: Text(
+                                //transaction.timeForDisplay(),
+                                element.toTime(),
+                                softWrap: false,
+                                style: TextStyle(
+                                  color: ArborColors.white70,
+                                ),
+                              ),
+                              trailing: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    element.amountForDisplay(
+                                        transactionsModel!.fork.precision),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: ArborColors.white,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 2,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () => launchExplorer(
+                                        url:
+                                            "${ArborConstants.explorerBaseURL}/${element.address}"),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(2.0),
+                                      child: Icon(
+                                        Icons.open_in_browser,
+                                        color: ArborColors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           );
                         },
                       ),

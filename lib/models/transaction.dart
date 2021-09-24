@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 
 part 'transaction.g.dart';
 
@@ -46,6 +47,16 @@ class Transaction {
   String timeForDisplay() {
     final DateTime dt = DateTime.fromMillisecondsSinceEpoch(timestamp * MILLISECONDS_MULTIPLIER);
     return dt.toString();
+  }
+
+  String toDateOnly() {
+    final DateFormat formatter = DateFormat('MMM d, y');
+    return formatter.format(DateTime.fromMillisecondsSinceEpoch(timestamp * MILLISECONDS_MULTIPLIER));
+  }
+
+  String toTime() {
+    final DateFormat formatter = DateFormat('h:mm a');
+    return formatter.format(DateTime.fromMillisecondsSinceEpoch(timestamp * MILLISECONDS_MULTIPLIER));
   }
 
   AssetImage assetImageForType() {
