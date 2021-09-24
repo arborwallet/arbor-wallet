@@ -193,10 +193,11 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                                       color: ArborColors.white70,
                                     ),
                                   ),
-                                  trailing: Column(
+                                  trailing: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                        MainAxisAlignment.end,
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text(
                                         transaction.amountForDisplay(
