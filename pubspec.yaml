@@ -32,6 +32,9 @@ dependencies:
   # App Version
   package_info_plus: ^1.0.6
 
+  # Biometrics
+  local_auth: ^1.1.7
+
   #QR
   image: ^3.0.4
   qr_code_scanner: ^0.5.2

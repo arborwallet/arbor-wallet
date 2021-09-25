@@ -98,6 +98,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                           SizedBox(height: 10),
                           Text(
+                            "Security",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: ArborColors.white,
+                              fontSize: 15.sp,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          settingsItem(
+                            title: "Visit DFI Discord Channel",
+                            assetPath: AssetPaths.discord,
+                            onPressed: () => model.launchURL(
+                                url: ArborConstants.discordChannelURL),
+                          ),
+                          settingsItem(
+                            title: "View Privacy Policy",
+                            assetPath: AssetPaths.privacyPolicy,
+                            onPressed: () => model.launchURL(
+                                url: ArborConstants.websitePrivacyURL),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
                             "Arbor Data",
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
