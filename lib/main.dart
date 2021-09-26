@@ -142,7 +142,7 @@ class _MyAppState extends State<MyApp> {
                     if (_isFirstTime) {
                       return SplashScreen();
                     } else {
-                      if(customSharedPreference.pinIsSet==true){
+                      if(customSharedPreference.pinIsSet||customSharedPreference.biometricsIsSet){
                         return UnlockWithPinScreen(fromRoot: true,);
                       }else{
                         return BaseScreen();

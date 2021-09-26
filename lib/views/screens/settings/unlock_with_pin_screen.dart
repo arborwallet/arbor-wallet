@@ -58,7 +58,7 @@ class _UnlockWithPinScreenState extends State<UnlockWithPinScreen> {
                 localizedReason: 'Please authenticate with Face ID',
                 iOSAuthStrings: iosStrings);
             if (didAuthenticate) {
-              NavigationUtils.pushReplacement(context, BaseScreen());
+              handleNavigationForBiometrics();
             }
           } catch (e) {
             AppUtils.showSnackBar(context,
@@ -77,7 +77,7 @@ class _UnlockWithPinScreenState extends State<UnlockWithPinScreen> {
                 localizedReason: 'Please authenticate with fingerprint',
                 iOSAuthStrings: iosStrings);
             if (didAuthenticate) {
-              NavigationUtils.pushReplacement(context, BaseScreen());
+              handleNavigationForBiometrics();
             }
           } catch (e) {
             AppUtils.showSnackBar(
@@ -95,21 +95,30 @@ class _UnlockWithPinScreenState extends State<UnlockWithPinScreen> {
               goToSettingsButton: 'settings',
               goToSettingsDescription: 'Please set up your fingerprint ID.');
           try {
+            debugPrint('here');
             bool didAuthenticate = await localAuth.authenticate(
               localizedReason: 'Please authenticate with fingerprint',
               androidAuthStrings: androidStrings,
             );
             if (didAuthenticate) {
-              NavigationUtils.pushReplacement(context, BaseScreen());
+              handleNavigationForBiometrics();
             }
           } catch (e) {
+            debugPrint("${e.toString()}");
             AppUtils.showSnackBar(
-                context,
-                "Unable to authenticate with fingerprint",
-                ArborColors.errorRed);
+                context, "${e.toString()}", ArborColors.errorRed);
           }
         }
       }
+    }
+  }
+
+  handleNavigationForBiometrics() {
+    if (widget.unlock == false) {
+      customSharedPreference.setUseBiometrics(false);
+      Navigator.pop(context, true);
+    } else {
+      NavigationUtils.pushReplacement(context, BaseScreen());
     }
   }
 
