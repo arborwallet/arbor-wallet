@@ -127,7 +127,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           assetPath: AssetPaths.fingerprint,
                           trailing: ArborSwitch(
                             state: customSharedPreference.biometricsIsSet,
-                            onChanged: (_) {},
+                            onChanged: (_) async{
+                              if(_==true){
+                                customSharedPreference.setUseBiometrics(true);
+                              }else{
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => UnlockWithPinScreen(
+                                      unlock: false,
+                                    ),
+                                  ),
+                                );
+                              }
+
+                              setState(() {
+
+                              });
+                            },
                           ),
                           onPressed: () {},
                         ),
