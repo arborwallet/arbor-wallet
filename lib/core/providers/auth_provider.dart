@@ -1,8 +1,12 @@
 import 'package:arbor/core/enums/status.dart';
 import 'package:arbor/core/utils/local_storage_util.dart';
 import 'package:flutter/foundation.dart';
+import 'package:local_auth/auth_strings.dart';
+import 'package:local_auth/local_auth.dart';
 
 class AuthProvider extends ChangeNotifier{
+
+  final LocalAuthentication localAuthentication = LocalAuthentication();
 
   String _firstPin = "";
   String _currentPin = "";
@@ -20,6 +24,49 @@ class AuthProvider extends ChangeNotifier{
   get invalidPin => _invalidPin;
   get pinLength => _pinLength;
 
+  ///Biometrics
+  //Check if device support biometrics
+  Future<bool> hasBiometrics() {
+    return localAuthentication.canCheckBiometrics;
+  }
+
+  //Check the available biometric support
+  Future<BiometricType> biometricType() async {
+    List<BiometricType> availableBiometrics =
+    await localAuthentication.getAvailableBiometrics();
+    if (availableBiometrics.contains(BiometricType.face)) {
+      return BiometricType.face;
+    } else {
+      return BiometricType.fingerprint;
+    }
+  }
+
+
+  IOSAuthMessages iosAuthMessages(String type) {
+    return IOSAuthMessages(
+      cancelButton: 'Cancel',
+      goToSettingsButton: 'Settings',
+      goToSettingsDescription:
+      '$type ID is not set up on your device. Please enable $type ID on your phone',
+      lockOut: 'Please re-enable your $type ID for Arbor',
+    );
+  }
+
+  AndroidAuthMessages androidAuthMessages() {
+    return AndroidAuthMessages(
+      cancelButton: 'Cancel',
+      goToSettingsButton: 'Settings',
+      goToSettingsDescription:
+      'Touch ID is not set up on your device. Please enable Touch ID on your phone',
+    );
+  }
+
+
+
+
+
+
+  ///PIN
   void clear() {
     if (_currentPin.length > 0) {
       _currentPin = _currentPin.substring(0, _currentPin.length - 1);
@@ -140,7 +187,5 @@ class AuthProvider extends ChangeNotifier{
   clearStatus(){
     setPinStatus=Status.IDLE;
   }
-
-
 
 }
