@@ -16,4 +16,5 @@ Arbor Wallet v1 is focused on bringing a light wallet that doesn't store your se
 
 ## Releases
 
-- We'll add this once both the Android and iOS apps are in the respective App Stores.
+- Android BETA https://play.google.com/store/apps/details?id=com.digitalfarminginitiative.arbor
+- iOS BETA https://testflight.apple.com/join/afdyqrwp

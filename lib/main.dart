@@ -1,9 +1,10 @@
 import 'dart:convert';
 
-import 'package:arbor/constants.dart';
+import 'package:arbor/core/constants/arbor_constants.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/providers/restore_wallet_provider.dart';
-import 'package:arbor/screens/info_screen.dart';
+import 'package:arbor/core/providers/settings_provider.dart';
+import 'package:arbor/views/screens/base/base_screen.dart';
 import 'package:arbor/views/screens/no_encryption_available_sccreen.dart';
 import 'package:arbor/core/providers/send_crypto_provider.dart';
 import 'package:flutter/material.dart';
@@ -19,29 +20,26 @@ import 'models/transaction.dart';
 import 'models/transactions.dart';
 import 'models/wallet.dart';
 import 'themes/arbor_theme_data.dart';
-import 'views/screens/splash_screen.dart';
+import 'views/screens/on_boarding/splash_screen.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
 
   try {
-    final String hiveEncryptionKeyKey = 'arbor_hive_key';
-    final String hiveEncryptionSchemaKey = 'arbor_hive_version_key';
-
     final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
     var containsEncryptionKey =
-        await secureStorage.containsKey(key: hiveEncryptionKeyKey);
+        await secureStorage.containsKey(key: HiveConstants.hiveEncryptionKeyKey);
     if (!containsEncryptionKey) {
       var newEncryptionKey = Hive.generateSecureKey();
       await secureStorage.write(
-          key: hiveEncryptionKeyKey, value: base64UrlEncode(newEncryptionKey));
-      await secureStorage.write(key: hiveEncryptionSchemaKey, value: "1");
+          key: HiveConstants.hiveEncryptionKeyKey, value: base64UrlEncode(newEncryptionKey));
+      await secureStorage.write(key: HiveConstants.hiveEncryptionSchemaKey, value: "1");
     }
     await secureStorage.readAll();
 
     String? keyFromSecureStorage =
-        await secureStorage.read(key: hiveEncryptionKeyKey);
+        await secureStorage.read(key: HiveConstants.hiveEncryptionKeyKey);
     if (keyFromSecureStorage != null && keyFromSecureStorage != '') {
       var encryptionKey = base64Url.decode(keyFromSecureStorage);
 
@@ -52,21 +50,40 @@ main() async {
             encryptionCipher: HiveAesCipher(encryptionKey));
         await Hive.openBox(HiveConstants.transactionsBox,
             encryptionCipher: HiveAesCipher(encryptionKey));
-      } on Exception catch (e) {
-        print("Error: ${e.toString()}");
+      } on Exception catch (error) {
+        return runApp(
+          MaterialApp(
+            home: NoEncryptionAvailableScreen(
+              message: 'We were unable to retrieve the encrypted keys to open your wallets. Please contact us.\n',
+              errorString: 'Error: ${error.toString()}',
+            ),
+            debugShowCheckedModeBanner: false,
+          ),
+        );
       }
 
       runApp(MyApp());
     } else {
-      // _showEncryptionErrorView();
-      return runApp(NoEncryptionAvailableScreen(
-          message:
-              'We were unable to retrieve the encrypted keys to open your wallets. Please contact us.'));
+      return runApp(
+        MaterialApp(
+          home: NoEncryptionAvailableScreen(
+            message: 'We were unable to retrieve the encrypted keys to open your wallets. Please contact us.',
+            errorString: ' ',
+          ),
+          debugShowCheckedModeBanner: false,
+        ),
+      );
     }
   } catch (error) {
-    return runApp(NoEncryptionAvailableScreen(
-        message:
-            'We were unable to use the encrypted storage for your wallets. Please contact us. Error: $error'));
+    return runApp(
+      MaterialApp(
+        home: NoEncryptionAvailableScreen(
+          message: 'We were unable to use the encrypted storage for your wallets. Please contact us.\n',
+          errorString: 'Error: ${error.toString()}',
+        ),
+        debugShowCheckedModeBanner: false,
+      ),
+    );
   }
 }
 
@@ -105,6 +122,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => CreateWalletProvider()),
         ChangeNotifierProvider(create: (_) => RestoreWalletProvider()),
         ChangeNotifierProvider(create: (_) => SendCryptoProvider()),
+        ChangeNotifierProvider(create: (_) => SettingsProvider()),
       ],
       child: ScreenUtilInit(
         builder:()=> MaterialApp(
@@ -119,7 +137,7 @@ class _MyAppState extends State<MyApp> {
                     if (_isFirstTime) {
                       return SplashScreen();
                     } else {
-                      return InfoScreen();
+                      return BaseScreen();
                     }
                   } else {
                     return Container(
