@@ -10,6 +10,7 @@ import 'package:arbor/views/screens/base/base_screen.dart';
 import 'package:arbor/views/screens/no_encryption_available_sccreen.dart';
 import 'package:arbor/core/providers/send_crypto_provider.dart';
 import 'package:arbor/views/screens/settings/unlock_with_pin_screen.dart';
+import 'package:arbor/views/themes/arbor_theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -22,7 +23,6 @@ import 'models/fork.dart';
 import 'models/transaction.dart';
 import 'models/transactions.dart';
 import 'models/wallet.dart';
-import 'themes/arbor_theme_data.dart';
 import 'views/screens/on_boarding/splash_screen.dart';
 
 main() async {
@@ -32,13 +32,15 @@ main() async {
 
   try {
     final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
-    var containsEncryptionKey =
-        await secureStorage.containsKey(key: HiveConstants.hiveEncryptionKeyKey);
+    var containsEncryptionKey = await secureStorage.containsKey(
+        key: HiveConstants.hiveEncryptionKeyKey);
     if (!containsEncryptionKey) {
       var newEncryptionKey = Hive.generateSecureKey();
       await secureStorage.write(
-          key: HiveConstants.hiveEncryptionKeyKey, value: base64UrlEncode(newEncryptionKey));
-      await secureStorage.write(key: HiveConstants.hiveEncryptionSchemaKey, value: "1");
+          key: HiveConstants.hiveEncryptionKeyKey,
+          value: base64UrlEncode(newEncryptionKey));
+      await secureStorage.write(
+          key: HiveConstants.hiveEncryptionSchemaKey, value: "1");
     }
     await secureStorage.readAll();
 
@@ -58,7 +60,8 @@ main() async {
         return runApp(
           MaterialApp(
             home: NoEncryptionAvailableScreen(
-              message: 'We were unable to retrieve the encrypted keys to open your wallets. Please contact us.\n',
+              message:
+                  'We were unable to retrieve the encrypted keys to open your wallets. Please contact us.\n',
               errorString: 'Error: ${error.toString()}',
             ),
             debugShowCheckedModeBanner: false,
@@ -71,7 +74,8 @@ main() async {
       return runApp(
         MaterialApp(
           home: NoEncryptionAvailableScreen(
-            message: 'We were unable to retrieve the encrypted keys to open your wallets. Please contact us.',
+            message:
+                'We were unable to retrieve the encrypted keys to open your wallets. Please contact us.',
             errorString: ' ',
           ),
           debugShowCheckedModeBanner: false,
@@ -82,7 +86,8 @@ main() async {
     return runApp(
       MaterialApp(
         home: NoEncryptionAvailableScreen(
-          message: 'We were unable to use the encrypted storage for your wallets. Please contact us.\n',
+          message:
+              'We were unable to use the encrypted storage for your wallets. Please contact us.\n',
           errorString: 'Error: ${error.toString()}',
         ),
         debugShowCheckedModeBanner: false,
@@ -130,7 +135,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => SettingsProvider()),
       ],
       child: ScreenUtilInit(
-        builder:()=> MaterialApp(
+        builder: () => MaterialApp(
             title: 'Arbor',
             theme: ArborThemeData.lightTheme,
             debugShowCheckedModeBanner: false,
@@ -142,9 +147,12 @@ class _MyAppState extends State<MyApp> {
                     if (_isFirstTime) {
                       return SplashScreen();
                     } else {
-                      if(customSharedPreference.pinIsSet||customSharedPreference.biometricsIsSet){
-                        return UnlockWithPinScreen(fromRoot: true,);
-                      }else{
+                      if (customSharedPreference.pinIsSet ||
+                          customSharedPreference.biometricsIsSet) {
+                        return UnlockWithPinScreen(
+                          fromRoot: true,
+                        );
+                      } else {
                         return BaseScreen();
                       }
                     }
