@@ -230,6 +230,8 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                         },
                       ),*/
                       child: GroupedListView<dynamic, dynamic>(
+                        padding: const EdgeInsets.only(
+                            bottom: kFloatingActionButtonMargin + 100),
                         elements: transactionsList,
                         groupBy: (element) => element.toDateOnly(),
                         groupComparator: (value1, value2) =>
