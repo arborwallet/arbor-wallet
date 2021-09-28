@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '/models/models.dart';
 import 'package:hive/hive.dart';
 
-import '../core/constants/hive_constants.dart';
+import '../constants/hive_constants.dart';
 
 
 
