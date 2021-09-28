@@ -262,6 +262,9 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                             margin: EdgeInsets.all(4),
                             child: ListTile(
                               //isThreeLine: true,
+                              onTap: () => launchExplorer(
+                                  url: "${ArborConstants.explorerBaseURL}/${element.address}"
+                              ),
                               leading: Container(
                                 width: 35,
                                 height: 35,
@@ -303,16 +306,11 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                                   SizedBox(
                                     width: 2,
                                   ),
-                                  GestureDetector(
-                                    onTap: () => launchExplorer(
-                                        url:
-                                            "${ArborConstants.explorerBaseURL}/${element.address}"),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(2.0),
-                                      child: Icon(
-                                        Icons.open_in_browser,
-                                        color: ArborColors.white,
-                                      ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: Icon(
+                                      Icons.open_in_browser,
+                                      color: ArborColors.white,
                                     ),
                                   ),
                                 ],
