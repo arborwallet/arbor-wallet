@@ -232,26 +232,57 @@ class StatusScreen extends StatelessWidget {
                 8,
               ),
             ),
-            color: ArborColors.logoGreen,
+            color: ArborColors.lightGreen.withOpacity(0.3)
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                'Sending ',
-                style: TextStyle(
-                  color: ArborColors.white,
-                  fontSize: 12,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Sending:',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      color: ArborColors.white,
+                      fontSize: 12,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      '${model.transactionValue} ${model.forkTicker.toUpperCase()}',
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        color: ArborColors.white,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              Text(
-                '${model.transactionValue} ${model.forkTicker.toUpperCase()}',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: ArborColors.white,
-                  fontSize: 14,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Fee:',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      color: ArborColors.white,
+                      fontSize: 12,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      '0 ${model.forkTicker.toUpperCase()}',
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        color: ArborColors.white,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -268,7 +299,7 @@ class StatusScreen extends StatelessWidget {
                 8,
               ),
             ),
-            color: ArborColors.logoGreen,
+            color: ArborColors.lightGreen.withOpacity(0.3),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

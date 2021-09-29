@@ -222,7 +222,7 @@ class ValueScreen extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: ArborButton(
-                            backgroundColor: ArborColors.logoGreen,
+                            backgroundColor: ArborColors.deepGreen,
                             disabled: !model.enableButton,
                             loading: false,
                             title: 'Continue',
