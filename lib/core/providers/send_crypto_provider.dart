@@ -1,4 +1,3 @@
-import 'package:arbor/api/responses.dart';
 import 'package:arbor/api/services/wallet_service.dart';
 import 'package:arbor/core/constants/ui_constants.dart';
 import 'package:arbor/core/enums/status.dart';
@@ -164,11 +163,8 @@ class SendCryptoProvider extends ChangeNotifier {
         _transactionValue = '0';
         _receiverAddress = '';
         _appBarTitle = 'All Done';
-      } else if (transactionResponse.runtimeType == BaseResponse) {
+      } else{
         _errorMessage = transactionResponse.error;
-        sendCryptoStatus = Status.ERROR;
-      } else {
-        _errorMessage = 'An error occurred';
         sendCryptoStatus = Status.ERROR;
       }
       notifyListeners();
