@@ -112,6 +112,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             body: RefreshIndicator(
               onRefresh: _reloadWalletBalances,
+              backgroundColor: ArborColors.white,
+              strokeWidth: 2.5,
               child: ValueListenableBuilder(
                 valueListenable: walletBox.listenable(),
                 builder: (context, Box box, widget) {

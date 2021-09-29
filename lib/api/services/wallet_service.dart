@@ -15,7 +15,7 @@ class WalletService extends ApiService {
   // @GET("/v1/keygen") and @POST("v1/wallet")
   Future<Wallet> fetchWalletKeys() async {
     try {
-      final keygenResponse = await http.get(Uri.parse('${baseURL}/keygen'));
+      final keygenResponse = await http.get(Uri.parse('${baseURL}/keygen')).timeout(Duration(milliseconds: 5000));
 
       // print('HEADERS: ${keygenResponse.headers}');
 

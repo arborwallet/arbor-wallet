@@ -47,7 +47,7 @@ class CreateWalletProvider extends ChangeNotifier {
   bool _tappedRevealButton=false;
   bool get tappedRevealButton=>_tappedRevealButton;
 
-  createNewWallet() async {
+  createNewWallet() async    {
     createWalletStatus = Status.LOADING;
     _appBarTitle='Generating';
     notifyListeners();
@@ -63,8 +63,10 @@ class CreateWalletProvider extends ChangeNotifier {
       debugPrint('${newWallet.toString()}');
       box.add(newWallet);
     } on Exception catch (e) {
-      debugPrint('Create Wallet Error: ${e.toString()}');
-      _errorMessage=e.toString();
+      debugPrint('Create Wallet Error: ${e.toString()} ${e.runtimeType}');
+
+        _errorMessage=e.toString();
+
       _appBarTitle='Error';
       createWalletStatus = Status.ERROR;
       notifyListeners();

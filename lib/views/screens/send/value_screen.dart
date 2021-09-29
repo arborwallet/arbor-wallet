@@ -193,6 +193,7 @@ class ValueScreen extends StatelessWidget {
                                 child: GestureDetector(
                                   onTap: () => model.useMax(),
                                   child: Container(
+                                    margin: EdgeInsets.symmetric(vertical: 30),
                                     // margin: EdgeInsets.symmetric(vertical: 16),
                                     // padding: EdgeInsets.symmetric(horizontal: 10),
                                     height: double.maxFinite * 0.75,

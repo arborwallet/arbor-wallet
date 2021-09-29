@@ -145,6 +145,7 @@ class StatusScreen extends StatelessWidget {
           title: 'Continue',
           onPressed: () {
             Navigator.pop(context, true);
+            model.clearStatus();
             model.close();
           },
         ),

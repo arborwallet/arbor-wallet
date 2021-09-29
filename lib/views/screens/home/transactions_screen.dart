@@ -191,8 +191,8 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                             child: ListTile(
                               //isThreeLine: true,
                               onTap: () => launchExplorer(
-                                  url: "${ArborConstants.explorerBaseURL}/${element.address}"
-                              ),
+                                  url:
+                                      "${ArborConstants.explorerBaseURL}/${element.address}"),
                               leading: Container(
                                 width: 35,
                                 height: 35,

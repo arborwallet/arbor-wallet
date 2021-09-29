@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:arbor/api/services/wallet_service.dart';
 import 'package:arbor/core/constants/ui_constants.dart';
 import 'package:arbor/core/enums/status.dart';
@@ -155,6 +157,7 @@ class SendCryptoProvider extends ChangeNotifier {
         privateKey: privateKey,
         amount: double.parse(_transactionValue) * chiaPrecision,
         address: _receiverAddress,
+        fee: 1
       );
 
       if (transactionResponse == 'success') {
@@ -167,6 +170,11 @@ class SendCryptoProvider extends ChangeNotifier {
         _errorMessage = transactionResponse.error;
         sendCryptoStatus = Status.ERROR;
       }
+      notifyListeners();
+    }on SocketException catch(e){
+      _errorMessage ="Unable to connect to the internet";
+      debugPrint(e.toString());
+      sendCryptoStatus = Status.ERROR;
       notifyListeners();
     } on Exception catch (e) {
       _errorMessage = e.toString();
@@ -200,6 +208,7 @@ class SendCryptoProvider extends ChangeNotifier {
   }
 
   clearStatus() {
+    _validAddress=false;
     sendCryptoStatus = Status.IDLE;
   }
 
