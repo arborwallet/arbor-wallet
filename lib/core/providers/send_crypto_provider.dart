@@ -157,7 +157,7 @@ class SendCryptoProvider extends ChangeNotifier {
         privateKey: privateKey,
         amount: double.parse(_transactionValue) * chiaPrecision,
         address: _receiverAddress,
-        fee: 1
+        fee: 0
       );
 
       if (transactionResponse == 'success') {

@@ -232,7 +232,7 @@ class StatusScreen extends StatelessWidget {
                 8,
               ),
             ),
-            color: ArborColors.deepGreen,
+            color: ArborColors.logoGreen,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -268,7 +268,7 @@ class StatusScreen extends StatelessWidget {
                 8,
               ),
             ),
-            color: ArborColors.deepGreen,
+            color: ArborColors.logoGreen,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -299,7 +299,7 @@ class StatusScreen extends StatelessWidget {
           child: Container(),
         ),
         ArborButton(
-          backgroundColor: ArborColors.logoGreen,
+          backgroundColor: ArborColors.deepGreen,
           disabled: false,
           loading: false,
           title: 'Send',
