@@ -100,7 +100,7 @@ class WalletService extends ApiService {
     }
   }
 
-  // @GET("/transactions")
+  // @GET("/v1/transactions")
   Future<Transactions> fetchWalletTransactions(String walletAddress) async {
     try {
       final transactionsData = await http.post(
@@ -153,7 +153,7 @@ class WalletService extends ApiService {
     }
   }
 
-  // @POST("/recover") and @POST("/wallet")
+  // @POST("/v1/recover") and @POST("/v1/wallet") and @POST("/v1/balance")
   Future<dynamic> recoverWallet(String phrase) async {
     try {
       final recoverKeyResponse = await http.post(
@@ -240,7 +240,7 @@ class WalletService extends ApiService {
     }
   }
 
-  // @POST("/send")
+  // @POST("/v1/send")
   Future<dynamic> sendXCH(
       {required String privateKey,
       required var amount,
