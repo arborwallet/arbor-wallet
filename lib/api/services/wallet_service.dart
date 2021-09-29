@@ -15,7 +15,7 @@ class WalletService extends ApiService {
   // @GET("/v1/keygen") and @POST("v1/wallet")
   Future<Wallet> fetchWalletKeys() async {
     try {
-      final keygenResponse = await http.get(Uri.parse('${baseURL}/keygen')).timeout(Duration(milliseconds: 5000));
+      final keygenResponse = await http.get(Uri.parse('${baseURL}/v1/keygen')).timeout(Duration(milliseconds: 5000));
 
       // print('HEADERS: ${keygenResponse.headers}');
 
@@ -26,7 +26,7 @@ class WalletService extends ApiService {
             KeygenResponse.fromJson(jsonDecode(keygenResponse.body));
 
         final walletResponse = await http.post(
-          Uri.parse('${baseURL}/wallet'),
+          Uri.parse('${baseURL}/v1/wallet'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
@@ -74,7 +74,7 @@ class WalletService extends ApiService {
   Future<int> fetchWalletBalance(String walletAddress) async {
     try {
       final balanceData = await http.post(
-        Uri.parse('${baseURL}/balance'),
+        Uri.parse('${baseURL}/v1/balance'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -104,7 +104,7 @@ class WalletService extends ApiService {
   Future<Transactions> fetchWalletTransactions(String walletAddress) async {
     try {
       final transactionsData = await http.post(
-        Uri.parse('${baseURL}/transactions'),
+        Uri.parse('${baseURL}/v1/transactions'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -157,7 +157,7 @@ class WalletService extends ApiService {
   Future<dynamic> recoverWallet(String phrase) async {
     try {
       final recoverKeyResponse = await http.post(
-        Uri.parse('${baseURL}/recover'),
+        Uri.parse('${baseURL}/v1/recover'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -174,7 +174,7 @@ class WalletService extends ApiService {
             KeygenResponse.fromJson(jsonDecode(recoverKeyResponse.body));
 
         final getWalletResponse = await http.post(
-          Uri.parse('${baseURL}/wallet'),
+          Uri.parse('${baseURL}/v1/wallet'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
@@ -192,7 +192,7 @@ class WalletService extends ApiService {
               WalletResponse.fromJson(jsonDecode(getWalletResponse.body));
 
           final getWalletBalanceResponse = await http.post(
-            Uri.parse('${baseURL}/balance'),
+            Uri.parse('${baseURL}/v1/balance'),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
@@ -247,7 +247,7 @@ class WalletService extends ApiService {
       required String address,var fee=1}) async {
     try {
       final responseData = await http.post(
-        Uri.parse('${baseURL}/send'),
+        Uri.parse('${baseURL}/v1/send'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
