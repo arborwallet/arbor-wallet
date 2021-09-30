@@ -2,6 +2,7 @@ import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/constants/arbor_constants.dart';
 import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/core/constants/hive_constants.dart';
+import 'package:arbor/core/utils/app_utils.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:arbor/views/widgets/dialogs/arbor_alert_dialog.dart';
 import 'package:arbor/views/widgets/dialogs/arbor_info_dialog.dart';
@@ -14,14 +15,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NoEncryptionAvailableScreen extends StatelessWidget {
-  const NoEncryptionAvailableScreen({Key? key, required this.message, required this.errorString}) : super(key: key);
+  const NoEncryptionAvailableScreen(
+      {Key? key, required this.message, required this.errorString})
+      : super(key: key);
   final String message;
   final String errorString;
   static const VIEW_PADDING = 40.0;
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       color: ArborColors.green,
       child: Scaffold(
           backgroundColor: ArborColors.green,
@@ -31,7 +34,8 @@ class NoEncryptionAvailableScreen extends StatelessWidget {
             left: true,
             right: true,
             child: Padding(
-                padding: EdgeInsets.fromLTRB(VIEW_PADDING, 0.0, VIEW_PADDING, 0.0),
+                padding:
+                    EdgeInsets.fromLTRB(VIEW_PADDING, 0.0, VIEW_PADDING, 0.0),
                 child: Container(
                   child: Column(
                     children: <Widget>[
@@ -43,7 +47,9 @@ class NoEncryptionAvailableScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Spacer(flex: 2,),
+                      Spacer(
+                        flex: 2,
+                      ),
                       Text(
                         message,
                         textAlign: TextAlign.center,
@@ -53,38 +59,43 @@ class NoEncryptionAvailableScreen extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      SizedBox(height: 20,),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Row(
                         children: [
                           Flexible(
                               child: InkWell(
-                                child: Text(
-                                  errorString,
-                                  maxLines: 5,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                onTap: () {
-                                  Clipboard.setData(ClipboardData(text: errorString));
-                                },
-                              )
-                          ),
+                            child: Text(
+                              errorString,
+                              maxLines: 5,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            onTap: () {
+                              Clipboard.setData(
+                                  ClipboardData(text: errorString));
+                            },
+                          )),
                           InkWell(
                             child: Icon(
                               Icons.copy,
                             ),
                             onTap: () {
-                              Clipboard.setData(ClipboardData(text: errorString));
+                              Clipboard.setData(
+                                  ClipboardData(text: errorString));
                             },
                           ),
                         ],
                       ),
-                      SizedBox(height: 20,),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Row(
                         children: <Widget>[
                           Flexible(
@@ -100,7 +111,9 @@ class NoEncryptionAvailableScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(height: 20,),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Row(
                         children: <Widget>[
                           Flexible(
@@ -108,7 +121,9 @@ class NoEncryptionAvailableScreen extends StatelessWidget {
                             fit: FlexFit.tight,
                             child: ArborButton(
                               onPressed: () {
-                                launchURL(url: ArborConstants.baseWebsiteURL);
+                                launchURL(
+                                    context: context,
+                                    url: ArborConstants.baseWebsiteURL);
                               },
                               title: 'Contact Us',
                               backgroundColor: ArborColors.deepGreen,
@@ -116,13 +131,13 @@ class NoEncryptionAvailableScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(height: 40,),
+                      SizedBox(
+                        height: 40,
+                      ),
                     ],
                   ),
-                )
-            ),
-          )
-      ),
+                )),
+          )),
     );
   }
 
@@ -133,7 +148,7 @@ class NoEncryptionAvailableScreen extends StatelessWidget {
         return ArborAlertDialog(
           title: "Delete Wallet",
           subTitle:
-          "You cannot undo this action. Do you want to proceed to delete all Arbor data?",
+              "You cannot undo this action. Do you want to proceed to delete all Arbor data?",
           onCancelPressed: () => Navigator.pop(context, false),
           onYesPressed: () => Navigator.pop(context, true),
         );
@@ -158,21 +173,24 @@ class NoEncryptionAvailableScreen extends StatelessWidget {
       _showDeleteArborDataSuccess(context);
     } catch (error) {
       print('Error: ${error.toString()}');
-      showDeleteArborDataStatus(context, "Erase Arbor Data Failed","We couldn't delete the data. Error: ${error.toString()}");
+      showDeleteArborDataStatus(context, "Erase Arbor Data Failed",
+          "We couldn't delete the data. Error: ${error.toString()}");
     }
   }
 
   void _showDeleteArborDataSuccess(BuildContext context) async {
-     await showDialog(
-
+    await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Arbor Data Deleted",
-            style: TextStyle(fontSize: 14, color: ArborColors.black),),
+          title: Text(
+            "Arbor Data Deleted",
+            style: TextStyle(fontSize: 14, color: ArborColors.black),
+          ),
           content: Text(
             "Your Arbor data was deleted. Please restart/reinstall the app.",
-            style: TextStyle(fontSize: 12, color: ArborColors.black),),
+            style: TextStyle(fontSize: 12, color: ArborColors.black),
+          ),
           actions: [
             TextButton(
               child: Text("OK"),
@@ -182,13 +200,13 @@ class NoEncryptionAvailableScreen extends StatelessWidget {
             ),
           ],
         );
-
       },
     );
   }
 
-  void showDeleteArborDataStatus(BuildContext context, String title,String description) async {
-     await showDialog(
+  void showDeleteArborDataStatus(
+      BuildContext context, String title, String description) async {
+    await showDialog(
       context: context,
       builder: (BuildContext context) {
         return ArborInfoDialog(
@@ -199,7 +217,14 @@ class NoEncryptionAvailableScreen extends StatelessWidget {
     );
   }
 
-  launchURL({required String url}) async {
-    await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+  launchURL({required BuildContext context, required String url}) async {
+    try {
+      await canLaunch(url)
+          ? await launch(url)
+          : AppUtils.showSnackBar(
+              context, 'Unable to launch $url', ArborColors.errorRed);
+    } on Exception catch (e) {
+      AppUtils.showSnackBar(context, "${e.toString()}", ArborColors.errorRed);
+    }
   }
 }

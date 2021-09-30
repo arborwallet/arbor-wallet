@@ -140,9 +140,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                         ),
                       ),
                     );
-                  }
-                  // if (box.isEmpty) {
-                  else if (transactionsList.length == 0 && _fetchingTransactions==false) {
+                  } else if (transactionsList.length == 0 && _fetchingTransactions==false) {
                     return Container(
                         padding: EdgeInsets.all(50),
                         child: Column(
