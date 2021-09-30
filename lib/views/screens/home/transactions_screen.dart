@@ -29,7 +29,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
 
   late final Box transactionsBox;
   final String walletAddress;
-  bool _fetchingTransactions = false;
+  bool _fetchingTransactions = true;
   final walletService = WalletService();
   late Future<TransactionsList> fetchedTransactions;
 
@@ -54,6 +54,9 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
         transactionsBox.delete(walletAddress);
       }
       transactionsBox.put(walletAddress, transactions);
+      setState(() {
+        _fetchingTransactions = false;
+      });
     });
   }
 
@@ -115,15 +118,31 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
               child: ValueListenableBuilder(
                 valueListenable: transactionsBox.listenable(),
                 builder: (context, Box box, widget) {
-                  List<Transaction>? transactionsList;
+                  var transactionsList=[];
 
                   for (int i = 0; i < box.length; i++) {
-                    transactionsList = box.getAt(i);
+                    try{
+                      transactionsList = box.getAt(i);
+                    }on Exception catch (e){
+                      debugPrint(e.toString());
+                    }
+
                   }
 
 
+                  if((transactionsList.length == 0 && _fetchingTransactions==true)){
+                    return Center(
+                      child: Container(
+                        height: 40,width: 40,
+                        child: CircularProgressIndicator(
+                            valueColor: new AlwaysStoppedAnimation<Color>(ArborColors.white),
+                          strokeWidth: 3,
+                        ),
+                      ),
+                    );
+                  }
                   // if (box.isEmpty) {
-                  if (transactionsList==null|| transactionsList.length == 0) {
+                  else if (transactionsList.length == 0 && _fetchingTransactions==false) {
                     return Container(
                         padding: EdgeInsets.all(50),
                         child: Column(
