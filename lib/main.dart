@@ -17,7 +17,8 @@ import 'core/constants/hive_constants.dart';
 import 'core/providers/create_wallet_provider.dart';
 import 'models/fork.dart';
 import 'models/transaction.dart';
-import 'models/transactions.dart';
+import 'models/transaction_model.dart';
+import 'models/transactions_list.dart';
 import 'models/wallet.dart';
 import 'themes/arbor_theme_data.dart';
 import 'views/screens/on_boarding/splash_screen.dart';
@@ -89,8 +90,9 @@ main() async {
 
 void _hiveAdaptersRegistration() {
   Hive.registerAdapter(WalletAdapter());
-  Hive.registerAdapter(ForkAdapter());
-  Hive.registerAdapter(TransactionsAdapter());
+  Hive.registerAdapter(NewForkAdapter());
+  Hive.registerAdapter(TransactionsListAdapter());
+  Hive.registerAdapter(TransactionModelAdapter());
   Hive.registerAdapter(TransactionAdapter());
 }
 

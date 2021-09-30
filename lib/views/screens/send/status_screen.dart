@@ -242,7 +242,7 @@ class StatusScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Sending:',
+                    'Sending',
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: ArborColors.white,
@@ -265,7 +265,7 @@ class StatusScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Fee:',
+                    'Fee',
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: ArborColors.white,

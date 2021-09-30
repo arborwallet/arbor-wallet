@@ -2,7 +2,6 @@ import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/constants/arbor_constants.dart';
 import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/core/constants/hive_constants.dart';
-import 'package:arbor/core/providers/settings_provider.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:arbor/views/widgets/dialogs/arbor_alert_dialog.dart';
 import 'package:arbor/views/widgets/dialogs/arbor_info_dialog.dart';
@@ -11,8 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive/hive.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NoEncryptionAvailableScreen extends StatelessWidget {
   const NoEncryptionAvailableScreen({Key? key, required this.message, required this.errorString}) : super(key: key);
@@ -22,111 +21,109 @@ class NoEncryptionAvailableScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<SettingsProvider>(builder: (_,model,__){
-      return  Container(
-        color: ArborColors.green,
-        child: Scaffold(
-            backgroundColor: ArborColors.green,
-            body: SafeArea(
-              top: true,
-              bottom: true,
-              left: true,
-              right: true,
-              child: Padding(
-                  padding: EdgeInsets.fromLTRB(VIEW_PADDING, 0.0, VIEW_PADDING, 0.0),
-                  child: Container(
-                    child: Column(
-                      children: <Widget>[
-                        Flexible(
-                          flex: 2,
-                          child: Center(
-                            child: Image.asset(
-                              AssetPaths.logo,
-                            ),
+    return  Container(
+      color: ArborColors.green,
+      child: Scaffold(
+          backgroundColor: ArborColors.green,
+          body: SafeArea(
+            top: true,
+            bottom: true,
+            left: true,
+            right: true,
+            child: Padding(
+                padding: EdgeInsets.fromLTRB(VIEW_PADDING, 0.0, VIEW_PADDING, 0.0),
+                child: Container(
+                  child: Column(
+                    children: <Widget>[
+                      Flexible(
+                        flex: 2,
+                        child: Center(
+                          child: Image.asset(
+                            AssetPaths.logo,
                           ),
                         ),
-                        Spacer(flex: 2,),
-                        Text(
-                          message,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
+                      ),
+                      Spacer(flex: 2,),
+                      Text(
+                        message,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
                         ),
-                        SizedBox(height: 20,),
-                        Row(
-                          children: [
-                            Flexible(
-                                child: InkWell(
-                                  child: Text(
-                                    errorString,
-                                    maxLines: 5,
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                      ),
+                      SizedBox(height: 20,),
+                      Row(
+                        children: [
+                          Flexible(
+                              child: InkWell(
+                                child: Text(
+                                  errorString,
+                                  maxLines: 5,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                  onTap: () {
-                                    Clipboard.setData(ClipboardData(text: errorString));
-                                  },
-                                )
+                                ),
+                                onTap: () {
+                                  Clipboard.setData(ClipboardData(text: errorString));
+                                },
+                              )
+                          ),
+                          InkWell(
+                            child: Icon(
+                              Icons.copy,
                             ),
-                            InkWell(
-                              child: Icon(
-                                Icons.copy,
-                              ),
-                              onTap: () {
-                                Clipboard.setData(ClipboardData(text: errorString));
+                            onTap: () {
+                              Clipboard.setData(ClipboardData(text: errorString));
+                            },
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20,),
+                      Row(
+                        children: <Widget>[
+                          Flexible(
+                            flex: 1,
+                            fit: FlexFit.tight,
+                            child: ArborButton(
+                              onPressed: () {
+                                deleteArborData(context);
                               },
+                              title: 'Erase Arbor Data',
+                              backgroundColor: ArborColors.deepGreen,
                             ),
-                          ],
-                        ),
-                        SizedBox(height: 20,),
-                        Row(
-                          children: <Widget>[
-                            Flexible(
-                              flex: 1,
-                              fit: FlexFit.tight,
-                              child: ArborButton(
-                                onPressed: () {
-                                  deleteArborData(context);
-                                },
-                                title: 'Erase Arbor Data',
-                                backgroundColor: ArborColors.deepGreen,
-                              ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20,),
+                      Row(
+                        children: <Widget>[
+                          Flexible(
+                            flex: 1,
+                            fit: FlexFit.tight,
+                            child: ArborButton(
+                              onPressed: () {
+                                launchURL(url: ArborConstants.baseWebsiteURL);
+                              },
+                              title: 'Contact Us',
+                              backgroundColor: ArborColors.deepGreen,
                             ),
-                          ],
-                        ),
-                        SizedBox(height: 20,),
-                        Row(
-                          children: <Widget>[
-                            Flexible(
-                              flex: 1,
-                              fit: FlexFit.tight,
-                              child: ArborButton(
-                                onPressed: () {
-                                  model.launchURL(url: ArborConstants.baseWebsiteURL);
-                                },
-                                title: 'Contact Us',
-                                backgroundColor: ArborColors.deepGreen,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 40,),
-                      ],
-                    ),
-                  )
-              ),
-            )
-        ),
-      );
-    });
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 40,),
+                    ],
+                  ),
+                )
+            ),
+          )
+      ),
+    );
   }
 
   void deleteArborData(BuildContext context) async {
@@ -200,5 +197,9 @@ class NoEncryptionAvailableScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  launchURL({required String url}) async {
+    await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
   }
 }

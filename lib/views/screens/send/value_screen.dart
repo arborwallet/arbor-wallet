@@ -28,6 +28,7 @@ class ValueScreen extends StatelessWidget {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (model.walletBalanceStatus == Status.IDLE) {
           model.privateKey=wallet.privateKey;
+          model.networkFee=wallet.fork.network_fee;
           model.currentUserAddress=wallet.address;
           model.forkPrecision=wallet.fork.precision;
           model.forkName=wallet.fork.name;

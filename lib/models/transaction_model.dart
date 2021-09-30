@@ -1,13 +1,14 @@
 import 'dart:math';
 
+import 'package:arbor/models/transaction.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
-part 'transaction.g.dart';
+part 'transaction_model.g.dart';
 
-@HiveType(typeId: 4)
-class Transaction {
+@HiveType(typeId: 5)
+class TransactionModel {
   static const MILLISECONDS_MULTIPLIER = 1000;
 
   @HiveField(0)
@@ -26,17 +27,15 @@ class Transaction {
   final int amount;
 
   @HiveField(5)
-  final String address;
+  final List<Transaction> transactions;
 
-
-
-  Transaction({
+  TransactionModel({
     required this.type,
     required this.timestamp,
     required this.block,
     required this.fee,
     required this.amount,
-    required this.address
+    required this.transactions
   });
 
   String amountForDisplay(int forkPrecision) {

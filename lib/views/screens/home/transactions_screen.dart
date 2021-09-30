@@ -1,6 +1,7 @@
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/constants/arbor_constants.dart';
 import 'package:arbor/core/utils/app_utils.dart';
+import 'package:arbor/models/transaction.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:arbor/core/constants/hive_constants.dart';
@@ -30,7 +31,9 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
   final String walletAddress;
   bool _fetchingTransactions = false;
   final walletService = WalletService();
-  late Future<Transactions> fetchedTransactions;
+  late Future<TransactionsList> fetchedTransactions;
+
+  List<Transaction>? transactions;
 
   @override
   void initState() {
@@ -46,12 +49,11 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
       setState(() {
         _fetchingTransactions = true;
       });
-      Transactions tr =
-          await walletService.fetchWalletTransactions(walletAddress);
+      transactions=await walletService.fetchWalletTransactions(walletAddress);
       if (transactionsBox.containsKey(walletAddress)) {
         transactionsBox.delete(walletAddress);
       }
-      transactionsBox.put(walletAddress, tr);
+      transactionsBox.put(walletAddress, transactions);
     });
   }
 
@@ -113,21 +115,22 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
               child: ValueListenableBuilder(
                 valueListenable: transactionsBox.listenable(),
                 builder: (context, Box box, widget) {
-                  Transactions? transactionsModel;
+                  TransactionsList? transactionsModel;
                   List<Transaction>? transactionsList;
 
-                  for (int i = 0; i < box.length; i++) {
+                  /*for (int i = 0; i < box.length; i++) {
                     Transactions tr = box.getAt(i);
                     if (tr.walletAddress == walletAddress) {
                       transactionsModel = tr;
                       transactionsList = tr.list;
                       break;
                     }
-                  }
+                  }*/
+
+                  transactionsList=transactions;
 
                   // if (box.isEmpty) {
-                  if (transactionsList == null ||
-                      transactionsList.length == 0) {
+                  if (transactionsList==null|| transactionsList.length == 0) {
                     return Container(
                         padding: EdgeInsets.all(50),
                         child: Column(
@@ -224,8 +227,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    element.amountForDisplay(
-                                        transactionsModel!.fork.precision),
+                                    element.amountForDisplay(12),
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: ArborColors.white,

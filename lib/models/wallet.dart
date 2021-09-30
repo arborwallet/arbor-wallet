@@ -23,7 +23,7 @@ class Wallet {
   final String address;
 
   @HiveField(4)
-  final Fork fork;
+  final NewFork fork;
 
   @HiveField(5)
   final int balance;

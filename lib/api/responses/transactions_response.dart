@@ -1,37 +1,88 @@
+class TransactionListResponse {
+  List<Transactions>? transactions;
 
+  TransactionListResponse({this.transactions});
 
-import 'base_response.dart';
-import 'fork_response.dart';
-import 'transaction_response.dart';
+  TransactionListResponse.fromJson(Map<String, dynamic> json) {
+    if (json['transactions'] != null) {
+      transactions = [];
+      json['transactions'].forEach((v) {
+        transactions!.add(new Transactions.fromJson(v));
+      });
+    }
+  }
 
-class TransactionsResponse extends BaseResponse {
-  TransactionsResponse({
-    required this.success,
-    this.error,
-    required this.transactions,
-    required this.balance,
-    required this.fork,
-  }) : super(success: success, error: error);
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.transactions != null) {
+      data['transactions'] = this.transactions!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
 
-  final bool success;
-  final String? error;
-  final List<TransactionResponse> transactions;
-  final int balance;
-  final ForkResponse fork;
+class Transactions {
+  String? type;
+  List<TransactionsResponse>? transactions;
+  int? timestamp;
+  int? block;
+  int? amount;
+  int? fee;
 
-  factory TransactionsResponse.fromJson(Map<String, dynamic> json) => TransactionsResponse(
-    success: json["success"],
-    error: json["error"] == null ? null : json["error"],
-    transactions: List<TransactionResponse>.from(json["transactions"].map((x) => TransactionResponse.fromJson(x))),
-    balance: json["balance"],
-    fork: ForkResponse.fromJson(json["fork"]),
-  );
+  Transactions(
+      {this.type,
+        this.transactions,
+        this.timestamp,
+        this.block,
+        this.amount,
+        this.fee});
 
-  Map<String, dynamic> toJson() => {
-    "success": success,
-    "error": error == null ? null : error,
-    "transactions": List<dynamic>.from(transactions.map((x) => x.toJson())),
-    "balance": balance,
-    "fork": fork.toJson(),
-  };
+  Transactions.fromJson(Map<String, dynamic> json) {
+    type = json['type'];
+    if (json['transactions'] != null) {
+      transactions =[];
+      json['transactions'].forEach((v) {
+        transactions!.add(new TransactionsResponse.fromJson(v));
+      });
+    }
+    timestamp = json['timestamp'];
+    block = json['block'];
+    amount = json['amount'];
+    fee = json['fee'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['type'] = this.type;
+    if (this.transactions != null) {
+      data['transactions'] = this.transactions!.map((v) => v.toJson()).toList();
+    }
+    data['timestamp'] = this.timestamp;
+    data['block'] = this.block;
+    data['amount'] = this.amount;
+    data['fee'] = this.fee;
+    return data;
+  }
+}
+
+class TransactionsResponse {
+  String? sender;
+  String? destination;
+  int? amount;
+
+  TransactionsResponse({this.sender, this.amount});
+
+  TransactionsResponse.fromJson(Map<String, dynamic> json) {
+    sender = json['sender'];
+    destination = json['destination'];
+    amount = json['amount'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['sender'] = this.sender;
+    data['destination']=this.destination;
+    data['amount'] = this.amount;
+    return data;
+  }
 }

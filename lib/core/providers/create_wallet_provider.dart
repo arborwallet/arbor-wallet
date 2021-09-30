@@ -52,7 +52,7 @@ class CreateWalletProvider extends ChangeNotifier {
     _appBarTitle='Generating';
     notifyListeners();
     try {
-      newWallet = await walletService.fetchWalletKeys();
+      newWallet = await walletService.createNewWallet();
       seedPhrase=newWallet!.phrase;
       _wordsList=seedPhrase.split(' ').toList();
 

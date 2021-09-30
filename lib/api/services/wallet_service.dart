@@ -1,3 +1,7 @@
+import 'package:arbor/api/responses/wallet_address_response.dart';
+import 'package:arbor/models/transaction.dart';
+import 'package:flutter/material.dart';
+
 import '/models/models.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -13,7 +17,7 @@ class WalletService extends ApiService {
   BaseResponse? baseResponse;
 
   // @GET("/v1/keygen") and @POST("v1/wallet")
-  Future<Wallet> fetchWalletKeys() async {
+  /*Future<Wallet> fetchWalletKeys() async {
     try {
       final keygenResponse = await http.get(Uri.parse('${baseURL}/v1/keygen')).timeout(Duration(milliseconds: 5000));
 
@@ -58,19 +62,201 @@ class WalletService extends ApiService {
 
           return walletModel;
         } else {
-          baseResponse = BaseResponse.fromJson(jsonDecode(keygenResponse.body));
-          throw Exception('${baseResponse}');
+          throw Exception('${walletResponse.body}');
         }
       } else {
-        baseResponse = BaseResponse.fromJson(jsonDecode(keygenResponse.body));
-        throw Exception('${baseResponse}');
+        throw Exception('${keygenResponse.body}');
       }
     } on Exception catch (e) {
       throw Exception('ERROR : ${e.toString()}');
     }
+  }*/
+
+  // @GET("/v1/keygen") and @POST("v1/address") and @POST("v1/fork")
+  Future<Wallet> createNewWallet()async{
+    try{
+
+      final keygenResponse = await http.get(Uri.parse('${baseURL}/v1/keygen')).timeout(Duration(milliseconds: 5000));
+      if(keygenResponse.statusCode==200){
+        KeygenResponse keygen =
+        KeygenResponse.fromJson(jsonDecode(keygenResponse.body));
+
+        final addressResponse = await http.post(
+          Uri.parse('${baseURL}/v1/address'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            'public_key': keygen.publicKey,
+            'fork': 'xch',
+          }),
+        );
+
+        if(addressResponse.statusCode==200){
+          WalletAddressResponse walletAddressResponse =
+          WalletAddressResponse.fromJson(jsonDecode(addressResponse.body));
+
+
+          final forkResponse = await http.post(
+            Uri.parse('${baseURL}/v1/fork'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, String>{
+              'fork': 'xch',
+            }),
+          );
+
+          if(forkResponse.statusCode==200){
+            ForkResponse fork =
+            ForkResponse.fromJson(jsonDecode(forkResponse.body));
+
+            Wallet wallet = Wallet(
+              name: '',
+              phrase: keygen.phrase,
+              privateKey: keygen.privateKey,
+              publicKey: keygen.publicKey,
+              address: walletAddressResponse.address!,
+              fork: NewFork(
+                  name: fork.fork!.name!,
+                  ticker: fork.fork!.ticker!,
+                  unit: fork.fork!.unit!,
+                  precision: fork.fork!.precision!,
+                  logo: fork.fork!.logo!,
+                  network_fee: fork.fork!.networkFee!
+              ),
+              balance: 0,
+            );
+
+            return wallet;
+
+
+          }else{
+            throw Exception('${forkResponse.body}');
+          }
+
+
+        }else{
+          throw Exception('${addressResponse.body}');
+        }
+
+      }else {
+        throw Exception('${keygenResponse.body}');
+      }
+
+    }on Exception catch (e){
+      throw Exception('ERROR : ${e.toString()}');
+    }
+
   }
 
-  // @GET("/v1/balance")
+  // @POST("/v1/recover") and @POST("/v1/wallet") and @POST("v1/fork") and @POST("/v1/balance")
+  Future<Wallet> recoverWallet(String phrase)async{
+    try{
+
+      final recoverKeyResponse = await http.post(
+        Uri.parse('${baseURL}/v1/recover'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'phrase': phrase,
+        }),
+      );
+      if(recoverKeyResponse.statusCode==200){
+        KeygenResponse keygen =
+        KeygenResponse.fromJson(jsonDecode(recoverKeyResponse.body));
+
+        final addressResponse = await http.post(
+          Uri.parse('${baseURL}/v1/address'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            'public_key': keygen.publicKey,
+            'fork': 'xch',
+          }),
+        );
+
+        if(addressResponse.statusCode==200){
+          WalletAddressResponse walletAddressResponse =
+          WalletAddressResponse.fromJson(jsonDecode(addressResponse.body));
+
+
+          final forkResponse = await http.post(
+            Uri.parse('${baseURL}/v1/fork'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, String>{
+              'fork': 'xch',
+            }),
+          );
+
+          if(forkResponse.statusCode==200){
+
+
+
+            ForkResponse fork =
+            ForkResponse.fromJson(jsonDecode(forkResponse.body));
+
+            final balanceResponse = await http.post(
+              Uri.parse('${baseURL}/v1/balance'),
+              headers: <String, String>{
+                'Content-Type': 'application/json; charset=UTF-8',
+              },
+              body: jsonEncode(<String, String>{
+                'address': walletAddressResponse.address!,
+              }),
+            );
+
+            if(balanceResponse.statusCode==200){
+              BalanceResponse balance =
+              BalanceResponse.fromJson(jsonDecode(balanceResponse.body));
+
+              Wallet wallet = Wallet(
+                name: '',
+                phrase: keygen.phrase,
+                privateKey: keygen.privateKey,
+                publicKey: keygen.publicKey,
+                address: walletAddressResponse.address!,
+                fork: NewFork(
+                    name: fork.fork!.name!,
+                    ticker: fork.fork!.ticker!,
+                    unit: fork.fork!.unit!,
+                    precision: fork.fork!.precision!,
+                    logo: fork.fork!.logo!,
+                    network_fee: fork.fork!.networkFee!
+                ),
+                balance: balance.balance!,
+              );
+
+              return wallet;
+            }else{
+              throw Exception('${balanceResponse.body}');
+            }
+
+
+          }else{
+            throw Exception('${forkResponse.body}');
+          }
+
+
+        }else{
+          throw Exception('${addressResponse.body}');
+        }
+
+      }else {
+        throw Exception('${recoverKeyResponse.body}');
+      }
+
+    }on Exception catch (e){
+      throw Exception('ERROR : ${e.toString()}');
+    }
+
+  }
+
+  // @POST("/v1/balance")
   Future<int> fetchWalletBalance(String walletAddress) async {
     try {
       final balanceData = await http.post(
@@ -89,7 +275,7 @@ class WalletService extends ApiService {
         BalanceResponse balanceResponse =
             BalanceResponse.fromJson(jsonDecode(balanceData.body));
 
-        return balanceResponse.balance;
+        return balanceResponse.balance!;
       } else {
         // If the server did not return a 200 OK response,
         baseResponse = BaseResponse.fromJson(jsonDecode(balanceData.body));
@@ -101,7 +287,7 @@ class WalletService extends ApiService {
   }
 
   // @GET("/v1/transactions")
-  Future<Transactions> fetchWalletTransactions(String walletAddress) async {
+  Future<List<Transaction>> fetchWalletTransactions(String walletAddress) async {
     try {
       final transactionsData = await http.post(
         Uri.parse('${baseURL}/v1/transactions'),
@@ -113,138 +299,62 @@ class WalletService extends ApiService {
         }),
       );
 
+      debugPrint(transactionsData.body.toString());
+
       if (transactionsData.statusCode == 200) {
         // If the server did return a 200 OK response,
         // then parse the JSON.
-        TransactionsResponse tr =
-            TransactionsResponse.fromJson(jsonDecode(transactionsData.body));
+        debugPrint("Here");
+        TransactionListResponse transactionListResponse =
+        TransactionListResponse.fromJson(jsonDecode(transactionsData.body));
 
-        if (tr.success == true) {
+        debugPrint("Length: ${transactionListResponse.transactions!.length}");
+
           List<Transaction> transactionList = [];
-          for (TransactionResponse tr in tr.transactions) {
-            Transaction transaction = Transaction(
-                type: tr.type,
-                timestamp: tr.timestamp,
-                block: tr.block,
-                address: ((tr.sender != null) ? tr.sender! : tr.destination!),
-                amount: tr.amount);
-            transactionList.add(transaction);
+          for (Transactions transactions in transactionListResponse.transactions!) {
+
+            for(TransactionsResponse t in transactions.transactions!){
+              Transaction transaction = Transaction(
+                  type: transactions.type!,
+                  timestamp: transactions.timestamp!,
+                  block: transactions.block!,
+                  address: ((t.sender != null) ? t.sender! : t.destination!),
+                  amount: t.amount!, fee:transactions.fee!);
+              transactionList.add(transaction);
+            }
+
+
           }
 
-          Transactions transactionsModel = Transactions(
+          /*Transactions transactionsModel = Transactions(
               walletAddress: walletAddress,
               list: transactionList,
               fork: Fork(
-                  name: tr.fork.name,
-                  ticker: tr.fork.ticker,
-                  unit: tr.fork.unit,
-                  precision: tr.fork.precision));
-          return transactionsModel;
-        } else {
-          throw Exception('Error: ${tr.error}');
-        }
-      } else {
-        baseResponse = BaseResponse.fromJson(jsonDecode(transactionsData.body));
+                  name: transactionListResponse.fork.name,
+                  ticker: transactionListResponse.fork.ticker,
+                  unit: transactionListResponse.fork.unit,
+                  precision: transactionListResponse.fork.precision));
+          return transactionsModel;*/
 
-        throw Exception('${baseResponse!.error}');
+          debugPrint("Lengthy: ${transactionList.length}");
+          return transactionList;
+
+      } else {
+
+        throw Exception('${transactionsData.body}');
       }
     } on Exception catch (e) {
       throw Exception(e.toString());
     }
   }
 
-  // @POST("/v1/recover") and @POST("/v1/wallet") and @POST("/v1/balance")
-  Future<dynamic> recoverWallet(String phrase) async {
-    try {
-      final recoverKeyResponse = await http.post(
-        Uri.parse('${baseURL}/v1/recover'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'phrase': phrase,
-        }),
-      );
 
-      print(
-          'BODY: ${recoverKeyResponse.body} ${recoverKeyResponse.statusCode}');
-
-      if (recoverKeyResponse.statusCode == 200) {
-        KeygenResponse keygen =
-            KeygenResponse.fromJson(jsonDecode(recoverKeyResponse.body));
-
-        final getWalletResponse = await http.post(
-          Uri.parse('${baseURL}/v1/wallet'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, String>{
-            'public_key': keygen.publicKey,
-            'fork': 'xch',
-          }),
-        );
-
-        print(
-            'BODY: ${getWalletResponse.body} ${getWalletResponse.statusCode}');
-
-        if (getWalletResponse.statusCode == 200) {
-          WalletResponse walletResponse =
-              WalletResponse.fromJson(jsonDecode(getWalletResponse.body));
-
-          final getWalletBalanceResponse = await http.post(
-            Uri.parse('${baseURL}/v1/balance'),
-            headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8',
-            },
-            body: jsonEncode(<String, String>{
-              'address': walletResponse.address,
-            }),
-          );
-          // temp wallet model to be filled out/persisted later
-          if (getWalletBalanceResponse.statusCode == 200) {
-            BalanceResponse balanceResponse = BalanceResponse.fromJson(
-                jsonDecode(getWalletBalanceResponse.body));
-
-            Wallet wallet = Wallet(
-              name: '',
-              phrase: keygen.phrase,
-              privateKey: keygen.privateKey,
-              publicKey: keygen.publicKey,
-              address: walletResponse.address,
-              fork: Fork(
-                  name: walletResponse.fork.name,
-                  ticker: walletResponse.fork.ticker,
-                  unit: walletResponse.fork.unit,
-                  precision: walletResponse.fork.precision),
-              balance: balanceResponse.balance,
-            );
-
-            return wallet;
-          } else {
-            BaseResponse baseResponse = BaseResponse.fromJson(
-                jsonDecode(getWalletBalanceResponse.body));
-            return baseResponse.error;
-          }
-        } else {
-          BaseResponse baseResponse =
-              BaseResponse.fromJson(jsonDecode(getWalletResponse.body));
-          return baseResponse.error;
-        }
-      } else {
-        baseResponse =
-            BaseResponse.fromJson(jsonDecode(recoverKeyResponse.body));
-        return '${baseResponse!.error}';
-      }
-    } catch (e) {
-      return e.toString();
-    }
-  }
 
   // @POST("/v1/send")
   Future<dynamic> sendXCH(
       {required String privateKey,
       required var amount,
-      required String address,var fee=1}) async {
+      required String address,required int fee}) async {
     try {
       final responseData = await http.post(
         Uri.parse('${baseURL}/v1/send'),
@@ -264,8 +374,7 @@ class WalletService extends ApiService {
       if (responseData.statusCode == 200) {
         return 'success';
       } else {
-        baseResponse = BaseResponse.fromJson(jsonDecode(responseData.body));
-        return baseResponse;
+        return "${responseData.body}";
       }
     } on Exception catch (e) {
       return e.toString();
