@@ -1,6 +1,5 @@
 import 'package:arbor/api/responses/wallet_address_response.dart';
 import 'package:arbor/models/transaction.dart';
-import 'package:flutter/material.dart';
 
 import '/models/models.dart';
 import 'package:http/http.dart' as http;
@@ -15,62 +14,6 @@ class WalletService extends ApiService {
   final String baseURL;
 
   BaseResponse? baseResponse;
-
-  // @GET("/v1/keygen") and @POST("v1/wallet")
-  /*Future<Wallet> fetchWalletKeys() async {
-    try {
-      final keygenResponse = await http.get(Uri.parse('${baseURL}/v1/keygen')).timeout(Duration(milliseconds: 5000));
-
-      // print('HEADERS: ${keygenResponse.headers}');
-
-      if (keygenResponse.statusCode == 200) {
-        // If the server did return a 200 OK response,
-        // then parse the JSON.
-        KeygenResponse keygen =
-            KeygenResponse.fromJson(jsonDecode(keygenResponse.body));
-
-        final walletResponse = await http.post(
-          Uri.parse('${baseURL}/v1/wallet'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, String>{
-            'public_key': keygen.publicKey,
-            'fork': 'xch',
-          }),
-        );
-
-        if (walletResponse.statusCode == 200) {
-          // If the server did return a 200 OK response,
-          // then parse the JSON.
-          WalletResponse wallet =
-              WalletResponse.fromJson(jsonDecode(walletResponse.body));
-          // temp wallet model to be filled out/persisted later
-          Wallet walletModel = Wallet(
-            name: '',
-            phrase: keygen.phrase,
-            privateKey: keygen.privateKey,
-            publicKey: keygen.publicKey,
-            address: wallet.address,
-            fork: Fork(
-                name: wallet.fork.name,
-                ticker: wallet.fork.ticker,
-                unit: wallet.fork.unit,
-                precision: wallet.fork.precision),
-            balance: 0,
-          );
-
-          return walletModel;
-        } else {
-          throw Exception('${walletResponse.body}');
-        }
-      } else {
-        throw Exception('${keygenResponse.body}');
-      }
-    } on Exception catch (e) {
-      throw Exception('ERROR : ${e.toString()}');
-    }
-  }*/
 
   // @GET("/v1/keygen") and @POST("v1/address") and @POST("v1/fork")
   Future<Wallet> createNewWallet()async{
@@ -299,16 +242,13 @@ class WalletService extends ApiService {
         }),
       );
 
-      debugPrint(transactionsData.body.toString());
 
       if (transactionsData.statusCode == 200) {
         // If the server did return a 200 OK response,
         // then parse the JSON.
-        debugPrint("Here");
         TransactionListResponse transactionListResponse =
         TransactionListResponse.fromJson(jsonDecode(transactionsData.body));
 
-        debugPrint("Length: ${transactionListResponse.transactions!.length}");
 
           List<Transaction> transactionList = [];
           for (Transactions transactions in transactionListResponse.transactions!) {
@@ -326,17 +266,6 @@ class WalletService extends ApiService {
 
           }
 
-          /*Transactions transactionsModel = Transactions(
-              walletAddress: walletAddress,
-              list: transactionList,
-              fork: Fork(
-                  name: transactionListResponse.fork.name,
-                  ticker: transactionListResponse.fork.ticker,
-                  unit: transactionListResponse.fork.unit,
-                  precision: transactionListResponse.fork.precision));
-          return transactionsModel;*/
-
-          debugPrint("Lengthy: ${transactionList.length}");
           return transactionList;
 
       } else {

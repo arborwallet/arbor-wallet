@@ -115,19 +115,12 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
               child: ValueListenableBuilder(
                 valueListenable: transactionsBox.listenable(),
                 builder: (context, Box box, widget) {
-                  TransactionsList? transactionsModel;
                   List<Transaction>? transactionsList;
 
-                  /*for (int i = 0; i < box.length; i++) {
-                    Transactions tr = box.getAt(i);
-                    if (tr.walletAddress == walletAddress) {
-                      transactionsModel = tr;
-                      transactionsList = tr.list;
-                      break;
-                    }
-                  }*/
+                  for (int i = 0; i < box.length; i++) {
+                    transactionsList = box.getAt(i);
+                  }
 
-                  transactionsList=transactions;
 
                   // if (box.isEmpty) {
                   if (transactionsList==null|| transactionsList.length == 0) {

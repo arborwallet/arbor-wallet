@@ -149,6 +149,8 @@ class SendCryptoProvider extends ChangeNotifier {
   }
 
   send() async {
+
+    debugPrint("Fee:$networkFee");
     sendCryptoStatus = Status.LOADING;
     notifyListeners();
     try {
@@ -166,7 +168,7 @@ class SendCryptoProvider extends ChangeNotifier {
         _receiverAddress = '';
         _appBarTitle = 'All Done';
       } else{
-        _errorMessage = transactionResponse.error;
+        _errorMessage = transactionResponse;
         sendCryptoStatus = Status.ERROR;
       }
       notifyListeners();
