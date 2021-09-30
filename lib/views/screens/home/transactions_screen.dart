@@ -15,20 +15,23 @@ import 'package:url_launcher/url_launcher.dart';
 class TransactionsSheet extends StatefulWidget {
   const TransactionsSheet({
     required this.walletAddress,
+    required this.precision
   });
 
   final String walletAddress;
+  final int precision;
 
   @override
   _TransactionsSheetState createState() =>
-      _TransactionsSheetState(walletAddress);
+      _TransactionsSheetState(walletAddress,precision);
 }
 
 class _TransactionsSheetState extends State<TransactionsSheet> {
-  _TransactionsSheetState(this.walletAddress);
+  _TransactionsSheetState(this.walletAddress,this.precision);
 
   late final Box transactionsBox;
   final String walletAddress;
+  final int precision;
   bool _fetchingTransactions = true;
   final walletService = WalletService();
   late Future<TransactionsList> fetchedTransactions;
@@ -237,7 +240,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    element.amountForDisplay(12),
+                                    element.amountForDisplay(precision),
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: ArborColors.white,

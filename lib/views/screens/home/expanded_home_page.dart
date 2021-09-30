@@ -60,7 +60,7 @@ class _ExpandedHomePageState extends State<ExpandedHomePage> {
           if (box.isEmpty) {
             return const Center(
               child: Text(
-                  'Hmm. We could not find a wallet to show. Please try again'),
+                  'Hmm... We could not find a wallet to show. Please try again'),
             );
           } else {
             var walletData = walletBox.getAt(index);
@@ -203,7 +203,9 @@ class _ExpandedHomePageState extends State<ExpandedHomePage> {
             isScrollControlled: true,
             builder: (BuildContext context) {
               return TransactionsSheet(
-                  walletAddress: (walletBox.getAt(index) as Wallet).address);
+                  walletAddress: (walletBox.getAt(index) as Wallet).address,
+                precision: widget.wallet.fork.precision,
+              );
             },
           );
         },
