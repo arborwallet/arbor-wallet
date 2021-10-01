@@ -15,7 +15,7 @@ class WalletService extends ApiService {
 
   BaseResponse? baseResponse;
 
-  // @GET("/v1/keygen") and @POST("v1/address") and @POST("v1/fork")
+  // @GET("/v1/keygen") and @POST("v1/address") and @POST("v1/blockchain")
   Future<Wallet> createNewWallet()async{
     try{
 
@@ -31,7 +31,7 @@ class WalletService extends ApiService {
           },
           body: jsonEncode(<String, String>{
             'public_key': keygen.publicKey,
-            'fork': 'xch',
+            'blockchain': 'xch',
           }),
         );
 
@@ -40,19 +40,19 @@ class WalletService extends ApiService {
           WalletAddressResponse.fromJson(jsonDecode(addressResponse.body));
 
 
-          final forkResponse = await http.post(
-            Uri.parse('${baseURL}/v1/fork'),
+          final blockchainResponse = await http.post(
+            Uri.parse('${baseURL}/v1/blockchain'),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
             body: jsonEncode(<String, String>{
-              'fork': 'xch',
+              'blockchain': 'xch',
             }),
           );
 
-          if(forkResponse.statusCode==200){
-            ForkResponse fork =
-            ForkResponse.fromJson(jsonDecode(forkResponse.body));
+          if(blockchainResponse.statusCode==200){
+            BlockchainResponse blockchainResponseModel =
+            BlockchainResponse.fromJson(jsonDecode(blockchainResponse.body));
 
             Wallet wallet = Wallet(
               name: '',
@@ -61,12 +61,12 @@ class WalletService extends ApiService {
               publicKey: keygen.publicKey,
               address: walletAddressResponse.address!,
               fork: Fork(
-                  name: fork.fork!.name!,
-                  ticker: fork.fork!.ticker!,
-                  unit: fork.fork!.unit!,
-                  precision: fork.fork!.precision!,
-                  logo: fork.fork!.logo!,
-                  network_fee: fork.fork!.networkFee!
+                  name: blockchainResponseModel.blockchainData!.name!,
+                  ticker: blockchainResponseModel.blockchainData!.ticker!,
+                  unit: blockchainResponseModel.blockchainData!.unit!,
+                  precision: blockchainResponseModel.blockchainData!.precision!,
+                  logo: blockchainResponseModel.blockchainData!.logo!,
+                  network_fee: blockchainResponseModel.blockchainData!.blockchainFee!
               ),
               balance: 0,
             );
@@ -75,7 +75,7 @@ class WalletService extends ApiService {
 
 
           }else{
-            throw Exception('${forkResponse.body}');
+            throw Exception('${blockchainResponse.body}');
           }
 
 
@@ -93,7 +93,7 @@ class WalletService extends ApiService {
 
   }
 
-  // @POST("/v1/recover") and @POST("/v1/wallet") and @POST("v1/fork") and @POST("/v1/balance")
+  // @POST("/v1/recover") and @POST("/v1/wallet") and @POST("v1/blockchain") and @POST("/v1/balance")
   Future<Wallet> recoverWallet(String phrase)async{
     try{
 
@@ -117,7 +117,7 @@ class WalletService extends ApiService {
           },
           body: jsonEncode(<String, String>{
             'public_key': keygen.publicKey,
-            'fork': 'xch',
+            'blockchain': 'xch',
           }),
         );
 
@@ -126,22 +126,22 @@ class WalletService extends ApiService {
           WalletAddressResponse.fromJson(jsonDecode(addressResponse.body));
 
 
-          final forkResponse = await http.post(
-            Uri.parse('${baseURL}/v1/fork'),
+          final blockchainResponse = await http.post(
+            Uri.parse('${baseURL}/v1/blockchain'),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
             body: jsonEncode(<String, String>{
-              'fork': 'xch',
+              'blockchain': 'xch',
             }),
           );
 
-          if(forkResponse.statusCode==200){
+          if(blockchainResponse.statusCode==200){
 
 
 
-            ForkResponse fork =
-            ForkResponse.fromJson(jsonDecode(forkResponse.body));
+            BlockchainResponse blockchainResponseModel =
+            BlockchainResponse.fromJson(jsonDecode(blockchainResponse.body));
 
             final balanceResponse = await http.post(
               Uri.parse('${baseURL}/v1/balance'),
@@ -164,12 +164,12 @@ class WalletService extends ApiService {
                 publicKey: keygen.publicKey,
                 address: walletAddressResponse.address!,
                 fork: Fork(
-                    name: fork.fork!.name!,
-                    ticker: fork.fork!.ticker!,
-                    unit: fork.fork!.unit!,
-                    precision: fork.fork!.precision!,
-                    logo: fork.fork!.logo!,
-                    network_fee: fork.fork!.networkFee!
+                    name: blockchainResponseModel.blockchainData!.name!,
+                    ticker: blockchainResponseModel.blockchainData!.ticker!,
+                    unit: blockchainResponseModel.blockchainData!.unit!,
+                    precision: blockchainResponseModel.blockchainData!.precision!,
+                    logo: blockchainResponseModel.blockchainData!.logo!,
+                    network_fee: blockchainResponseModel.blockchainData!.blockchainFee!
                 ),
                 balance: balance.balance!,
               );
@@ -181,7 +181,7 @@ class WalletService extends ApiService {
 
 
           }else{
-            throw Exception('${forkResponse.body}');
+            throw Exception('${blockchainResponse.body}');
           }
 
 

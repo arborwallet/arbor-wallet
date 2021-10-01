@@ -1,44 +1,46 @@
-class ForkResponse {
-  ForkData? fork;
+class BlockchainResponse {
+  BlockchainData? blockchainData;
 
-  ForkResponse({this.fork});
+  BlockchainResponse({this.blockchainData});
 
-  ForkResponse.fromJson(Map<String, dynamic> json) {
-    fork = json['fork'] != null ? new ForkData.fromJson(json['fork']) : null;
+  BlockchainResponse.fromJson(Map<String, dynamic> json) {
+    blockchainData = json['blockchain'] != null
+        ? new BlockchainData.fromJson(json['blockchain'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.fork != null) {
-      data['fork'] = this.fork!.toJson();
+    if (this.blockchainData != null) {
+      data['blockchain'] = this.blockchainData!.toJson();
     }
     return data;
   }
 }
 
-class ForkData {
+class BlockchainData {
   String? name;
   String? unit;
   String? logo;
   String? ticker;
   int? precision;
-  int? networkFee;
+  int? blockchainFee;
 
-  ForkData(
+  BlockchainData(
       {this.name,
         this.unit,
         this.logo,
         this.ticker,
         this.precision,
-        this.networkFee});
+        this.blockchainFee});
 
-  ForkData.fromJson(Map<String, dynamic> json) {
+  BlockchainData.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     unit = json['unit'];
     logo = json['logo'];
     ticker = json['ticker'];
     precision = json['precision'];
-    networkFee = json['network_fee'];
+    blockchainFee = json['blockchain_fee'];
   }
 
   Map<String, dynamic> toJson() {
@@ -48,7 +50,7 @@ class ForkData {
     data['logo'] = this.logo;
     data['ticker'] = this.ticker;
     data['precision'] = this.precision;
-    data['network_fee'] = this.networkFee;
+    data['blockchain_fee'] = this.blockchainFee;
     return data;
   }
 }
