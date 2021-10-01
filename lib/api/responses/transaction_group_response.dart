@@ -1,8 +1,8 @@
 
 import 'package:arbor/api/responses/transaction_response.dart';
 
-class TransactionModelResponse {
-  TransactionModelResponse({
+class TransactionGroupResponse {
+  TransactionGroupResponse({
     required this.type,
     required this.timestamp,
     required this.block,
@@ -18,7 +18,7 @@ class TransactionModelResponse {
   final int fee;
   final List<TransactionResponse> transactions;
 
-  factory TransactionModelResponse.fromJson(Map<String, dynamic> json) => TransactionModelResponse(
+  factory TransactionGroupResponse.fromJson(Map<String, dynamic> json) => TransactionGroupResponse(
     type: json["type"],
     timestamp: json["timestamp"],
     block: json["block"],
