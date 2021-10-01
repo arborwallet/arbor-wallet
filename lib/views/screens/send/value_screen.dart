@@ -28,11 +28,11 @@ class ValueScreen extends StatelessWidget {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (model.walletBalanceStatus == Status.IDLE) {
           model.privateKey=wallet.privateKey;
-          model.networkFee=wallet.fork.network_fee;
+          model.networkFee=wallet.blockchain.network_fee;
           model.currentUserAddress=wallet.address;
-          model.forkPrecision=wallet.fork.precision;
-          model.forkName=wallet.fork.name;
-          model.forkTicker=wallet.fork.ticker;
+          model.forkPrecision=wallet.blockchain.precision;
+          model.forkName=wallet.blockchain.name;
+          model.forkTicker=wallet.blockchain.ticker;
           model.setWalletBalance(wallet.balance);
         }
       });
@@ -108,7 +108,7 @@ class ValueScreen extends StatelessWidget {
                               Expanded(
                                 flex: 1,
                                 child: Text(
-                                  '${wallet.fork.name}',
+                                  '${wallet.blockchain.name}',
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
@@ -123,7 +123,7 @@ class ValueScreen extends StatelessWidget {
                                 child: Text(
                                   model.walletBalanceStatus == Status.LOADING
                                       ? 'Loading...'
-                                      : '${model.readableBalance} ${wallet.fork.ticker.toUpperCase()}',
+                                      : '${model.readableBalance} ${wallet.blockchain.ticker.toUpperCase()}',
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.end,
                                   style: TextStyle(
@@ -135,7 +135,7 @@ class ValueScreen extends StatelessWidget {
                         ),
                         Spacer(flex: 2),
                         Text(
-                          '${model.transactionValue} ${wallet.fork.ticker.toUpperCase()}',
+                          '${model.transactionValue} ${wallet.blockchain.ticker.toUpperCase()}',
                           style:
                           TextStyle(fontSize: 30.h, color: ArborColors.deepGreen),
                         ),

@@ -54,9 +54,9 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
           await Share.shareFiles(
             [file.path],
             mimeTypes: ['images/png'],
-            subject: '${widget.wallet.fork.name} Wallet Address',
+            subject: '${widget.wallet.blockchain.name} Wallet Address',
             text:
-            '${widget.wallet.fork.name} (${widget.wallet.fork.ticker.toUpperCase()}) Address:\n${widget.wallet.address}',
+            '${widget.wallet.blockchain.name} (${widget.wallet.blockchain.ticker.toUpperCase()}) Address:\n${widget.wallet.address}',
           );
         }
       } else {
@@ -82,7 +82,7 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
         ),
         // title: Text('Receive ${widget.wallet.fork.name} (${widget.wallet.name})'),
         title: Text(
-          'Receive ${widget.wallet.fork.name}',
+          'Receive ${widget.wallet.blockchain.name}',
           style: TextStyle(
             color: ArborColors.white,
           ),
@@ -121,7 +121,7 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
                           height: 20,
                         ),
                         Text(
-                          'Tap to copy your ${widget.wallet.fork.name} light wallet address:',
+                          'Tap to copy your ${widget.wallet.blockchain.name} light wallet address:',
                           textAlign: TextAlign.center,
                           style: TextStyle(color: ArborColors.white, fontSize: 16.0),
                         ),

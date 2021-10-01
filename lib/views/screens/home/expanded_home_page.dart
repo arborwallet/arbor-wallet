@@ -204,7 +204,7 @@ class _ExpandedHomePageState extends State<ExpandedHomePage> {
             builder: (BuildContext context) {
               return TransactionsSheet(
                   walletAddress: (walletBox.getAt(index) as Wallet).address,
-                precision: widget.wallet.fork.precision,
+                precision: widget.wallet.blockchain.precision,
               );
             },
           );

@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
         privateKey: existingWallet.privateKey,
         publicKey: existingWallet.publicKey,
         address: existingWallet.address,
-        fork: existingWallet.fork,
+        blockchain: existingWallet.blockchain,
         balance: newBalance,
       );
 

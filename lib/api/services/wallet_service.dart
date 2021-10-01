@@ -60,7 +60,7 @@ class WalletService extends ApiService {
               privateKey: keygen.privateKey,
               publicKey: keygen.publicKey,
               address: walletAddressResponse.address!,
-              fork: Blockchain(
+              blockchain: Blockchain(
                   name: blockchainResponseModel.blockchainData!.name!,
                   ticker: blockchainResponseModel.blockchainData!.ticker!,
                   unit: blockchainResponseModel.blockchainData!.unit!,
@@ -163,7 +163,7 @@ class WalletService extends ApiService {
                 privateKey: keygen.privateKey,
                 publicKey: keygen.publicKey,
                 address: walletAddressResponse.address!,
-                fork: Blockchain(
+                blockchain: Blockchain(
                     name: blockchainResponseModel.blockchainData!.name!,
                     ticker: blockchainResponseModel.blockchainData!.ticker!,
                     unit: blockchainResponseModel.blockchainData!.unit!,
