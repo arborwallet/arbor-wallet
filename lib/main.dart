@@ -4,6 +4,7 @@ import 'package:arbor/core/constants/arbor_constants.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/providers/restore_wallet_provider.dart';
 import 'package:arbor/core/providers/settings_provider.dart';
+import 'package:arbor/models/models.dart';
 import 'package:arbor/views/screens/base/base_screen.dart';
 import 'package:arbor/views/screens/no_encryption_available_sccreen.dart';
 import 'package:arbor/core/providers/send_crypto_provider.dart';
@@ -17,8 +18,6 @@ import 'core/constants/hive_constants.dart';
 import 'core/providers/create_wallet_provider.dart';
 import 'models/blockchain.dart';
 import 'models/transaction.dart';
-import 'models/transaction_group.dart';
-import 'models/transactions_list.dart';
 import 'models/wallet.dart';
 import 'themes/arbor_theme_data.dart';
 import 'views/screens/on_boarding/splash_screen.dart';
@@ -49,8 +48,7 @@ main() async {
       try {
         await Hive.openBox(HiveConstants.walletBox,
             encryptionCipher: HiveAesCipher(encryptionKey));
-        await Hive.openBox(HiveConstants.transactionsBox,
-            encryptionCipher: HiveAesCipher(encryptionKey));
+        await Hive.openBox(HiveConstants.transactionsBox, encryptionCipher: HiveAesCipher(encryptionKey));
       } on Exception catch (error) {
         return runApp(
           MaterialApp(
@@ -91,8 +89,8 @@ main() async {
 void _hiveAdaptersRegistration() {
   Hive.registerAdapter(WalletAdapter());
   Hive.registerAdapter(BlockchainAdapter());
-  Hive.registerAdapter(TransactionsListAdapter());
-  Hive.registerAdapter(TransactionGroupAdapter());
+  Hive.registerAdapter(TransactionsGroupModelAdapter());
+  //Hive.registerAdapter(TransactionGroupAdapter());
   Hive.registerAdapter(TransactionAdapter());
 }
 

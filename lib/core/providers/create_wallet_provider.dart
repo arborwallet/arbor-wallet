@@ -60,7 +60,6 @@ class CreateWalletProvider extends ChangeNotifier {
         _phrasesList.add(Phrase(index: i, phrase: _wordsList[i]));
       }
 
-      debugPrint('${newWallet.toString()}');
       box.add(newWallet);
     } on Exception catch (e) {
       debugPrint('Create Wallet Error: ${e.toString()} ${e.runtimeType}');

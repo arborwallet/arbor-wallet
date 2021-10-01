@@ -1,3 +1,4 @@
+import 'package:arbor/api/responses/transaction_response.dart';
 import 'package:arbor/api/responses/wallet_address_response.dart';
 import 'package:arbor/models/transaction.dart';
 
@@ -19,7 +20,7 @@ class WalletService extends ApiService {
   Future<Wallet> createNewWallet()async{
     try{
 
-      final keygenResponse = await http.get(Uri.parse('${baseURL}/v1/keygen')).timeout(Duration(milliseconds: 5000));
+      final keygenResponse = await http.get(Uri.parse('${baseURL}/v1/keygen'));
       if(keygenResponse.statusCode==200){
         KeygenResponse keygen =
         KeygenResponse.fromJson(jsonDecode(keygenResponse.body));
@@ -230,7 +231,7 @@ class WalletService extends ApiService {
   }
 
   // @GET("/v1/transactions")
-  Future<List<Transaction>> fetchWalletTransactions(String walletAddress) async {
+  Future<TransactionsGroupModel> fetchWalletTransactions(String walletAddress) async {
     try {
       final transactionsData = await http.post(
         Uri.parse('${baseURL}/v1/transactions'),
@@ -243,6 +244,7 @@ class WalletService extends ApiService {
       );
 
 
+
       if (transactionsData.statusCode == 200) {
         // If the server did return a 200 OK response,
         // then parse the JSON.
@@ -250,8 +252,8 @@ class WalletService extends ApiService {
         TransactionListResponse.fromJson(jsonDecode(transactionsData.body));
 
 
-          List<Transaction> transactionList = [];
-          for (Transactions transactions in transactionListResponse.transactions!) {
+          List<Transaction> transactionsList = [];
+          for (TransactionGroupResponse transactions in transactionListResponse.transactions!) {
 
             for(TransactionsResponse t in transactions.transactions!){
               Transaction transaction = Transaction(
@@ -259,14 +261,13 @@ class WalletService extends ApiService {
                   timestamp: transactions.timestamp!,
                   block: transactions.block!,
                   address: ((t.sender != null) ? t.sender! : t.destination!),
-                  amount: t.amount!, fee:transactions.fee!);
-              transactionList.add(transaction);
+                  amount: t.amount, fee:transactions.fee!,
+                  baseAddress: walletAddress
+              );
+              transactionsList.add(transaction);
             }
-
-
           }
-
-          return transactionList;
+          return TransactionsGroupModel(address: walletAddress, transactionsList: transactionsList);
 
       } else {
 

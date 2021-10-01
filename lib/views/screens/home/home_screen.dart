@@ -169,13 +169,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                   title: Text(
                                     // '${walletData.fork.name} (${walletData.name})'
-                                    '${walletData.blockchainData.name}',
+                                    '${walletData.blockchain.name}',
                                     style: TextStyle(
                                       color: ArborColors.white,
                                     ),
                                   ),
                                   subtitle: Text(
-                                    walletData.blockchainData.ticker.toUpperCase(),
+                                    walletData.blockchain.ticker.toUpperCase(),
                                     style: TextStyle(
                                       color: ArborColors.white70,
                                     ),

@@ -1,11 +1,10 @@
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/constants/arbor_constants.dart';
 import 'package:arbor/core/utils/app_utils.dart';
-import 'package:arbor/models/transaction.dart';
+import 'package:arbor/models/models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:arbor/core/constants/hive_constants.dart';
-import 'package:arbor/models/models.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -13,30 +12,27 @@ import 'package:arbor/api/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TransactionsSheet extends StatefulWidget {
-  const TransactionsSheet({
-    required this.walletAddress,
-    required this.precision
-  });
+  const TransactionsSheet(
+      {required this.walletAddress, required this.precision});
 
   final String walletAddress;
   final int precision;
 
   @override
   _TransactionsSheetState createState() =>
-      _TransactionsSheetState(walletAddress,precision);
+      _TransactionsSheetState(walletAddress, precision);
 }
 
 class _TransactionsSheetState extends State<TransactionsSheet> {
-  _TransactionsSheetState(this.walletAddress,this.precision);
+  _TransactionsSheetState(this.walletAddress, this.precision);
 
   late final Box transactionsBox;
   final String walletAddress;
   final int precision;
   bool _fetchingTransactions = true;
   final walletService = WalletService();
-  late Future<TransactionsList> fetchedTransactions;
 
-  List<Transaction>? transactions;
+  TransactionsGroupModel? transactionsGroupModel;
 
   @override
   void initState() {
@@ -52,11 +48,13 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
       setState(() {
         _fetchingTransactions = true;
       });
-      transactions=await walletService.fetchWalletTransactions(walletAddress);
+      transactionsGroupModel =
+          await walletService.fetchWalletTransactions(walletAddress);
+
       if (transactionsBox.containsKey(walletAddress)) {
         transactionsBox.delete(walletAddress);
       }
-      transactionsBox.put(walletAddress, transactions);
+      transactionsBox.put(walletAddress, transactionsGroupModel);
       setState(() {
         _fetchingTransactions = false;
       });
@@ -121,29 +119,34 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
               child: ValueListenableBuilder(
                 valueListenable: transactionsBox.listenable(),
                 builder: (context, Box box, widget) {
-                  var transactionsList=[];
+                  var transactionsList = [];
 
                   for (int i = 0; i < box.length; i++) {
-                    try{
-                      transactionsList = box.getAt(i);
-                    }on Exception catch (e){
+                    try {
+                      TransactionsGroupModel transactionsGroup = box.getAt(i);
+                      if (transactionsGroup.address == walletAddress) {
+                        transactionsList = transactionsGroup.transactionsList;
+                      }
+                    } on Exception catch (e) {
                       debugPrint(e.toString());
                     }
-
                   }
 
-
-                  if((transactionsList.length == 0 && _fetchingTransactions==true)){
+                  if ((transactionsList.length == 0 &&
+                      _fetchingTransactions == true)) {
                     return Center(
                       child: Container(
-                        height: 40,width: 40,
+                        height: 40,
+                        width: 40,
                         child: CircularProgressIndicator(
-                            valueColor: new AlwaysStoppedAnimation<Color>(ArborColors.white),
+                          valueColor: new AlwaysStoppedAnimation<Color>(
+                              ArborColors.white),
                           strokeWidth: 3,
                         ),
                       ),
                     );
-                  } else if (transactionsList.length == 0 && _fetchingTransactions==false) {
+                  } else if (transactionsList.length == 0 &&
+                      _fetchingTransactions == false) {
                     return Container(
                         padding: EdgeInsets.all(50),
                         child: Column(

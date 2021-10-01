@@ -28,6 +28,9 @@ class Transaction {
   @HiveField(5)
   final String address;
 
+  @HiveField(6)
+  final String baseAddress;
+
 
 
   Transaction({
@@ -36,7 +39,8 @@ class Transaction {
     required this.block,
     required this.fee,
     required this.amount,
-    required this.address
+    required this.address,
+    required this.baseAddress,
   });
 
   String amountForDisplay(int forkPrecision) {

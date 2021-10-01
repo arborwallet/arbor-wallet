@@ -80,13 +80,13 @@ class _ExpandedHomePageState extends State<ExpandedHomePage> {
                   ),
                   // title: Text('${walletData.fork.name} (${walletData.name})'),
                   title: Text(
-                    '${walletData.blockchainData.name}',
+                    '${walletData.blockchain.name}',
                     style: TextStyle(
                       color: ArborColors.white,
                     ),
                   ),
                   subtitle: Text(
-                    walletData.blockchainData.ticker.toUpperCase(),
+                    walletData.blockchain.ticker.toUpperCase(),
                     style: TextStyle(
                       color: ArborColors.white70,
                     ),
@@ -98,7 +98,7 @@ class _ExpandedHomePageState extends State<ExpandedHomePage> {
                     title: FittedBox(
                       fit: BoxFit.contain,
                       child: Text(
-                        '${walletData.blockchainData.ticker.toUpperCase()}: ${walletData.balanceForDisplay()}',
+                        '${walletData.blockchain.ticker.toUpperCase()}: ${walletData.balanceForDisplay()}',
                         style: TextStyle(
                           color: ArborColors.white,
                         ),
