@@ -1,10 +1,10 @@
 class ForkResponse {
-  Fork? fork;
+  ForkData? fork;
 
   ForkResponse({this.fork});
 
   ForkResponse.fromJson(Map<String, dynamic> json) {
-    fork = json['fork'] != null ? new Fork.fromJson(json['fork']) : null;
+    fork = json['fork'] != null ? new ForkData.fromJson(json['fork']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -16,7 +16,7 @@ class ForkResponse {
   }
 }
 
-class Fork {
+class ForkData {
   String? name;
   String? unit;
   String? logo;
@@ -24,7 +24,7 @@ class Fork {
   int? precision;
   int? networkFee;
 
-  Fork(
+  ForkData(
       {this.name,
         this.unit,
         this.logo,
@@ -32,7 +32,7 @@ class Fork {
         this.precision,
         this.networkFee});
 
-  Fork.fromJson(Map<String, dynamic> json) {
+  ForkData.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     unit = json['unit'];
     logo = json['logo'];

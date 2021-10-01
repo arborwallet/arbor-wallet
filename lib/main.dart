@@ -90,7 +90,7 @@ main() async {
 
 void _hiveAdaptersRegistration() {
   Hive.registerAdapter(WalletAdapter());
-  Hive.registerAdapter(NewForkAdapter());
+  Hive.registerAdapter(ForkAdapter());
   Hive.registerAdapter(TransactionsListAdapter());
   Hive.registerAdapter(TransactionModelAdapter());
   Hive.registerAdapter(TransactionAdapter());
