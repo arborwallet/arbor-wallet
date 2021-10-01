@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 part 'fork.g.dart';
 
 @HiveType(typeId: 2)
-class NewFork {
+class Fork {
   @HiveField(0)
   final String name;
 
@@ -22,7 +22,7 @@ class NewFork {
   @HiveField(5)
   final int network_fee;
 
-  NewFork({
+  Fork({
     required this.name,
     required this.ticker,
     required this.unit,

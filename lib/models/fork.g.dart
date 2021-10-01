@@ -6,17 +6,17 @@ part of 'fork.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class NewForkAdapter extends TypeAdapter<NewFork> {
+class ForkAdapter extends TypeAdapter<Fork> {
   @override
   final int typeId = 2;
 
   @override
-  NewFork read(BinaryReader reader) {
+  Fork read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return NewFork(
+    return Fork(
       name: fields[0] as String,
       ticker: fields[1] as String,
       unit: fields[2] as String,
@@ -27,7 +27,7 @@ class NewForkAdapter extends TypeAdapter<NewFork> {
   }
 
   @override
-  void write(BinaryWriter writer, NewFork obj) {
+  void write(BinaryWriter writer, Fork obj) {
     writer
       ..writeByte(6)
       ..writeByte(0)
@@ -50,7 +50,7 @@ class NewForkAdapter extends TypeAdapter<NewFork> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is NewForkAdapter &&
+      other is ForkAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

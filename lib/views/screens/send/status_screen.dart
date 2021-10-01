@@ -139,7 +139,7 @@ class StatusScreen extends StatelessWidget {
           child: Container(),
         ),
         ArborButton(
-          backgroundColor: ArborColors.logoGreen,
+          backgroundColor: ArborColors.deepGreen,
           disabled: false,
           loading: false,
           title: 'Continue',

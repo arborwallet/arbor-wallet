@@ -68,7 +68,7 @@ flutter:
     - assets/fonts/
     - assets/bip39/
 
-  #generate: true
+  generate: true
   uses-material-design: true
   fonts:
     - family: GalleryIcons
