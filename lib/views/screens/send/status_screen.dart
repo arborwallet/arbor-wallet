@@ -127,7 +127,7 @@ class StatusScreen extends StatelessWidget {
           ),
         ),
         Text(
-          '${model.amount} ${model.forkName} (${model.forkTicker.toUpperCase()}) sent',
+          '${model.transactionValueForDisplay} ${model.forkName} (${model.forkTicker.toUpperCase()}) sent',
           style: TextStyle(
             color: ArborColors.white,
             fontWeight: FontWeight.w400,
