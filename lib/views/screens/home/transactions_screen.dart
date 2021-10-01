@@ -38,7 +38,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
     // Get reference to an already opened box
     transactionsBox = Hive.box(HiveConstants.transactionsBox);
 
-    _updateTransactions(delayInSeconds: 1);
+    _updateTransactions(delayInSeconds: 0);
   }
 
   Future<void> _updateTransactions({int delayInSeconds = 0}) async {
@@ -52,6 +52,9 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
         transactionsBox.delete(walletAddress);
       }
       transactionsBox.put(walletAddress, tr);
+      setState(() {
+        _fetchingTransactions = false;
+      });
     });
   }
 
@@ -143,7 +146,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                             Flexible(
                               flex: 2,
                               child: Text(
-                                'You have not sent or received anything yet. Go to a faucet and get some mojo.',
+                                _fetchingTransactions ? "Loading transactions ... " : 'You have not sent or received anything yet. Go to a faucet and get some mojo.',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 20.0,
