@@ -127,11 +127,20 @@ class StatusScreen extends StatelessWidget {
           ),
         ),
         Text(
-          '${model.forkName}(${model.forkTicker.toUpperCase()}) sent',
+          '${model.amount} ${model.forkName} (${model.forkTicker.toUpperCase()}) sent',
           style: TextStyle(
             color: ArborColors.white,
             fontWeight: FontWeight.w400,
             fontSize: 18,
+          ),
+        ),
+        SizedBox(height: 20,),
+        Text(
+          'Transactions may take up to 2 minutes to show up in your wallet.',
+          style: TextStyle(
+            color: ArborColors.white,
+            fontWeight: FontWeight.w200,
+            fontSize: 14,
           ),
         ),
         Expanded(
