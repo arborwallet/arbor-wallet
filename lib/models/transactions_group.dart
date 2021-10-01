@@ -2,10 +2,10 @@
 import 'package:arbor/models/transaction.dart';
 import 'package:hive/hive.dart';
 
-part 'transactions_group_model.g.dart';
+part 'transactions_group.g.dart';
 
 @HiveType(typeId: 3)
-class TransactionsGroupModel {
+class TransactionsGroup {
 
   @HiveField(0)
   final List<Transaction> transactionsList;
@@ -14,7 +14,7 @@ class TransactionsGroupModel {
   final String address;
 
 
-  TransactionsGroupModel({
+  TransactionsGroup({
     required this.address,
     required this.transactionsList,
   });

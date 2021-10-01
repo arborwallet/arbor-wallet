@@ -231,7 +231,7 @@ class WalletService extends ApiService {
   }
 
   // @GET("/v1/transactions")
-  Future<TransactionsGroupModel> fetchWalletTransactions(String walletAddress) async {
+  Future<TransactionsGroup> fetchWalletTransactions(String walletAddress) async {
     try {
       final transactionsData = await http.post(
         Uri.parse('${baseURL}/v1/transactions'),
@@ -267,7 +267,7 @@ class WalletService extends ApiService {
               transactionsList.add(transaction);
             }
           }
-          return TransactionsGroupModel(address: walletAddress, transactionsList: transactionsList);
+          return TransactionsGroup(address: walletAddress, transactionsList: transactionsList);
 
       } else {
 

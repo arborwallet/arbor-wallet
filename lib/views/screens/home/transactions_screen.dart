@@ -32,7 +32,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
   bool _fetchingTransactions = true;
   final walletService = WalletService();
 
-  TransactionsGroupModel? transactionsGroupModel;
+  TransactionsGroup? transactionsGroupModel;
 
   @override
   void initState() {
@@ -96,6 +96,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                     alignment: Alignment.bottomLeft,
                     child: FloatingActionButton(
                         heroTag: "refresh",
+                        splashColor: ArborColors.lightGreen,
                         backgroundColor: ArborColors.deepGreen,
                         child: Icon(Icons.refresh, color: ArborColors.white),
                         onPressed: () {
@@ -107,6 +108,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                   alignment: Alignment.bottomRight,
                   child: FloatingActionButton(
                       heroTag: "btn2",
+                      splashColor: ArborColors.lightGreen,
                       backgroundColor: ArborColors.deepGreen,
                       child: Icon(Icons.close, color: ArborColors.white),
                       onPressed: () {
@@ -123,7 +125,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
 
                   for (int i = 0; i < box.length; i++) {
                     try {
-                      TransactionsGroupModel transactionsGroup = box.getAt(i);
+                      TransactionsGroup transactionsGroup = box.getAt(i);
                       if (transactionsGroup.address == walletAddress) {
                         transactionsList = transactionsGroup.transactionsList;
                       }
