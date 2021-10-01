@@ -21,7 +21,7 @@ class WalletAdapter extends TypeAdapter<Wallet> {
       privateKey: fields[1] as String,
       publicKey: fields[2] as String,
       address: fields[3] as String,
-      fork: fields[4] as Fork,
+      fork: fields[4] as Blockchain,
       balance: fields[5] as int,
     );
   }

@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:hive/hive.dart';
 
-import 'fork.dart';
+import 'blockchain.dart';
 
 part 'wallet.g.dart';
 
@@ -23,7 +23,7 @@ class Wallet {
   final String address;
 
   @HiveField(4)
-  final Fork fork;
+  final Blockchain fork;
 
   @HiveField(5)
   final int balance;

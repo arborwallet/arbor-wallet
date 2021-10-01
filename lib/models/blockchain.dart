@@ -1,9 +1,9 @@
 import 'package:hive/hive.dart';
 
-part 'fork.g.dart';
+part 'blockchain.g.dart';
 
 @HiveType(typeId: 2)
-class Fork {
+class Blockchain {
   @HiveField(0)
   final String name;
 
@@ -22,7 +22,7 @@ class Fork {
   @HiveField(5)
   final int network_fee;
 
-  Fork({
+  Blockchain({
     required this.name,
     required this.ticker,
     required this.unit,
