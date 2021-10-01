@@ -9,7 +9,7 @@ part 'transactions_list.g.dart';
 class TransactionsList {
 
   @HiveField(0)
-  final List<TransactionModel> list;
+  final List<TransactionGroup> list;
 
 
   TransactionsList({

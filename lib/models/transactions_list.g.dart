@@ -17,7 +17,7 @@ class TransactionsListAdapter extends TypeAdapter<TransactionsList> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TransactionsList(
-      list: (fields[0] as List).cast<TransactionModel>(),
+      list: (fields[0] as List).cast<TransactionGroup>(),
     );
   }
 

@@ -5,10 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
-part 'transaction_model.g.dart';
+part 'transaction_group.g.dart';
 
 @HiveType(typeId: 5)
-class TransactionModel {
+class TransactionGroup {
   static const MILLISECONDS_MULTIPLIER = 1000;
 
   @HiveField(0)
@@ -29,7 +29,7 @@ class TransactionModel {
   @HiveField(5)
   final List<Transaction> transactions;
 
-  TransactionModel({
+  TransactionGroup({
     required this.type,
     required this.timestamp,
     required this.block,

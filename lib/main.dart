@@ -17,7 +17,7 @@ import 'core/constants/hive_constants.dart';
 import 'core/providers/create_wallet_provider.dart';
 import 'models/blockchain.dart';
 import 'models/transaction.dart';
-import 'models/transaction_model.dart';
+import 'models/transaction_group.dart';
 import 'models/transactions_list.dart';
 import 'models/wallet.dart';
 import 'themes/arbor_theme_data.dart';
@@ -92,7 +92,7 @@ void _hiveAdaptersRegistration() {
   Hive.registerAdapter(WalletAdapter());
   Hive.registerAdapter(BlockchainAdapter());
   Hive.registerAdapter(TransactionsListAdapter());
-  Hive.registerAdapter(TransactionModelAdapter());
+  Hive.registerAdapter(TransactionGroupAdapter());
   Hive.registerAdapter(TransactionAdapter());
 }
 
