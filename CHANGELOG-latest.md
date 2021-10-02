@@ -1,8 +1,12 @@
-## [1.1.0] - 2021-09-25
+## [1.2.0] - 2021-10-02
 
 ### Added
 
-- Add menu item for viewing app settings.
-- Add a setting to delete all of Arbor Wallet data ( local encryption keys from secure storage and all wallet data ).
-- Add a new onboarding view where new users are taken to Create New Wallet view.
-- Add a setting to allow users join DFI discord community.
+- Now using the new wallet puzzle API which is imcompatible with previous beta apps.
+- Add progress indicator to the transactions screen.
+- Add more info to the transactions screen.
+- Add more info on the send success screen.
+
+### Fixed
+
+- Fix colors of the pull to refresh spinner.
