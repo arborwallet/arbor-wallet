@@ -1,37 +1,28 @@
+import 'transaction_group_response.dart';
 
+class TransactionListResponse {
+  List<TransactionGroupResponse>? transactions;
 
-import 'base_response.dart';
-import 'fork_response.dart';
-import 'transaction_response.dart';
+  TransactionListResponse({this.transactions});
 
-class TransactionsResponse extends BaseResponse {
-  TransactionsResponse({
-    required this.success,
-    this.error,
-    required this.transactions,
-    required this.balance,
-    required this.fork,
-  }) : super(success: success, error: error);
+  TransactionListResponse.fromJson(Map<String, dynamic> json) {
+    if (json['transaction_groups'] != null) {
+      transactions = [];
+      json['transaction_groups'].forEach((v) {
+        transactions!.add(new TransactionGroupResponse.fromJson(v));
+      });
+    }
+  }
 
-  final bool success;
-  final String? error;
-  final List<TransactionResponse> transactions;
-  final int balance;
-  final ForkResponse fork;
-
-  factory TransactionsResponse.fromJson(Map<String, dynamic> json) => TransactionsResponse(
-    success: json["success"],
-    error: json["error"] == null ? null : json["error"],
-    transactions: List<TransactionResponse>.from(json["transactions"].map((x) => TransactionResponse.fromJson(x))),
-    balance: json["balance"],
-    fork: ForkResponse.fromJson(json["fork"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "success": success,
-    "error": error == null ? null : error,
-    "transactions": List<dynamic>.from(transactions.map((x) => x.toJson())),
-    "balance": balance,
-    "fork": fork.toJson(),
-  };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.transactions != null) {
+      data['transaction_groups'] = this.transactions!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
 }
+
+
+
+

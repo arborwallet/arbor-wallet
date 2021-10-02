@@ -60,7 +60,7 @@ class _ExpandedHomePageState extends State<ExpandedHomePage> {
           if (box.isEmpty) {
             return const Center(
               child: Text(
-                  'Hmm. We could not find a wallet to show. Please try again'),
+                  'Hmm... We could not find a wallet to show. Please try again'),
             );
           } else {
             var walletData = walletBox.getAt(index);
@@ -80,13 +80,13 @@ class _ExpandedHomePageState extends State<ExpandedHomePage> {
                   ),
                   // title: Text('${walletData.fork.name} (${walletData.name})'),
                   title: Text(
-                    '${walletData.fork.name}',
+                    '${walletData.blockchain.name}',
                     style: TextStyle(
                       color: ArborColors.white,
                     ),
                   ),
                   subtitle: Text(
-                    walletData.fork.ticker.toUpperCase(),
+                    walletData.blockchain.ticker.toUpperCase(),
                     style: TextStyle(
                       color: ArborColors.white70,
                     ),
@@ -98,7 +98,7 @@ class _ExpandedHomePageState extends State<ExpandedHomePage> {
                     title: FittedBox(
                       fit: BoxFit.contain,
                       child: Text(
-                        '${walletData.fork.ticker.toUpperCase()}: ${walletData.balanceForDisplay()}',
+                        '${walletData.blockchain.ticker.toUpperCase()}: ${walletData.balanceForDisplay()}',
                         style: TextStyle(
                           color: ArborColors.white,
                         ),
@@ -203,7 +203,9 @@ class _ExpandedHomePageState extends State<ExpandedHomePage> {
             isScrollControlled: true,
             builder: (BuildContext context) {
               return TransactionsSheet(
-                  walletAddress: (walletBox.getAt(index) as Wallet).address);
+                  walletAddress: (walletBox.getAt(index) as Wallet).address,
+                precision: widget.wallet.blockchain.precision,
+              );
             },
           );
         },

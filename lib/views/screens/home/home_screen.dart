@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
         privateKey: existingWallet.privateKey,
         publicKey: existingWallet.publicKey,
         address: existingWallet.address,
-        fork: existingWallet.fork,
+        blockchain: existingWallet.blockchain,
         balance: newBalance,
       );
 
@@ -112,6 +112,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             body: RefreshIndicator(
               onRefresh: _reloadWalletBalances,
+              backgroundColor: ArborColors.white,
+              strokeWidth: 2.5,
               child: ValueListenableBuilder(
                 valueListenable: walletBox.listenable(),
                 builder: (context, Box box, widget) {
@@ -167,13 +169,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                   title: Text(
                                     // '${walletData.fork.name} (${walletData.name})'
-                                    '${walletData.fork.name}',
+                                    '${walletData.blockchain.name}',
                                     style: TextStyle(
                                       color: ArborColors.white,
                                     ),
                                   ),
                                   subtitle: Text(
-                                    walletData.fork.ticker.toUpperCase(),
+                                    walletData.blockchain.ticker.toUpperCase(),
                                     style: TextStyle(
                                       color: ArborColors.white70,
                                     ),

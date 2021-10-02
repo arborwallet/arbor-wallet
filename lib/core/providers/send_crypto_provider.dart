@@ -1,4 +1,3 @@
-import 'package:arbor/api/responses.dart';
 import 'package:arbor/api/services/wallet_service.dart';
 import 'package:arbor/core/constants/ui_constants.dart';
 import 'package:arbor/core/enums/status.dart';
@@ -29,6 +28,7 @@ class SendCryptoProvider extends ChangeNotifier {
 
   var transactionResponse;
   int forkPrecision=0;
+  int networkFee=0;
   String forkName='';
   String forkTicker='';
   String privateKey='';
@@ -149,6 +149,8 @@ class SendCryptoProvider extends ChangeNotifier {
   }
 
   send() async {
+
+    debugPrint("Fee:$networkFee");
     sendCryptoStatus = Status.LOADING;
     notifyListeners();
     try {
@@ -156,6 +158,7 @@ class SendCryptoProvider extends ChangeNotifier {
         privateKey: privateKey,
         amount: double.parse(_transactionValue) * chiaPrecision,
         address: _receiverAddress,
+        fee: networkFee
       );
 
       if (transactionResponse == 'success') {
@@ -164,11 +167,8 @@ class SendCryptoProvider extends ChangeNotifier {
         _transactionValue = '0';
         _receiverAddress = '';
         _appBarTitle = 'All Done';
-      } else if (transactionResponse.runtimeType == BaseResponse) {
-        _errorMessage = transactionResponse.error;
-        sendCryptoStatus = Status.ERROR;
-      } else {
-        _errorMessage = 'An error occurred';
+      } else{
+        _errorMessage = transactionResponse;
         sendCryptoStatus = Status.ERROR;
       }
       notifyListeners();
@@ -204,6 +204,7 @@ class SendCryptoProvider extends ChangeNotifier {
   }
 
   clearStatus() {
+    _validAddress=false;
     sendCryptoStatus = Status.IDLE;
   }
 
