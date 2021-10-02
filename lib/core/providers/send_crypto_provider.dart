@@ -39,6 +39,9 @@ class SendCryptoProvider extends ChangeNotifier {
   String _transactionValue = '0';
   String get transactionValue => _transactionValue;
 
+  String _transactionValueForDisplay = '0';
+  String get transactionValueForDisplay => _transactionValueForDisplay;
+
   bool get enableButton => _validAddress && double.parse(_transactionValue) > 0;
 
   double get convertedBalance => _walletBalance / chiaPrecision;
@@ -154,6 +157,7 @@ class SendCryptoProvider extends ChangeNotifier {
     sendCryptoStatus = Status.LOADING;
     notifyListeners();
     try {
+      _transactionValueForDisplay = _transactionValue;
       transactionResponse = await walletService.sendXCH(
         privateKey: privateKey,
         amount: double.parse(_transactionValue) * chiaPrecision,
@@ -197,6 +201,7 @@ class SendCryptoProvider extends ChangeNotifier {
 
   clearInput() {
     _transactionValue = '0';
+    _transactionValueForDisplay = '0';
     _receiverAddress = '';
     _errorMessage = '';
     _addressErrorMessage = '';
