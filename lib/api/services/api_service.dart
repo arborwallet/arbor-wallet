@@ -1,3 +1,3 @@
 abstract class ApiService {
-  static const String baseURL = 'https://dev.arborwallet.com/api';
+  static const String baseURL = 'https://arborwallet.com/api';
 }
