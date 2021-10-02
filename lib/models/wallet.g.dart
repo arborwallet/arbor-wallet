@@ -21,7 +21,7 @@ class WalletAdapter extends TypeAdapter<Wallet> {
       privateKey: fields[1] as String,
       publicKey: fields[2] as String,
       address: fields[3] as String,
-      fork: fields[4] as Fork,
+      blockchain: fields[4] as Blockchain,
       balance: fields[5] as int,
     );
   }
@@ -39,7 +39,7 @@ class WalletAdapter extends TypeAdapter<Wallet> {
       ..writeByte(3)
       ..write(obj.address)
       ..writeByte(4)
-      ..write(obj.fork)
+      ..write(obj.blockchain)
       ..writeByte(5)
       ..write(obj.balance);
   }

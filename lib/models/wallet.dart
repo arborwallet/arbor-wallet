@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:hive/hive.dart';
 
-import 'fork.dart';
+import 'blockchain.dart';
 
 part 'wallet.g.dart';
 
@@ -23,7 +23,7 @@ class Wallet {
   final String address;
 
   @HiveField(4)
-  final Fork fork;
+  final Blockchain blockchain;
 
   @HiveField(5)
   final int balance;
@@ -34,13 +34,13 @@ class Wallet {
     required this.privateKey,
     required this.publicKey,
     required this.address,
-    required this.fork,
+    required this.blockchain,
     required this.balance,
   });
 
   String balanceForDisplay() {
-    double display = balance / pow(10,fork.precision);
-    return display.toStringAsFixed(fork.precision);
+    double display = balance / pow(10,blockchain.precision);
+    return display.toStringAsFixed(blockchain.precision);
     // In case someone asks for the zeros at the end to be not displayed
     // return display.toString();
   }

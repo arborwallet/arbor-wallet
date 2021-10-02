@@ -1,41 +1,35 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'fork.dart';
+part of 'transactions_group.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ForkAdapter extends TypeAdapter<Fork> {
+class TransactionsGroupAdapter extends TypeAdapter<TransactionsGroup> {
   @override
-  final int typeId = 2;
+  final int typeId = 3;
 
   @override
-  Fork read(BinaryReader reader) {
+  TransactionsGroup read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Fork(
-      name: fields[0] as String,
-      ticker: fields[1] as String,
-      unit: fields[2] as String,
-      precision: fields[3] as int,
+    return TransactionsGroup(
+      address: fields[1] as String,
+      transactionsList: (fields[0] as List).cast<Transaction>(),
     );
   }
 
   @override
-  void write(BinaryWriter writer, Fork obj) {
+  void write(BinaryWriter writer, TransactionsGroup obj) {
     writer
-      ..writeByte(4)
-      ..writeByte(0)
-      ..write(obj.name)
-      ..writeByte(1)
-      ..write(obj.ticker)
       ..writeByte(2)
-      ..write(obj.unit)
-      ..writeByte(3)
-      ..write(obj.precision);
+      ..writeByte(0)
+      ..write(obj.transactionsList)
+      ..writeByte(1)
+      ..write(obj.address);
   }
 
   @override
@@ -44,7 +38,7 @@ class ForkAdapter extends TypeAdapter<Fork> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ForkAdapter &&
+      other is TransactionsGroupAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

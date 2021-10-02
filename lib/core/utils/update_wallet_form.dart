@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '/models/models.dart';
 import 'package:hive/hive.dart';
 
-import '../core/constants/hive_constants.dart';
+import '../constants/hive_constants.dart';
 
 
 
@@ -41,7 +41,7 @@ class _UpdateWalletFormState extends State<UpdateWalletForm> {
       privateKey: existingWallet.privateKey,
       publicKey: existingWallet.publicKey,
       address: existingWallet.address,
-      fork: existingWallet.fork,
+      blockchain: existingWallet.blockchain,
       balance: existingWallet.balance,
     );
 

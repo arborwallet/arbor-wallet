@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:arbor/core/constants/arbor_colors.dart';
-import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,7 @@ import 'package:arbor/models/models.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:flutter/services.dart';
-import 'package:image/image.dart' as image;
+//import 'package:image/image.dart' as image;
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
@@ -55,9 +54,9 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
           await Share.shareFiles(
             [file.path],
             mimeTypes: ['images/png'],
-            subject: '${widget.wallet.fork.name} Wallet Address',
+            subject: '${widget.wallet.blockchain.name} Wallet Address',
             text:
-            '${widget.wallet.fork.name} (${widget.wallet.fork.ticker.toUpperCase()}) Address:\n${widget.wallet.address}',
+            '${widget.wallet.blockchain.name} (${widget.wallet.blockchain.ticker.toUpperCase()}) Address:\n${widget.wallet.address}',
           );
         }
       } else {
@@ -83,7 +82,7 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
         ),
         // title: Text('Receive ${widget.wallet.fork.name} (${widget.wallet.name})'),
         title: Text(
-          'Receive ${widget.wallet.fork.name}',
+          'Receive ${widget.wallet.blockchain.name}',
           style: TextStyle(
             color: ArborColors.white,
           ),
@@ -122,7 +121,7 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
                           height: 20,
                         ),
                         Text(
-                          'Tap to copy your ${widget.wallet.fork.name} light wallet address:',
+                          'Tap to copy your ${widget.wallet.blockchain.name} light wallet address:',
                           textAlign: TextAlign.center,
                           style: TextStyle(color: ArborColors.white, fontSize: 16.0),
                         ),

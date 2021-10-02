@@ -1,4 +1,4 @@
-import 'fork_response.dart';
+import 'blockchain_response.dart';
 
 class WalletResponse {
   WalletResponse({
@@ -9,12 +9,12 @@ class WalletResponse {
 
   final bool success;
   final String address;
-  final ForkResponse fork;
+  final BlockchainResponse fork;
 
   factory WalletResponse.fromJson(Map<String, dynamic> json) => WalletResponse(
     success: json["success"],
     address: json["address"],
-    fork: ForkResponse.fromJson(json["fork"]),
+    fork: BlockchainResponse.fromJson(json["fork"]),
   );
 
   Map<String, dynamic> toJson() => {

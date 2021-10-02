@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
+## [1.2.0] - 2021-10-02
+
+### Added
+
+- Now using the new wallet puzzle API which is incompatible with previous beta apps.
+- Add progress indicator to the transactions screen.
+- Add more info to the transactions screen.
+- Add more info on the send success screen.
+
+### Fixed
+
+- Fix colors of the pull to refresh spinner.
+
+
 ## [1.1.0] - 2021-09-25
 
 ### Added
