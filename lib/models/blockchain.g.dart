@@ -1,38 +1,47 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'transactions.dart';
+part of 'blockchain.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class TransactionsAdapter extends TypeAdapter<Transactions> {
+class BlockchainAdapter extends TypeAdapter<Blockchain> {
   @override
-  final int typeId = 3;
+  final int typeId = 2;
 
   @override
-  Transactions read(BinaryReader reader) {
+  Blockchain read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Transactions(
-      walletAddress: fields[0] as String,
-      list: (fields[1] as List).cast<Transaction>(),
-      fork: fields[2] as Fork,
+    return Blockchain(
+      name: fields[0] as String,
+      ticker: fields[1] as String,
+      unit: fields[2] as String,
+      precision: fields[3] as int,
+      logo: fields[4] as String,
+      network_fee: fields[5] as int,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Transactions obj) {
+  void write(BinaryWriter writer, Blockchain obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(6)
       ..writeByte(0)
-      ..write(obj.walletAddress)
+      ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.list)
+      ..write(obj.ticker)
       ..writeByte(2)
-      ..write(obj.fork);
+      ..write(obj.unit)
+      ..writeByte(3)
+      ..write(obj.precision)
+      ..writeByte(4)
+      ..write(obj.logo)
+      ..writeByte(5)
+      ..write(obj.network_fee);
   }
 
   @override
@@ -41,7 +50,7 @@ class TransactionsAdapter extends TypeAdapter<Transactions> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TransactionsAdapter &&
+      other is BlockchainAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

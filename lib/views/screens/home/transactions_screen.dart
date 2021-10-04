@@ -1,10 +1,10 @@
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/constants/arbor_constants.dart';
 import 'package:arbor/core/utils/app_utils.dart';
+import 'package:arbor/models/models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:arbor/core/constants/hive_constants.dart';
-import 'package:arbor/models/models.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -12,25 +12,27 @@ import 'package:arbor/api/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TransactionsSheet extends StatefulWidget {
-  const TransactionsSheet({
-    required this.walletAddress,
-  });
+  const TransactionsSheet(
+      {required this.walletAddress, required this.precision});
 
   final String walletAddress;
+  final int precision;
 
   @override
   _TransactionsSheetState createState() =>
-      _TransactionsSheetState(walletAddress);
+      _TransactionsSheetState(walletAddress, precision);
 }
 
 class _TransactionsSheetState extends State<TransactionsSheet> {
-  _TransactionsSheetState(this.walletAddress);
+  _TransactionsSheetState(this.walletAddress, this.precision);
 
   late final Box transactionsBox;
   final String walletAddress;
-  bool _fetchingTransactions = false;
+  final int precision;
+  bool _fetchingTransactions = true;
   final walletService = WalletService();
-  late Future<Transactions> fetchedTransactions;
+
+  TransactionsGroup? transactionsGroupModel;
 
   @override
   void initState() {
@@ -46,12 +48,16 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
       setState(() {
         _fetchingTransactions = true;
       });
-      Transactions tr =
+      transactionsGroupModel =
           await walletService.fetchWalletTransactions(walletAddress);
+
       if (transactionsBox.containsKey(walletAddress)) {
         transactionsBox.delete(walletAddress);
       }
-      transactionsBox.put(walletAddress, tr);
+      transactionsBox.put(walletAddress, transactionsGroupModel);
+      setState(() {
+        _fetchingTransactions = false;
+      });
     });
   }
 
@@ -90,6 +96,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                     alignment: Alignment.bottomLeft,
                     child: FloatingActionButton(
                         heroTag: "refresh",
+                        splashColor: ArborColors.lightGreen,
                         backgroundColor: ArborColors.deepGreen,
                         child: Icon(Icons.refresh, color: ArborColors.white),
                         onPressed: () {
@@ -101,6 +108,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                   alignment: Alignment.bottomRight,
                   child: FloatingActionButton(
                       heroTag: "btn2",
+                      splashColor: ArborColors.lightGreen,
                       backgroundColor: ArborColors.deepGreen,
                       child: Icon(Icons.close, color: ArborColors.white),
                       onPressed: () {
@@ -113,21 +121,34 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
               child: ValueListenableBuilder(
                 valueListenable: transactionsBox.listenable(),
                 builder: (context, Box box, widget) {
-                  Transactions? transactionsModel;
-                  List<Transaction>? transactionsList;
+                  var transactionsList = [];
 
                   for (int i = 0; i < box.length; i++) {
-                    Transactions tr = box.getAt(i);
-                    if (tr.walletAddress == walletAddress) {
-                      transactionsModel = tr;
-                      transactionsList = tr.list;
-                      break;
+                    try {
+                      TransactionsGroup transactionsGroup = box.getAt(i);
+                      if (transactionsGroup.address == walletAddress) {
+                        transactionsList = transactionsGroup.transactionsList;
+                      }
+                    } on Exception catch (e) {
+                      debugPrint(e.toString());
                     }
                   }
 
-                  // if (box.isEmpty) {
-                  if (transactionsList == null ||
-                      transactionsList.length == 0) {
+                  if ((transactionsList.length == 0 &&
+                      _fetchingTransactions == true)) {
+                    return Center(
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                        child: CircularProgressIndicator(
+                          valueColor: new AlwaysStoppedAnimation<Color>(
+                              ArborColors.white),
+                          strokeWidth: 3,
+                        ),
+                      ),
+                    );
+                  } else if (transactionsList.length == 0 &&
+                      _fetchingTransactions == false) {
                     return Container(
                         padding: EdgeInsets.all(50),
                         child: Column(
@@ -155,81 +176,9 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                         ));
                   } else {
                     return Container(
-                      /*child: ListView.builder(
+                      child: GroupedListView<dynamic, dynamic>(
                         padding: const EdgeInsets.only(
                             bottom: kFloatingActionButtonMargin + 100),
-                        shrinkWrap: false,
-                        itemCount: transactionsList.length,
-                        itemBuilder: (context, index) {
-                          Transaction transaction =
-                              transactionsList!.elementAt(index);
-
-                          return Card(
-                            color: ArborColors.green,
-                            elevation: 1,
-                            shadowColor: Colors.lightGreen,
-                            margin: EdgeInsets.all(4),
-                            child:
-                                ListTile(
-                                  //isThreeLine: true,
-                                  leading: Container(
-                                    width: 35,
-                                    height: 35,
-                                    decoration: new BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: new DecorationImage(
-                                        image: transaction.assetImageForType(),
-                                        fit: BoxFit.fitHeight,
-                                      ),
-                                    ),
-                                  ),
-                                  title: Text(
-                                    '${transaction.typeForDisplay()}',
-                                    style: TextStyle(
-                                      color: ArborColors.white,
-                                    ),
-                                  ),
-                                  subtitle: Text(
-                                    //transaction.timeForDisplay(),
-                                    transaction.toDateOnly(),
-                                    softWrap: false,
-                                    style: TextStyle(
-                                      color: ArborColors.white70,
-                                    ),
-                                  ),
-                                  trailing: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.end,
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        transaction.amountForDisplay(
-                                            transactionsModel!.fork.precision),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: ArborColors.white,
-                                        ),
-                                      ),
-                                      SizedBox(width: 2,),
-                                      GestureDetector(
-                                        onTap: ()=>launchExplorer(url: "${ArborConstants.explorerBaseURL}/${transaction.address}"),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(2.0),
-                                          child: Icon(
-                                            Icons.open_in_browser,
-                                            color: ArborColors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-                          );
-                        },
-                      ),*/
-                      child: GroupedListView<dynamic, dynamic>(
                         elements: transactionsList,
                         groupBy: (element) => element.toDateOnly(),
                         groupComparator: (value1, value2) =>
@@ -262,6 +211,9 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                             margin: EdgeInsets.all(4),
                             child: ListTile(
                               //isThreeLine: true,
+                              onTap: () => launchExplorer(
+                                  url:
+                                      "${ArborConstants.explorerBaseURL}/${element.address}"),
                               leading: Container(
                                 width: 35,
                                 height: 35,
@@ -293,8 +245,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    element.amountForDisplay(
-                                        transactionsModel!.fork.precision),
+                                    element.amountForDisplay(precision),
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: ArborColors.white,
@@ -303,16 +254,11 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                                   SizedBox(
                                     width: 2,
                                   ),
-                                  GestureDetector(
-                                    onTap: () => launchExplorer(
-                                        url:
-                                            "${ArborConstants.explorerBaseURL}/${element.address}"),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(2.0),
-                                      child: Icon(
-                                        Icons.open_in_browser,
-                                        color: ArborColors.white,
-                                      ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: Icon(
+                                      Icons.open_in_browser,
+                                      color: ArborColors.white,
                                     ),
                                   ),
                                 ],

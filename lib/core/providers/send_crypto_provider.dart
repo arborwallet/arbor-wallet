@@ -1,4 +1,3 @@
-import 'package:arbor/api/responses.dart';
 import 'package:arbor/api/services/wallet_service.dart';
 import 'package:arbor/core/constants/ui_constants.dart';
 import 'package:arbor/core/enums/status.dart';
@@ -29,6 +28,7 @@ class SendCryptoProvider extends ChangeNotifier {
 
   var transactionResponse;
   int forkPrecision=0;
+  int networkFee=0;
   String forkName='';
   String forkTicker='';
   String privateKey='';
@@ -38,6 +38,9 @@ class SendCryptoProvider extends ChangeNotifier {
 
   String _transactionValue = '0';
   String get transactionValue => _transactionValue;
+
+  String _transactionValueForDisplay = '0';
+  String get transactionValueForDisplay => _transactionValueForDisplay;
 
   bool get enableButton => _validAddress && double.parse(_transactionValue) > 0;
 
@@ -149,13 +152,17 @@ class SendCryptoProvider extends ChangeNotifier {
   }
 
   send() async {
+
+    debugPrint("Fee:$networkFee");
     sendCryptoStatus = Status.LOADING;
     notifyListeners();
     try {
+      _transactionValueForDisplay = _transactionValue;
       transactionResponse = await walletService.sendXCH(
         privateKey: privateKey,
         amount: double.parse(_transactionValue) * chiaPrecision,
         address: _receiverAddress,
+        fee: networkFee
       );
 
       if (transactionResponse == 'success') {
@@ -164,11 +171,8 @@ class SendCryptoProvider extends ChangeNotifier {
         _transactionValue = '0';
         _receiverAddress = '';
         _appBarTitle = 'All Done';
-      } else if (transactionResponse.runtimeType == BaseResponse) {
-        _errorMessage = transactionResponse.error;
-        sendCryptoStatus = Status.ERROR;
-      } else {
-        _errorMessage = 'An error occurred';
+      } else{
+        _errorMessage = transactionResponse;
         sendCryptoStatus = Status.ERROR;
       }
       notifyListeners();
@@ -197,6 +201,7 @@ class SendCryptoProvider extends ChangeNotifier {
 
   clearInput() {
     _transactionValue = '0';
+    _transactionValueForDisplay = '0';
     _receiverAddress = '';
     _errorMessage = '';
     _addressErrorMessage = '';
@@ -204,6 +209,7 @@ class SendCryptoProvider extends ChangeNotifier {
   }
 
   clearStatus() {
+    _validAddress=false;
     sendCryptoStatus = Status.IDLE;
   }
 

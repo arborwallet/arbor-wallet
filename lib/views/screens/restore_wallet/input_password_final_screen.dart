@@ -97,7 +97,7 @@ class InputPasswordFinalScreen extends StatelessWidget
                         Padding(
                           padding: const EdgeInsets.only(bottom: 30),
                           child: ArborButton(
-                            backgroundColor: ArborColors.logoGreen,
+                            backgroundColor: ArborColors.deepGreen,
                             disabled: !model.lastBatchButtonIsDisabled,
                             loading:
                                 model.recoverWalletStatus == Status.LOADING,

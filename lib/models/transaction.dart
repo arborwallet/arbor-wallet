@@ -20,17 +20,27 @@ class Transaction {
   final int block;
 
   @HiveField(3)
-  final String address;
+  final int fee;
 
   @HiveField(4)
   final int amount;
+
+  @HiveField(5)
+  final String address;
+
+  @HiveField(6)
+  final String baseAddress;
+
+
 
   Transaction({
     required this.type,
     required this.timestamp,
     required this.block,
-    required this.address,
+    required this.fee,
     required this.amount,
+    required this.address,
+    required this.baseAddress,
   });
 
   String amountForDisplay(int forkPrecision) {

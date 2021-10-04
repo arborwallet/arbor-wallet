@@ -41,7 +41,7 @@ class _UpdateWalletFormState extends State<UpdateWalletForm> {
       privateKey: existingWallet.privateKey,
       publicKey: existingWallet.publicKey,
       address: existingWallet.address,
-      fork: existingWallet.fork,
+      blockchain: existingWallet.blockchain,
       balance: existingWallet.balance,
     );
 
