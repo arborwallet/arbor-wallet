@@ -8,6 +8,7 @@ import 'package:arbor/models/models.dart';
 import 'package:arbor/views/screens/base/base_screen.dart';
 import 'package:arbor/views/screens/no_encryption_available_sccreen.dart';
 import 'package:arbor/core/providers/send_crypto_provider.dart';
+import 'package:arbor/views/themes/arbor_theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -19,7 +20,6 @@ import 'core/providers/create_wallet_provider.dart';
 import 'models/blockchain.dart';
 import 'models/transaction.dart';
 import 'models/wallet.dart';
-import 'themes/arbor_theme_data.dart';
 import 'views/screens/on_boarding/splash_screen.dart';
 
 main() async {
