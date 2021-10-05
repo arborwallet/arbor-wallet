@@ -1,12 +1,5 @@
-## [1.2.0] - 2021-10-02
+## [1.2.1] - 2021-10-04
 
-### Added
+### Changed
 
-- Now using the new wallet puzzle API which is incompatible with previous beta apps.
-- Add progress indicator to the transactions screen.
-- Add more info to the transactions screen.
-- Add more info on the send success screen.
-
-### Fixed
-
-- Fix colors of the pull to refresh spinner.
+- Android only release - change minimum supported Android SDK from minSdkVersion 20 to minSdkVersion 27 (Android 8.1) to match Google supported devices with security updates.
