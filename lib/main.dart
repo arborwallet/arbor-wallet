@@ -2,12 +2,15 @@ import 'dart:convert';
 
 import 'package:arbor/core/constants/arbor_constants.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
+import 'package:arbor/core/providers/auth_provider.dart';
 import 'package:arbor/core/providers/restore_wallet_provider.dart';
 import 'package:arbor/core/providers/settings_provider.dart';
+import 'package:arbor/core/utils/local_storage_utils.dart';
 import 'package:arbor/models/models.dart';
 import 'package:arbor/views/screens/base/base_screen.dart';
 import 'package:arbor/views/screens/no_encryption_available_sccreen.dart';
 import 'package:arbor/core/providers/send_crypto_provider.dart';
+import 'package:arbor/views/screens/settings/unlock_with_pin_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -25,6 +28,7 @@ import 'views/screens/on_boarding/splash_screen.dart';
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+  await customSharedPreference.init();
 
   try {
     final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
@@ -90,7 +94,6 @@ void _hiveAdaptersRegistration() {
   Hive.registerAdapter(WalletAdapter());
   Hive.registerAdapter(BlockchainAdapter());
   Hive.registerAdapter(TransactionsGroupAdapter());
-  //Hive.registerAdapter(TransactionGroupAdapter());
   Hive.registerAdapter(TransactionAdapter());
 }
 
@@ -119,6 +122,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => CreateWalletProvider()),
         ChangeNotifierProvider(create: (_) => RestoreWalletProvider()),
         ChangeNotifierProvider(create: (_) => SendCryptoProvider()),
@@ -137,7 +141,11 @@ class _MyAppState extends State<MyApp> {
                     if (_isFirstTime) {
                       return SplashScreen();
                     } else {
-                      return BaseScreen();
+                      if(customSharedPreference.pinIsSet||customSharedPreference.biometricsIsSet){
+                        return UnlockWithPinScreen(fromRoot: true,unlock: true,);
+                      }else{
+                        return BaseScreen();
+                      }
                     }
                   } else {
                     return Container(
