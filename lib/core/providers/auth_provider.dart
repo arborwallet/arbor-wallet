@@ -23,12 +23,18 @@ class AuthProvider extends ChangeNotifier {
   get invalidPin => _invalidPin;
   get pinLength => _pinLength;
 
+
+  AuthProvider(){
+    hasBiometrics();
+  }
+
   ///Biometrics
   //Check if device support biometrics
-  Future<bool> hasBiometrics() async {
+   hasBiometrics() async {
     bool deviceHasBiometrics = await localAuthentication.canCheckBiometrics;
+    debugPrint("Has bio : ${deviceHasBiometrics.toString()}");
     customSharedPreference.setHasBiometrics(deviceHasBiometrics);
-    return deviceHasBiometrics;
+    //return deviceHasBiometrics;
   }
 
   //Check the available biometric support

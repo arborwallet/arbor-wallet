@@ -3,6 +3,7 @@ import 'package:arbor/api/responses.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/constants/arbor_constants.dart';
 import 'package:arbor/core/constants/asset_paths.dart';
+import 'package:arbor/core/providers/auth_provider.dart';
 import 'package:arbor/core/providers/settings_provider.dart';
 import 'package:arbor/core/utils/local_storage_utils.dart';
 import 'package:arbor/views/screens/settings/set_pin_screen.dart';
@@ -30,6 +31,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   void initState() {
+    AuthProvider();
     _getAppDetails();
     super.initState();
   }
@@ -126,7 +128,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         customSharedPreference.hasBiometrics
                             ? settingsItem(
                                 title: "Unlock with biometrics",
-                                assetPath: AssetPaths.fingerprint,
+                                assetPath: Platform.isIOS
+                                    ? AssetPaths.faceId
+                                    : AssetPaths.fingerprint,
                                 trailing: ArborSwitch(
                                   state: customSharedPreference.biometricsIsSet,
                                   onChanged: (_) {},

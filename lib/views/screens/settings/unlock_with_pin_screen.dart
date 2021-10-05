@@ -137,7 +137,6 @@ class _UnlockWithPinScreenState extends State<UnlockWithPinScreen> {
         }
 
         if (model.invalidPin == true) {
-          print("Hello");
           showIncorrectPINInfo(context,
               title: "Authentication Failed",
               description:
@@ -165,7 +164,7 @@ class _UnlockWithPinScreenState extends State<UnlockWithPinScreen> {
                       ),
                     ),
               title: Text(
-                widget.unlock? 'Unlock With Pin':'Disable Unlock With Pin',
+                widget.unlock ? 'Unlock With Pin' : 'Disable Unlock With Pin',
                 style: TextStyle(
                   color: ArborColors.white,
                 ),
