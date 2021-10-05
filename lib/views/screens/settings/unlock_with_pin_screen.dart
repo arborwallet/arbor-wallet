@@ -13,6 +13,7 @@ import 'package:arbor/views/widgets/dialogs/arbor_info_dialog.dart';
 import 'package:arbor/views/widgets/keypad/arbor_keypad.dart';
 import 'package:arbor/views/widgets/pin/pin_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:local_auth/auth_strings.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
@@ -21,8 +22,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class UnlockWithPinScreen extends StatefulWidget {
   final bool unlock;
   final bool fromRoot;
+  final bool settingBiometrics;
 
-  const UnlockWithPinScreen({Key? key, this.unlock: true, this.fromRoot: false})
+  const UnlockWithPinScreen(
+      {Key? key,
+      this.unlock: true,
+      this.fromRoot: false,
+      this.settingBiometrics: false})
       : super(key: key);
 
   @override
@@ -41,7 +47,7 @@ class _UnlockWithPinScreenState extends State<UnlockWithPinScreen> {
 
   unlockWithBiometrics() async {
     var enabledBiometrics = customSharedPreference.biometricsIsSet;
-    if (enabledBiometrics) {
+    if (enabledBiometrics || widget.settingBiometrics) {
       var localAuth = LocalAuthentication();
       availableBiometrics = await localAuth.getAvailableBiometrics();
 
@@ -57,13 +63,25 @@ class _UnlockWithPinScreenState extends State<UnlockWithPinScreen> {
           try {
             bool didAuthenticate = await localAuth.authenticate(
                 localizedReason: 'Please authenticate with Face ID',
+                useErrorDialogs: true,
+                stickyAuth: true,
                 iOSAuthStrings: iosStrings);
             if (didAuthenticate) {
               handleNavigationForBiometrics();
             }
-          } catch (e) {
-            AppUtils.showSnackBar(context,
-                "Unable to authenticate with face ID", ArborColors.errorRed);
+          } on PlatformException catch (e) {
+            int count = 0;
+            showIncorrectPINInfo(context,
+                title: "ERROR",
+                description: e.message.toString(), onPressed: () {
+              Navigator.of(
+                context,
+              ).popUntil((_) => count++ >= 2);
+            });
+          } on Exception catch (e) {
+            debugPrint("${e.toString()}");
+            AppUtils.showSnackBar(
+                context, "${e.toString()}", ArborColors.errorRed);
           }
         } else if (availableBiometrics!.contains(BiometricType.fingerprint)) {
           // Face ID.
@@ -76,21 +94,31 @@ class _UnlockWithPinScreenState extends State<UnlockWithPinScreen> {
           try {
             bool didAuthenticate = await localAuth.authenticate(
                 localizedReason: 'Please authenticate with fingerprint',
+                useErrorDialogs: true,
+                stickyAuth: true,
                 iOSAuthStrings: iosStrings);
             if (didAuthenticate) {
               handleNavigationForBiometrics();
             }
-          } catch (e) {
-            AppUtils.showSnackBar(
+          } on PlatformException catch (e) {
+            int count = 0;
+            showIncorrectPINInfo(context,
+                title: "ERROR",
+                description: e.message.toString(), onPressed: () {
+              Navigator.of(
                 context,
-                "Unable to authenticate with fingerprint",
-                ArborColors.errorRed);
+              ).popUntil((_) => count++ >= 2);
+            });
+          } on Exception catch (e) {
+            debugPrint("${e.toString()}");
+            AppUtils.showSnackBar(
+                context, "${e.toString()}", ArborColors.errorRed);
           }
         }
       } else if (Platform.isAndroid) {
         if (availableBiometrics!.contains(BiometricType.fingerprint)) {
           // Touch ID.
-          debugPrint('has touch ID!!!!');
+
           const androidStrings = const AndroidAuthMessages(
               cancelButton: 'cancel',
               goToSettingsButton: 'settings',
@@ -99,12 +127,23 @@ class _UnlockWithPinScreenState extends State<UnlockWithPinScreen> {
             debugPrint('here');
             bool didAuthenticate = await localAuth.authenticate(
               localizedReason: 'Please authenticate with fingerprint',
+              useErrorDialogs: true,
+              stickyAuth: true,
               androidAuthStrings: androidStrings,
             );
             if (didAuthenticate) {
               handleNavigationForBiometrics();
             }
-          } catch (e) {
+          } on PlatformException catch (e) {
+            int count = 0;
+            showIncorrectPINInfo(context,
+                title: "ERROR",
+                description: e.message.toString(), onPressed: () {
+              Navigator.of(
+                context,
+              ).popUntil((_) => count++ >= 2);
+            });
+          } on Exception catch (e) {
             debugPrint("${e.toString()}");
             AppUtils.showSnackBar(
                 context, "${e.toString()}", ArborColors.errorRed);
