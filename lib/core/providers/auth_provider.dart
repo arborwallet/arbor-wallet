@@ -1,7 +1,6 @@
 import 'package:arbor/core/enums/status.dart';
 import 'package:arbor/core/utils/local_storage_utils.dart';
 import 'package:flutter/foundation.dart';
-import 'package:local_auth/auth_strings.dart';
 import 'package:local_auth/local_auth.dart';
 
 class AuthProvider extends ChangeNotifier {
@@ -45,25 +44,6 @@ class AuthProvider extends ChangeNotifier {
     } else {
       return BiometricType.fingerprint;
     }
-  }
-
-  IOSAuthMessages iosAuthMessages(String type) {
-    return IOSAuthMessages(
-      cancelButton: 'Cancel',
-      goToSettingsButton: 'Settings',
-      goToSettingsDescription:
-          '$type ID is not set up on your device. Please enable $type ID on your phone',
-      lockOut: 'Please re-enable your $type ID for Arbor',
-    );
-  }
-
-  AndroidAuthMessages androidAuthMessages() {
-    return AndroidAuthMessages(
-      cancelButton: 'Cancel',
-      goToSettingsButton: 'Settings',
-      goToSettingsDescription:
-          'Touch ID is not set up on your device. Please enable Touch ID on your phone',
-    );
   }
 
   ///PIN
@@ -119,7 +99,6 @@ class AuthProvider extends ChangeNotifier {
           } else {
             customSharedPreference.setUsePin(false);
             customSharedPreference.setUseBiometrics(false);
-            debugPrint("Unlock with pin: ${customSharedPreference.pinIsSet}");
             _currentPin = "";
             setPinStatus = Status.SUCCESS;
             notifyListeners();
@@ -154,7 +133,6 @@ class AuthProvider extends ChangeNotifier {
             } else {
               customSharedPreference.setPin(_currentPin);
               customSharedPreference.setUsePin(true);
-              debugPrint("Unlock with pin: ${customSharedPreference.pinIsSet}");
               _currentPin = "";
               setPinStatus = Status.SUCCESS;
               notifyListeners();

@@ -126,7 +126,6 @@ class _UnlockWithPinScreenState extends State<UnlockWithPinScreen> {
               goToSettingsButton: 'settings',
               goToSettingsDescription: 'Please set up your fingerprint ID.');
           try {
-            debugPrint('here');
             bool didAuthenticate = await localAuth.authenticate(
               localizedReason: 'Please authenticate with fingerprint',
               useErrorDialogs: true,

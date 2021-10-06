@@ -6,7 +6,6 @@ import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/core/providers/auth_provider.dart';
 import 'package:arbor/core/providers/settings_provider.dart';
 import 'package:arbor/core/utils/local_storage_utils.dart';
-import 'package:arbor/views/screens/settings/set_biometrics_screen.dart';
 import 'package:arbor/views/screens/settings/set_pin_screen.dart';
 import 'package:arbor/views/screens/settings/unlock_with_pin_screen.dart';
 import 'package:arbor/views/widgets/arbor_switch.dart';
@@ -15,6 +14,7 @@ import 'package:arbor/views/widgets/dialogs/arbor_info_dialog.dart';
 import 'package:arbor/views/widgets/tiles/settings_tile.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
@@ -189,17 +189,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
     bool pinIsSet = customSharedPreference.pinIsSet;
     bool biometricIsSet = customSharedPreference.biometricsIsSet;
 
-    var result;
     if (pinIsSet) {
       if (biometricIsSet == false) {
-        result = await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SetBiometricsScreen(),
-          ),
-        );
-        if (result == true) {
+        var localAuth = LocalAuthentication();
+        bool isSupported = await localAuth.isDeviceSupported();
+        List<BiometricType> availableBiometrics = await localAuth.getAvailableBiometrics();
+        if(isSupported && (availableBiometrics.contains(BiometricType.face) ||availableBiometrics.contains(BiometricType.fingerprint)) ){
+          customSharedPreference.setUseBiometrics(true);
           setState(() {});
+        }else if (isSupported==false&& (availableBiometrics.contains(BiometricType.face) ||availableBiometrics.contains(BiometricType.fingerprint))){
+          showInfoDialog(context,
+              title: "Error",
+              description: "You have not enrolled biometrics",
+              onPressed: null);
+        }else{
+          showInfoDialog(context,
+              title: "Error",
+              description: "Your device does not support biometrics",
+              onPressed: null);
         }
       } else {
         await Navigator.push(

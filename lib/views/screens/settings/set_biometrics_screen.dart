@@ -28,7 +28,10 @@ class _SetBiometricsScreenState extends State<SetBiometricsScreen> {
 
   unlockWithBiometrics() async {
     var localAuth = LocalAuthentication();
+    bool isSupported = await localAuth.isDeviceSupported();
     availableBiometrics = await localAuth.getAvailableBiometrics();
+    debugPrint(
+        "Device is supported? $isSupported Available biometrics-${availableBiometrics!.length}");
 
     if (Platform.isIOS) {
       if (availableBiometrics!.contains(BiometricType.face)) {
@@ -100,7 +103,6 @@ class _SetBiometricsScreenState extends State<SetBiometricsScreen> {
             goToSettingsButton: 'settings',
             goToSettingsDescription: 'Please set up your fingerprint ID.');
         try {
-          debugPrint('here');
           bool didAuthenticate = await localAuth.authenticate(
             localizedReason: 'Please authenticate with fingerprint',
             useErrorDialogs: true,
