@@ -65,6 +65,7 @@ class _UnlockWithPinScreenState extends State<UnlockWithPinScreen> {
                 localizedReason: 'Please authenticate with Face ID',
                 useErrorDialogs: true,
                 stickyAuth: true,
+                biometricOnly: true,
                 iOSAuthStrings: iosStrings);
             if (didAuthenticate) {
               handleNavigationForBiometrics();
@@ -96,6 +97,7 @@ class _UnlockWithPinScreenState extends State<UnlockWithPinScreen> {
                 localizedReason: 'Please authenticate with fingerprint',
                 useErrorDialogs: true,
                 stickyAuth: true,
+                biometricOnly: true,
                 iOSAuthStrings: iosStrings);
             if (didAuthenticate) {
               handleNavigationForBiometrics();
@@ -128,6 +130,7 @@ class _UnlockWithPinScreenState extends State<UnlockWithPinScreen> {
             bool didAuthenticate = await localAuth.authenticate(
               localizedReason: 'Please authenticate with fingerprint',
               useErrorDialogs: true,
+              biometricOnly: true,
               stickyAuth: true,
               androidAuthStrings: androidStrings,
             );
