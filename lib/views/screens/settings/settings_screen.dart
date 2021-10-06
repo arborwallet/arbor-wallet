@@ -6,6 +6,7 @@ import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/core/providers/auth_provider.dart';
 import 'package:arbor/core/providers/settings_provider.dart';
 import 'package:arbor/core/utils/local_storage_utils.dart';
+import 'package:arbor/views/screens/settings/set_biometrics_screen.dart';
 import 'package:arbor/views/screens/settings/set_pin_screen.dart';
 import 'package:arbor/views/screens/settings/unlock_with_pin_screen.dart';
 import 'package:arbor/views/widgets/arbor_switch.dart';
@@ -191,20 +192,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     var result;
     if (pinIsSet) {
       if (biometricIsSet == false) {
-        result=await Navigator.push(
+        result = await Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => UnlockWithPinScreen(
-              unlock: true,
-              settingBiometrics: true,
-            ),
+            builder: (context) => SetBiometricsScreen(),
           ),
         );
-        if(result==true || result==false){
-          customSharedPreference.setUseBiometrics(result);
+        if (result == true) {
+          setState(() {});
         }
-
-
       } else {
         await Navigator.push(
           context,
@@ -214,6 +210,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
         );
+        setState(() {});
       }
     } else {
       showInfoDialog(context,
@@ -221,8 +218,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           description: "Please enable 'Unlock with PIN' first",
           onPressed: null);
     }
-
-    setState(() {});
   }
 
   void _getAppDetails() async {
@@ -281,6 +276,3 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 }
-
-
-
