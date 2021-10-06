@@ -1,3 +1,7 @@
+<h1>Do not use this client on the mainnet. This is currently for development only</h1>
+
+Private keys are currently transmitted across the wire. This will be fixed in the future, but is not a secure system currently!
+
 <p align="center">
   <a href="https://www.arborwallet.com/">
     <img src="https://github.com/Digital-Farming-Initiative/arbor-wallet/blob/develop/assets/images/logo.png" alt="Arbor Wallet logo" width="200" height="200">
@@ -7,7 +11,7 @@
 <h3 align="center">Arbor Wallet</h3>
 
 <p align="center">
-  Secure, fast, and light wallet app (SPV) for the Chia network.
+  Fast and light wallet app (SPV) for the Chia network.
 </p>
 
 ## Arbor Wallet
