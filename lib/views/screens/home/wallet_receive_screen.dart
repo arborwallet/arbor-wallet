@@ -28,10 +28,8 @@ class WalletReceiveScreen extends StatefulWidget {
 }
 
 class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
-  static GlobalKey globalKey =
-      new GlobalKey(debugLabel: 'wallet_receive_screen');
+  //static GlobalKey globalKey = new GlobalKey(debugLabel: 'wallet_receive_screen');
 
-  static const double PASSWORD_PADDING = 40;
 
   void shareQrCode(String address) async {
     try {
@@ -63,9 +61,9 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
         await Share.shareFiles(
           [path],
           mimeTypes: ['images/png'],
-          subject: '${widget.wallet.fork.name} Wallet Address',
+          subject: '${widget.wallet.blockchain.name} Wallet Address',
           text:
-              'My ${widget.wallet.fork.ticker.toUpperCase()} Wallet Address:  ${widget.wallet.address}',
+              'My ${widget.wallet.blockchain.ticker.toUpperCase()} Wallet Address:  ${widget.wallet.address}',
         );
       } else {
         String _errorMessage = qrValidationResult.error.toString();
@@ -90,7 +88,7 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
         ),
         // title: Text('Receive ${widget.wallet.fork.name} (${widget.wallet.name})'),
         title: Text(
-          'Receive ${widget.wallet.fork.name}',
+          'Receive ${widget.wallet.blockchain.name}',
           style: TextStyle(
             color: ArborColors.white,
           ),
@@ -137,7 +135,7 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
           height: 20,
         ),
         Text(
-          'Tap to copy your ${widget.wallet.fork.name} light wallet address:',
+          'Tap to copy your ${widget.wallet.blockchain.name} light wallet address:',
           textAlign: TextAlign.center,
           style: TextStyle(color: ArborColors.white, fontSize: 16.0),
         ),

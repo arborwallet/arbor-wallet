@@ -4,10 +4,12 @@ import 'package:arbor/core/constants/arbor_constants.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/providers/restore_wallet_provider.dart';
 import 'package:arbor/core/providers/settings_provider.dart';
-import 'package:arbor/views/screens/base/base_screen.dart';
+import 'package:arbor/models/blockchain.dart';
+import 'package:arbor/models/models.dart';
 import 'package:arbor/views/screens/base/new_base_screen.dart';
 import 'package:arbor/views/screens/no_encryption_available_sccreen.dart';
 import 'package:arbor/core/providers/send_crypto_provider.dart';
+import 'package:arbor/views/screens/on_boarding/splash_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,12 +19,9 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/constants/hive_constants.dart';
 import 'core/providers/create_wallet_provider.dart';
-import 'models/fork.dart';
 import 'models/transaction.dart';
-import 'models/transactions.dart';
 import 'models/wallet.dart';
 import 'themes/arbor_theme_data.dart';
-import 'views/screens/on_boarding/splash_screen.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -112,8 +111,8 @@ main() async {
 
 void _hiveAdaptersRegistration() {
   Hive.registerAdapter(WalletAdapter());
-  Hive.registerAdapter(ForkAdapter());
-  Hive.registerAdapter(TransactionsAdapter());
+  Hive.registerAdapter(BlockchainAdapter());
+  Hive.registerAdapter(TransactionsGroupAdapter());
   Hive.registerAdapter(TransactionAdapter());
 }
 
@@ -160,7 +159,7 @@ class _MyAppState extends State<MyApp> {
                     if (_isFirstTime) {
                       return SplashScreen();
                     } else {
-                      return BaseScreen();
+                      return NewBaseScreen();
                     }
                   } else {
                     return Container(

@@ -196,17 +196,16 @@ class _ExpandedHomePageState extends State<ExpandedHomePage> {
           height: 40,
         ),
         ArborButton(
-          // style: ElevatedButton.styleFrom(
-          //   minimumSize: Size(double.infinity,
-          //       30), // double.infinity is the width and 30 is the height
-          // ),
+
           onPressed: () {
             showModalBottomSheet(
               context: context,
               isScrollControlled: true,
               builder: (BuildContext context) {
                 return TransactionsSheet(
-                    walletAddress: (walletBox.getAt(index) as Wallet).address);
+                    walletAddress: (walletBox.getAt(index) as Wallet).address,
+                  precision: widget.wallet.blockchain.precision,
+                );
               },
             );
           },

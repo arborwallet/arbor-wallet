@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 
 part 'transaction.g.dart';
 
@@ -19,17 +20,27 @@ class Transaction {
   final int block;
 
   @HiveField(3)
-  final String address;
+  final int fee;
 
   @HiveField(4)
   final int amount;
+
+  @HiveField(5)
+  final String address;
+
+  @HiveField(6)
+  final String baseAddress;
+
+
 
   Transaction({
     required this.type,
     required this.timestamp,
     required this.block,
-    required this.address,
+    required this.fee,
     required this.amount,
+    required this.address,
+    required this.baseAddress,
   });
 
   String amountForDisplay(int forkPrecision) {
@@ -46,6 +57,16 @@ class Transaction {
   String timeForDisplay() {
     final DateTime dt = DateTime.fromMillisecondsSinceEpoch(timestamp * MILLISECONDS_MULTIPLIER);
     return dt.toString();
+  }
+
+  String toDateOnly() {
+    final DateFormat formatter = DateFormat('MMM d, y');
+    return formatter.format(DateTime.fromMillisecondsSinceEpoch(timestamp * MILLISECONDS_MULTIPLIER));
+  }
+
+  String toTime() {
+    final DateFormat formatter = DateFormat('h:mm a');
+    return formatter.format(DateTime.fromMillisecondsSinceEpoch(timestamp * MILLISECONDS_MULTIPLIER));
   }
 
   AssetImage assetImageForType() {

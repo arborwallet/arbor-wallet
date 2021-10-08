@@ -101,6 +101,7 @@ class _BaseScreenState extends State<BaseScreen>
     return Container(
       color: ArborColors.green,
       child: Scaffold(
+        backgroundColor: ArborColors.green,
         body: SafeArea(
           child: Container(),
           /*child: Theme(

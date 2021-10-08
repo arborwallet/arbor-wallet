@@ -1,4 +1,3 @@
 export '/models/wallet.dart';
-export '/models/fork.dart';
-export '/models/transaction.dart';
-export '/models/transactions.dart';
+export '/models/blockchain.dart';
+export '/models/transactions_group.dart';

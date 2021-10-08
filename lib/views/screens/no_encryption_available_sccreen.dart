@@ -167,7 +167,7 @@ class NoEncryptionAvailableScreen extends StatelessWidget {
   }
 
   void _showDeleteArborDataSuccess(BuildContext context) async {
-    bool result = await showDialog(
+    await showDialog(
 
       context: context,
       builder: (BuildContext context) {
@@ -192,7 +192,7 @@ class NoEncryptionAvailableScreen extends StatelessWidget {
   }
 
   void showDeleteArborDataStatus(BuildContext context, String title,String description) async {
-    bool result = await showDialog(
+     await showDialog(
       context: context,
       builder: (BuildContext context) {
         return ArborInfoDialog(

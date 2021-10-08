@@ -47,12 +47,12 @@ class CreateWalletProvider extends ChangeNotifier {
   bool _tappedRevealButton=false;
   bool get tappedRevealButton=>_tappedRevealButton;
 
-  createNewWallet() async {
+  createNewWallet() async    {
     createWalletStatus = Status.LOADING;
     _appBarTitle='Generating';
     notifyListeners();
     try {
-      newWallet = await walletService.fetchWalletKeys();
+      newWallet = await walletService.createNewWallet();
       seedPhrase=newWallet!.phrase;
       _wordsList=seedPhrase.split(' ').toList();
 
@@ -60,11 +60,12 @@ class CreateWalletProvider extends ChangeNotifier {
         _phrasesList.add(Phrase(index: i, phrase: _wordsList[i]));
       }
 
-      debugPrint('${newWallet.toString()}');
       box.add(newWallet);
     } on Exception catch (e) {
-      debugPrint('Create Wallet Error: ${e.toString()}');
-      _errorMessage=e.toString();
+      debugPrint('Create Wallet Error: ${e.toString()} ${e.runtimeType}');
+
+        _errorMessage=e.toString();
+
       _appBarTitle='Error';
       createWalletStatus = Status.ERROR;
       notifyListeners();
