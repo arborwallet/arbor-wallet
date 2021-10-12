@@ -142,8 +142,6 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                     }
                   }
 
-                  debugPrint("LENGTH: ${transactionsList.length}");
-
                   if ((transactionsList.length == 0 &&
                       _fetchingTransactions == true)) {
                     return Center(
@@ -190,11 +188,11 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                         padding: const EdgeInsets.only(
                             bottom: kFloatingActionButtonMargin + 100),
                         elements: transactionsList,
-                        groupBy: (element) => element.toDateOnly(),
+                        groupBy: (element) => element.toUSDate(),
                         groupComparator: (value1, value2) =>
                             value2.compareTo(value1),
                         itemComparator: (item1, item2) =>
-                            item1.toTime().compareTo(item2.toTime()),
+                            item1.timestamp.compareTo(item2.timestamp),
                         order: GroupedListOrder.ASC,
                         sort: true,
                         useStickyGroupSeparators: false,
@@ -204,7 +202,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                value.toDifferentDatePattern(),
+                                value.toDateOnly(),
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                     fontSize: 16,
