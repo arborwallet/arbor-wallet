@@ -43,6 +43,13 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
     _updateTransactions(delayInSeconds: 1);
   }
 
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   Future<void> _updateTransactions({int delayInSeconds = 0}) async {
     Future.delayed(Duration(seconds: delayInSeconds), () async {
       setState(() {
@@ -101,6 +108,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                         child: Icon(Icons.refresh, color: ArborColors.white),
                         onPressed: () {
                           _updateTransactions();
+                          debugPrint("Called refresh");
                         }),
                   ),
                 ),
@@ -133,6 +141,8 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                       debugPrint(e.toString());
                     }
                   }
+
+                  debugPrint("LENGTH: ${transactionsList.length}");
 
                   if ((transactionsList.length == 0 &&
                       _fetchingTransactions == true)) {
@@ -182,10 +192,11 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                         elements: transactionsList,
                         groupBy: (element) => element.toDateOnly(),
                         groupComparator: (value1, value2) =>
-                            value1.compareTo(value2),
+                            value2.compareTo(value1),
                         itemComparator: (item1, item2) =>
                             item1.toTime().compareTo(item2.toTime()),
-                        order: GroupedListOrder.DESC,
+                        order: GroupedListOrder.ASC,
+                        sort: true,
                         useStickyGroupSeparators: false,
                         groupHeaderBuilder: (dynamic value) => Padding(
                           padding: const EdgeInsets.all(8.0),

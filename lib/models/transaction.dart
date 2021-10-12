@@ -31,8 +31,6 @@ class Transaction {
   @HiveField(6)
   final String baseAddress;
 
-
-
   Transaction({
     required this.type,
     required this.timestamp,
@@ -50,51 +48,61 @@ class Transaction {
 
   String timestampForDisplay() {
     //
-    final DateTime dt = DateTime.fromMillisecondsSinceEpoch(timestamp * MILLISECONDS_MULTIPLIER);
+    final DateTime dt = DateTime.fromMillisecondsSinceEpoch(
+        timestamp * MILLISECONDS_MULTIPLIER);
     return dt.toString();
   }
 
   String timeForDisplay() {
-    final DateTime dt = DateTime.fromMillisecondsSinceEpoch(timestamp * MILLISECONDS_MULTIPLIER);
+    final DateTime dt = DateTime.fromMillisecondsSinceEpoch(
+        timestamp * MILLISECONDS_MULTIPLIER);
     return dt.toString();
   }
 
   String toDateOnly() {
-    final DateFormat formatter = DateFormat('MMM d, y');
-    return formatter.format(DateTime.fromMillisecondsSinceEpoch(timestamp * MILLISECONDS_MULTIPLIER));
+    //final DateFormat formatter = DateFormat('MMM d, y');
+    final DateFormat formatter = DateFormat("MM/dd/yyyy");
+    return formatter.format(DateTime.fromMillisecondsSinceEpoch(
+        timestamp * MILLISECONDS_MULTIPLIER));
   }
 
   String toTime() {
     final DateFormat formatter = DateFormat('h:mm a');
-    return formatter.format(DateTime.fromMillisecondsSinceEpoch(timestamp * MILLISECONDS_MULTIPLIER));
+    return formatter.format(DateTime.fromMillisecondsSinceEpoch(
+        timestamp * MILLISECONDS_MULTIPLIER));
   }
 
   AssetImage assetImageForType() {
-    switch(type) {
-      case "receive": {
-        return AssetImage("assets/images/transaction-receive.png");
-      }
-      case "send": {
-        return AssetImage("assets/images/transaction-send.png");
-      }
-      default: {
-        return AssetImage("assets/images/transaction-receive.png");
-      }
+    switch (type) {
+      case "receive":
+        {
+          return AssetImage("assets/images/transaction-receive.png");
+        }
+      case "send":
+        {
+          return AssetImage("assets/images/transaction-send.png");
+        }
+      default:
+        {
+          return AssetImage("assets/images/transaction-receive.png");
+        }
     }
-
   }
 
   String typeForDisplay() {
-    switch(type) {
-      case "receive": {
-        return "Received";
-      }
-      case "send": {
-        return "Sent";
-      }
-      default: {
-        return "Unknown";
-      }
+    switch (type) {
+      case "receive":
+        {
+          return "Received";
+        }
+      case "send":
+        {
+          return "Sent";
+        }
+      default:
+        {
+          return "Unknown";
+        }
     }
   }
 }

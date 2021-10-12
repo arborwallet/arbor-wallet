@@ -136,6 +136,7 @@ class ValueScreen extends StatelessWidget {
                         Spacer(flex: 2),
                         Text(
                           '${model.transactionValue} ${wallet.blockchain.ticker.toUpperCase()}',
+                          textAlign: TextAlign.center,
                           style:
                           TextStyle(fontSize: 30.h, color: ArborColors.deepGreen),
                         ),
