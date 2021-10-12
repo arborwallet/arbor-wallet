@@ -204,7 +204,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                value.toDateOnly(),
+                                value.toDifferentDatePattern(),
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                     fontSize: 16,

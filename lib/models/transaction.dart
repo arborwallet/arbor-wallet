@@ -66,6 +66,12 @@ class Transaction {
         timestamp * MILLISECONDS_MULTIPLIER));
   }
 
+  String toDifferentDatePattern() {
+    final DateFormat formatter = DateFormat('MMM d, y');
+    return formatter.format(DateTime.fromMillisecondsSinceEpoch(
+        timestamp * MILLISECONDS_MULTIPLIER));
+  }
+
   String toTime() {
     final DateFormat formatter = DateFormat('h:mm a');
     return formatter.format(DateTime.fromMillisecondsSinceEpoch(
