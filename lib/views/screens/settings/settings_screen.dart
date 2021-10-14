@@ -23,7 +23,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Consumer<SettingsProvider>(builder: (_, model, __) {
       return Container(
-        padding: EdgeInsets.symmetric( horizontal: 10),
+        padding: EdgeInsets.symmetric(horizontal: 10),
         height: MediaQuery.of(context).size.height,
         color: ArborColors.green,
         child: SafeArea(
@@ -39,74 +39,78 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   color: ArborColors.black,
                 ),
               ),
-              constraints: BoxConstraints(maxWidth: 500, minWidth: 400),
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: ListView(
-                      children: [
-                        SizedBox(
-                          height: 20,
+              child: Center(
+                child: Container(
+                  constraints: BoxConstraints(maxWidth: 500, minWidth: 400),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ListView(
+                          children: [
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "General",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: ArborColors.white,
+                                fontSize: 15.sp,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 4,
+                            ),
+                            settingsItem(
+                              title: "Visit DFI Discord Channel",
+                              assetPath: AssetPaths.discord,
+                              onPressed: () => model.launchURL(
+                                  url: ArborConstants.discordChannelURL),
+                            ),
+                            settingsItem(
+                              title: "View Privacy Policy",
+                              assetPath: AssetPaths.privacyPolicy,
+                              onPressed: () => model.launchURL(
+                                  url: ArborConstants.baseWebsiteURL),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              "Arbor Data",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: ArborColors.white,
+                                fontSize: 15.sp,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 4,
+                            ),
+                            settingsItem(
+                              title: "Delete Arbor Data",
+                              assetPath: AssetPaths.delete,
+                              onPressed: () async {
+                                await deleteData(model);
+                              },
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                          ],
                         ),
-                        Text(
-                          "General",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: ArborColors.white,
-                            fontSize: 15.sp,
-                          ),
+                      ),
+                      Text(
+                        'v1.0.0b02',
+                        style: TextStyle(
+                          color: ArborColors.white,
                         ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        settingsItem(
-                          title: "Visit DFI Discord Channel",
-                          assetPath: AssetPaths.discord,
-                          onPressed: () => model.launchURL(
-                              url: ArborConstants.discordChannelURL),
-                        ),
-                        settingsItem(
-                          title: "View Privacy Policy",
-                          assetPath: AssetPaths.privacyPolicy,
-                          onPressed: () => model.launchURL(
-                              url: ArborConstants.baseWebsiteURL),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          "Arbor Data",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: ArborColors.white,
-                            fontSize: 15.sp,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        settingsItem(
-                          title: "Delete Arbor Data",
-                          assetPath: AssetPaths.delete,
-                          onPressed: () async {
-                            await deleteData(model);
-                          },
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                    ],
                   ),
-                  Text(
-                    'v1.0.0b02',
-                    style: TextStyle(
-                      color: ArborColors.white,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                ],
+                ),
               ),
             ),
           ),
