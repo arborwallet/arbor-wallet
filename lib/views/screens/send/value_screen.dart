@@ -3,7 +3,7 @@ import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/core/enums/status.dart';
 import 'package:arbor/core/providers/send_crypto_provider.dart';
 import 'package:arbor/models/models.dart';
-import 'package:arbor/views/screens/home/home_screen.dart';
+import 'package:arbor/views/screens/base/base_screen.dart';
 import 'package:arbor/views/screens/send/address_scanner.dart';
 import 'package:arbor/views/screens/send/status_screen.dart';
 import 'package:arbor/views/screens/settings/settings_screen.dart';
@@ -81,7 +81,7 @@ class ValueScreen extends StatelessWidget {
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute<Widget>(
-                                      builder: (context) => HomeScreen(),
+                                      builder: (context) => BaseScreen(),
                                     ),
                                   );
                                 },

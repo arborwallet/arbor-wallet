@@ -203,7 +203,7 @@ class StatusScreen extends StatelessWidget {
                         child: Container(),
                       ),
                       ArborButton(
-                        backgroundColor: ArborColors.logoGreen,
+                        backgroundColor: ArborColors.deepGreen,
                         disabled: false,
                         loading: false,
                         title: 'Continue',
@@ -256,7 +256,7 @@ class StatusScreen extends StatelessWidget {
                 child: Container(),
               ),
               ArborButton(
-                backgroundColor: ArborColors.logoGreen,
+                backgroundColor: ArborColors.deepGreen,
                 disabled: false,
                 loading: false,
                 title: 'Continue',
@@ -318,7 +318,7 @@ class StatusScreen extends StatelessWidget {
                         child: Container(),
                       ),
                       ArborButton(
-                        backgroundColor: ArborColors.logoGreen,
+                        backgroundColor: ArborColors.deepGreen,
                         disabled: false,
                         loading: false,
                         title: 'Go Back',
@@ -371,7 +371,7 @@ class StatusScreen extends StatelessWidget {
                 child: Container(),
               ),
               ArborButton(
-                backgroundColor: ArborColors.logoGreen,
+                backgroundColor: ArborColors.deepGreen,
                 disabled: false,
                 loading: false,
                 title: 'Go Back',
@@ -488,7 +488,7 @@ class StatusScreen extends StatelessWidget {
                         child: Container(),
                       ),
                       ArborButton(
-                        backgroundColor: ArborColors.logoGreen,
+                        backgroundColor: ArborColors.deepGreen,
                         disabled: false,
                         loading: false,
                         title: 'Send',
@@ -593,7 +593,7 @@ class StatusScreen extends StatelessWidget {
                 child: Container(),
               ),
               ArborButton(
-                backgroundColor: ArborColors.logoGreen,
+                backgroundColor: ArborColors.deepGreen,
                 disabled: false,
                 loading: false,
                 title: 'Send',

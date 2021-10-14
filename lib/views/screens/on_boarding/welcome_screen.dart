@@ -1,5 +1,6 @@
 import 'package:arbor/core/constants/hive_constants.dart';
 import 'package:arbor/views/screens/add_wallet/add_wallet_screen.dart';
+import 'package:arbor/views/screens/base/base_screen.dart';
 import 'package:arbor/views/widgets/responsiveness/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 import '../../../core/constants/arbor_colors.dart';
 import '../../../core/constants/asset_paths.dart';
-import '../home/home_screen.dart';
 import '../../widgets/arbor_button.dart';
 import '../restore_wallet/restore_wallet_screen.dart';
 
@@ -106,7 +106,7 @@ class _WelcomeScreenBody extends StatelessWidget {
             } else {
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => HomeScreen()),
+                MaterialPageRoute(builder: (context) => BaseScreen()),
                 (route) => false,
               );
             }
