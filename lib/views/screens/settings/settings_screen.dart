@@ -23,31 +23,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Consumer<SettingsProvider>(builder: (_, model, __) {
       return Container(
+        padding: EdgeInsets.symmetric( horizontal: 10),
         height: MediaQuery.of(context).size.height,
         color: ArborColors.green,
         child: SafeArea(
           child: Scaffold(
             backgroundColor: ArborColors.green,
-            /*appBar: AppBar(
-                backgroundColor: ArborColors.green,
-                centerTitle: true,
-                title: Text(
-                  'Settings',
-                  style: TextStyle(
-                    color: ArborColors.white,
-                  ),
-                ),
-                leading: IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: ArborColors.white,
-                  ),
-                )),*/
             body: Container(
-              margin: EdgeInsets.symmetric(vertical: 16),
+              margin: EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(
                   Radius.circular(8),
@@ -145,7 +128,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           margin: EdgeInsets.only(bottom: 10),
           decoration: BoxDecoration(
-            color: ArborColors.logoGreen,
+            color: ArborColors.deepGreen,
             borderRadius: BorderRadius.all(
               Radius.circular(8),
             ),

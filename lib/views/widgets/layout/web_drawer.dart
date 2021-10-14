@@ -13,7 +13,7 @@ class ArborDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 40),
+      width: 250,
       child: Drawer(
         child: Container(
           color: ArborColors.green,

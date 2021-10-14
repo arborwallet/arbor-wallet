@@ -96,22 +96,24 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
         centerTitle: true,
         backgroundColor: ArborColors.green,
       ),
-      body: Container(
-        margin: EdgeInsets.symmetric(vertical: 10),
-        padding: EdgeInsets.symmetric(vertical: 10),
-        decoration: BoxDecoration(
-          color: ArborColors.green,
-          borderRadius: BorderRadius.all(
-            Radius.circular(8),
+      body: Center(
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 10),
+          padding: EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+            color: ArborColors.green,
+            borderRadius: BorderRadius.all(
+              Radius.circular(8),
+            ),
+            border: Border.all(
+              color: ArborColors.black,
+            ),
           ),
-          border: Border.all(
-            color: ArborColors.black,
-          ),
-        ),
-        constraints:
-        BoxConstraints(maxWidth: 400, maxHeight: double.infinity),
+          constraints:
+          BoxConstraints(maxWidth: 450, maxHeight: double.infinity),
 
-        child: walletReceiveScreenBody(),
+          child: walletReceiveScreenBody(),
+        ),
       )
     );
   }

@@ -6,7 +6,7 @@ import 'package:arbor/core/providers/restore_wallet_provider.dart';
 import 'package:arbor/core/providers/settings_provider.dart';
 import 'package:arbor/models/blockchain.dart';
 import 'package:arbor/models/models.dart';
-import 'package:arbor/views/screens/base/new_base_screen.dart';
+import 'package:arbor/views/screens/base/base_screen.dart';
 import 'package:arbor/views/screens/no_encryption_available_sccreen.dart';
 import 'package:arbor/core/providers/send_crypto_provider.dart';
 import 'package:arbor/views/screens/on_boarding/splash_screen.dart';
@@ -159,7 +159,7 @@ class _MyAppState extends State<MyApp> {
                     if (_isFirstTime) {
                       return SplashScreen();
                     } else {
-                      return NewBaseScreen();
+                      return BaseScreen();
                     }
                   } else {
                     return Container(

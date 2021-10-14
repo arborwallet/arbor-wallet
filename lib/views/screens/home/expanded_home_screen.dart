@@ -1,10 +1,7 @@
 import 'package:arbor/models/models.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/views/screens/home/expanded_home_page.dart';
-import 'package:arbor/views/screens/settings/settings_screen.dart';
-import 'package:arbor/views/widgets/layout/web_drawer.dart';
 import 'package:arbor/views/widgets/responsiveness/responsive.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ExpandedHomeScreen extends StatefulWidget {
@@ -46,8 +43,9 @@ class _ExpandedHomeScreenState extends State<ExpandedHomeScreen> {
       ),
       body: Responsive.isDesktop(context)
           ? Row(
+        mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                kIsWeb & Responsive.isDesktop(context)
+                /*kIsWeb & Responsive.isDesktop(context)
                     ? ArborDrawer(
                         onWalletsTapped: () => Navigator.pop(context),
                         onSettingsTapped: () => Navigator.pushReplacement(
@@ -57,7 +55,7 @@ class _ExpandedHomeScreenState extends State<ExpandedHomeScreen> {
                           ),
                         ),
                       )
-                    : Container(),
+                    : Container(),*/
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(

@@ -43,13 +43,20 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
     _updateTransactions(delayInSeconds: 1);
   }
 
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   Future<void> _updateTransactions({int delayInSeconds = 0}) async {
     Future.delayed(Duration(seconds: delayInSeconds), () async {
       setState(() {
         _fetchingTransactions = true;
       });
       transactionsGroupModel =
-      await walletService.fetchWalletTransactions(walletAddress);
+          await walletService.fetchWalletTransactions(walletAddress);
 
       if (transactionsBox.containsKey(walletAddress)) {
         transactionsBox.delete(walletAddress);
@@ -214,7 +221,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                               //isThreeLine: true,
                               onTap: () => launchExplorer(
                                   url:
-                                  "${ArborConstants.explorerBaseURL}/${element.address}"),
+                                      "${ArborConstants.explorerBaseURL}/${element.address}"),
                               leading: Container(
                                 width: 35,
                                 height: 35,
@@ -282,7 +289,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
       await canLaunch(url)
           ? await launch(url)
           : AppUtils.showSnackBar(
-          context, 'Unable to launch $url', ArborColors.errorRed);
+              context, 'Unable to launch $url', ArborColors.errorRed);
     } on Exception catch (e) {
       AppUtils.showSnackBar(context, "${e.toString()}", ArborColors.errorRed);
     }
