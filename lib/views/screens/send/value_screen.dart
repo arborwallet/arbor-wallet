@@ -250,7 +250,7 @@ class ValueScreen extends StatelessWidget {
                               Container(
                                 width: 200.w,
                                 child: ArborButton(
-                                  backgroundColor: ArborColors.logoGreen,
+                                  backgroundColor: ArborColors.deepGreen,
                                   disabled: !model.enableButton,
                                   loading: false,
                                   title: 'Continue',
@@ -440,7 +440,7 @@ class ValueScreen extends StatelessWidget {
                                 Container(
                                   width: 200.w,
                                   child: ArborButton(
-                                    backgroundColor: ArborColors.logoGreen,
+                                    backgroundColor: ArborColors.deepGreen,
                                     disabled: !model.enableButton,
                                     loading: false,
                                     title: 'Continue',
@@ -641,7 +641,7 @@ class ValueScreen extends StatelessWidget {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10),
                                     child: ArborButton(
-                                      backgroundColor: ArborColors.logoGreen,
+                                      backgroundColor: ArborColors.deepGreen,
                                       disabled: !model.enableButton,
                                       loading: false,
                                       title: 'Continue',
