@@ -10,4 +10,5 @@ class ArborColors{
   static Color transparent=Colors.transparent;
   static Color white=Colors.white;
   static Color white70=Colors.white70;
+  static Color yellow=Colors.yellow;
 }

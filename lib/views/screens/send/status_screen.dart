@@ -60,8 +60,7 @@ class StatusScreen extends StatelessWidget {
   }
 
   Widget _processingView(BuildContext context, SendCryptoProvider model) {
-    return Responsive.isDesktop(context) || Responsive.isTablet(context)
-        ? Container(
+    return Container(
             alignment: Alignment.center,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -89,6 +88,7 @@ class StatusScreen extends StatelessWidget {
                       ),
                       Text(
                         'Sending',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: ArborColors.white,
                           fontWeight: FontWeight.w600,
@@ -97,6 +97,7 @@ class StatusScreen extends StatelessWidget {
                       ),
                       Text(
                         'Transaction in progress...',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: ArborColors.white,
                           fontWeight: FontWeight.w400,
@@ -112,45 +113,6 @@ class StatusScreen extends StatelessWidget {
                 ),
               ],
             ),
-          )
-        : Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                flex: 1,
-                child: Container(),
-              ),
-              SvgPicture.asset(
-                AssetPaths.transactionSend,
-                fit: BoxFit.cover,
-                height: 100,
-              ),
-              Expanded(
-                flex: 2,
-                child: Container(),
-              ),
-              Text(
-                'Sending',
-                style: TextStyle(
-                  color: ArborColors.white,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18,
-                ),
-              ),
-              Text(
-                'Transaction in progress...',
-                style: TextStyle(
-                  color: ArborColors.white,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Container(),
-              ),
-            ],
           );
   }
 
@@ -184,14 +146,26 @@ class StatusScreen extends StatelessWidget {
                       ),
                       Text(
                         'Success!',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: ArborColors.white,
                           fontWeight: FontWeight.w600,
                           fontSize: 24,
                         ),
                       ),
+                      SizedBox(height: 20,),
                       Text(
-                        '${model.forkName}(${model.forkTicker.toUpperCase()}) sent',
+                        '${model.forkName}(${model.forkTicker.toUpperCase()}) sent.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: ArborColors.white,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 18,
+                        ),
+                      ),
+                      Text(
+                        'Wallet balance will refresh automatically in 60 seconds.',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: ArborColors.white,
                           fontWeight: FontWeight.w400,
@@ -244,7 +218,7 @@ class StatusScreen extends StatelessWidget {
                 ),
               ),
               Text(
-                '${model.forkName}(${model.forkTicker.toUpperCase()}) sent',
+                '${model.forkName}(${model.forkTicker.toUpperCase()}) sent\nWallet balance will refresh automatically in 60 seconds.',
                 style: TextStyle(
                   color: ArborColors.white,
                   fontWeight: FontWeight.w400,
@@ -299,6 +273,7 @@ class StatusScreen extends StatelessWidget {
                       ),
                       Text(
                         'Oops!',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: ArborColors.white,
                           fontWeight: FontWeight.w600,
@@ -307,6 +282,7 @@ class StatusScreen extends StatelessWidget {
                       ),
                       Text(
                         '${model.errorMessage}',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: ArborColors.white,
                           fontWeight: FontWeight.w400,
@@ -352,6 +328,7 @@ class StatusScreen extends StatelessWidget {
               ),
               Text(
                 'Oops!',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: ArborColors.white,
                   fontWeight: FontWeight.w600,
@@ -360,6 +337,7 @@ class StatusScreen extends StatelessWidget {
               ),
               Text(
                 '${model.errorMessage}',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: ArborColors.white,
                   fontWeight: FontWeight.w400,

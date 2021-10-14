@@ -31,7 +31,7 @@ class _ExpandedHomeScreenState extends State<ExpandedHomeScreen> {
         ),
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context,false);
           },
           icon: Icon(
             Icons.arrow_back,

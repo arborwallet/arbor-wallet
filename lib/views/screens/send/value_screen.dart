@@ -263,7 +263,7 @@ class ValueScreen extends StatelessWidget {
                                     );
                                     if (status == true) {
                                       //model.getBalance();
-                                      Navigator.pop(context);
+                                      Navigator.pop(context, true);
                                     }
                                   },
                                 ),
@@ -453,7 +453,7 @@ class ValueScreen extends StatelessWidget {
                                       );
                                       if (status == true) {
                                         //model.getBalance();
-                                        Navigator.pop(context);
+                                        Navigator.pop(context, true);
                                       }
                                     },
                                   ),
@@ -618,7 +618,7 @@ class ValueScreen extends StatelessWidget {
                                                       BorderRadius.circular(20),
                                                   border: Border.all(
                                                       color: ArborColors
-                                                          .lightGreen)),
+                                                          .deepGreen)),
                                               child: Center(
                                                 child: Text(
                                                   'MAX',
@@ -655,7 +655,7 @@ class ValueScreen extends StatelessWidget {
                                         );
                                         if (status == true) {
                                           //model.getBalance();
-                                          Navigator.pop(context);
+                                          Navigator.pop(context, true);
                                         }
                                       },
                                     ),

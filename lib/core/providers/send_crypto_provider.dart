@@ -2,8 +2,10 @@ import 'package:arbor/api/services/wallet_service.dart';
 import 'package:arbor/core/constants/ui_constants.dart';
 import 'package:arbor/core/enums/status.dart';
 import 'package:arbor/core/utils/regex.dart';
+import 'package:arbor/models/models.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class SendCryptoProvider extends ChangeNotifier {
@@ -27,14 +29,21 @@ class SendCryptoProvider extends ChangeNotifier {
   String get addressErrorMessage => _addressErrorMessage;
 
   var transactionResponse;
-  int forkPrecision=0;
-  int networkFee=0;
-  String forkName='';
-  String forkTicker='';
-  String privateKey='';
-  String currentUserAddress='';
+  int _autoRefreshBalanceTimer = 90;
+  int get autoRefreshBalanceTimer => _autoRefreshBalanceTimer;
+
+  int forkPrecision = 0;
+  int networkFee = 0;
+  String forkName = '';
+  String forkTicker = '';
+  String privateKey = '';
+  String currentUserAddress = '';
+
   int _walletBalance = 0;
   int get walletBalance => _walletBalance;
+
+  int _temporaryWalletBalance = 0;
+  int get temporaryWalletBalance => _temporaryWalletBalance;
 
   String _transactionValue = '0';
   String get transactionValue => _transactionValue;
@@ -50,7 +59,8 @@ class SendCryptoProvider extends ChangeNotifier {
   double _amount = 0;
   double get amount => _amount;
 
-  bool useMaximumBalance=false;
+  bool useMaximumBalance = false;
+  bool transactionInProgress = false;
 
   bool scannedData = false;
   bool _validAddress = false;
@@ -103,8 +113,7 @@ class SendCryptoProvider extends ChangeNotifier {
     }
 
     if (_transactionValue.contains('.') &&
-        _transactionValue.split('.').last.length ==
-            forkPrecision) {
+        _transactionValue.split('.').last.length == forkPrecision) {
       return;
     }
 
@@ -123,7 +132,7 @@ class SendCryptoProvider extends ChangeNotifier {
   }
 
   useMax() {
-    useMaximumBalance=true;
+    useMaximumBalance = true;
     _transactionValue = readableBalance;
     notifyListeners();
   }
@@ -155,26 +164,25 @@ class SendCryptoProvider extends ChangeNotifier {
   }
 
   send() async {
-
     debugPrint("Fee:$networkFee");
     sendCryptoStatus = Status.LOADING;
     notifyListeners();
     try {
       _transactionValueForDisplay = _transactionValue;
       transactionResponse = await walletService.sendXCH(
-        privateKey: privateKey,
-        amount: double.parse(_transactionValue) * chiaPrecision,
-        address: _receiverAddress,
-        fee: networkFee
-      );
+          privateKey: privateKey,
+          amount: double.parse(_transactionValue) * chiaPrecision,
+          address: _receiverAddress,
+          fee: networkFee);
 
       if (transactionResponse == 'success') {
+        transactionInProgress = true;
         sendCryptoStatus = Status.SUCCESS;
         _walletBalanceStatus = Status.IDLE;
         _transactionValue = '0';
         _receiverAddress = '';
         _appBarTitle = 'All Done';
-      } else{
+      } else {
         _errorMessage = transactionResponse;
         sendCryptoStatus = Status.ERROR;
       }
@@ -202,6 +210,22 @@ class SendCryptoProvider extends ChangeNotifier {
     }
   }
 
+  /*calculateTemporaryBalance() {
+    int _temporaryWalletBalanceHolder = 0;
+    try {
+      _temporaryWalletBalanceHolder = int.tryParse(
+          (double.parse(_transactionValue) * chiaPrecision).toString())!;
+    } catch (e) {
+      _temporaryWalletBalanceHolder = 0;
+    }
+    _temporaryWalletBalance = _walletBalance - _temporaryWalletBalanceHolder;
+  }
+
+  String displayTemporaryBalance() {
+    double display = _temporaryWalletBalance / pow(10, chiaPrecision);
+    return display.toStringAsFixed(chiaPrecision);
+  }*/
+
   clearInput() {
     _transactionValue = '0';
     _transactionValueForDisplay = '0';
@@ -212,7 +236,7 @@ class SendCryptoProvider extends ChangeNotifier {
   }
 
   clearStatus() {
-    _validAddress=false;
+    _validAddress = false;
     sendCryptoStatus = Status.IDLE;
   }
 
@@ -237,5 +261,30 @@ class SendCryptoProvider extends ChangeNotifier {
       scannedData = true;
       notifyListeners();
     });
+  }
+
+  Future<Box> refreshWalletBalances(Box walletBox) async {
+    print("From view model");
+    for (int index = 0; index < walletBox.length; index++) {
+      Wallet existingWallet = walletBox.getAt(index);
+      int newBalance =
+          await walletService.fetchWalletBalance(existingWallet.address);
+
+      Wallet newWallet = Wallet(
+        name: existingWallet.name,
+        phrase: existingWallet.phrase,
+        privateKey: existingWallet.privateKey,
+        publicKey: existingWallet.publicKey,
+        address: existingWallet.address,
+        balance: newBalance,
+        blockchain: existingWallet.blockchain,
+      );
+
+      walletBox.putAt(index, newWallet);
+    }
+    transactionInProgress = false;
+    notifyListeners();
+    print("From view model - done");
+    return walletBox;
   }
 }

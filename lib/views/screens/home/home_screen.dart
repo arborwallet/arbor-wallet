@@ -1,4 +1,7 @@
 import 'package:arbor/api/services.dart';
+import 'package:arbor/core/constants/arbor_constants.dart';
+import 'package:arbor/core/constants/hive_constants.dart';
+import 'package:arbor/core/providers/send_crypto_provider.dart';
 import 'package:arbor/models/models.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/views/screens/add_wallet/add_wallet_screen.dart';
@@ -9,9 +12,8 @@ import 'package:arbor/views/widgets/dialog/arbor_alert_dialog.dart';
 import 'package:arbor/views/widgets/responsiveness/responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../core/constants/arbor_constants.dart';
-import '../../../core/constants/hive_constants.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'expanded_home_screen.dart';
@@ -22,7 +24,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late final Box walletBox;
+  late Box walletBox;
 
   // Pull to refresh wallet data
   Future<void> _reloadWalletBalances() async {
@@ -90,10 +92,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      color: ArborColors.green,
-      child: Container(
+    return Consumer<SendCryptoProvider>(builder: (_, model, __) {
+      return Container(
+        height: MediaQuery.of(context).size.height,
+        color: ArborColors.green,
+        child: Container(
           margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(
@@ -180,14 +183,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                 var walletData = currentBox.getAt(index)!;
 
                                 return InkWell(
-                                  onTap: () => Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => ExpandedHomeScreen(
-                                        index: index,
-                                        wallet: walletData,
+                                  onTap: () async {
+                                    dynamic result =
+                                        await Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ExpandedHomeScreen(
+                                          index: index,
+                                          wallet: walletData,
+                                        ),
                                       ),
-                                    ),
-                                  ),
+                                    );
+
+                                    if (result != null && result == true) {
+                                      Future.delayed(
+                                          Duration(
+                                              seconds: model
+                                                  .autoRefreshBalanceTimer),
+                                          () async {
+                                        walletBox = await model
+                                            .refreshWalletBalances(walletBox);
+                                      });
+                                    }
+                                  },
                                   child: Card(
                                     color: ArborColors.green,
                                     elevation: 8,
@@ -222,29 +240,59 @@ class _HomeScreenState extends State<HomeScreen> {
                                               color: ArborColors.white70,
                                             ),
                                           ),
-                                          trailing: PopupMenuButton(
-                                            itemBuilder: (context) {
-                                              return [
-                                                PopupMenuItem(
-                                                    value: 'delete',
-                                                    child: Row(
-                                                      children: [
-                                                        Icon(
-                                                          Icons.delete,
-                                                          color: Colors.red,
-                                                        ),
-                                                        SizedBox(
-                                                          width: 10,
-                                                        ),
-                                                        Text('Delete'),
-                                                      ],
-                                                    ))
-                                              ];
-                                            },
-                                            onSelected: (String value) {
-                                              _popupMenuItemSelected(
-                                                  value, index);
-                                            },
+                                          trailing: Container(
+                                            width: 70,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                (model.currentUserAddress ==
+                                                            walletData
+                                                                .address) &&
+                                                        model
+                                                            .transactionInProgress
+                                                    ? Container(
+                                                        height: 16,
+                                                        width: 16,
+                                                        decoration: BoxDecoration(
+                                                            color: ArborColors
+                                                                .yellow,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8)),
+                                                      )
+                                                    : Container(),
+                                                SizedBox(
+                                                  width: 4,
+                                                ),
+                                                PopupMenuButton(
+                                                  itemBuilder: (context) {
+                                                    return [
+                                                      PopupMenuItem(
+                                                          value: 'delete',
+                                                          child: Row(
+                                                            children: [
+                                                              Icon(
+                                                                Icons.delete,
+                                                                color: ArborColors
+                                                                    .errorRed,
+                                                              ),
+                                                              SizedBox(
+                                                                width: 10,
+                                                              ),
+                                                              Text('Delete'),
+                                                            ],
+                                                          ))
+                                                    ];
+                                                  },
+                                                  onSelected: (String value) {
+                                                    _popupMenuItemSelected(
+                                                        value, index);
+                                                  },
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                         ListTile(
@@ -282,8 +330,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                               SizedBox(width: 10),
                                               Expanded(
                                                 child: ArborButton(
-                                                  onPressed: () {
-                                                    Navigator.push(
+                                                  onPressed: () async {
+                                                    dynamic result =
+                                                        await Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
@@ -292,6 +341,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         ),
                                                       ),
                                                     );
+
+                                                    if (result != null &&
+                                                        result == true) {
+                                                      Future.delayed(
+                                                          Duration(
+                                                              seconds: model
+                                                                  .autoRefreshBalanceTimer),
+                                                          () async {
+                                                        walletBox = await model
+                                                            .refreshWalletBalances(
+                                                                walletBox);
+                                                      });
+                                                    }
                                                   },
                                                   title: 'Send',
                                                   backgroundColor:
@@ -317,7 +379,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-    );
+      );
+    });
   }
 
   // Delete info from wallet box
