@@ -49,73 +49,75 @@ class InputPasswordFinalScreen extends StatelessWidget {
             ),
           ),
           body: HideKeyboardContainer(
-            child: Container(
-              constraints: BoxConstraints(maxWidth: 450),
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 20),
-                    child: Text(
-                      'Type your 12-word password to restore your existing wallet',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: ArborColors.white,
+            child: Center(
+              child: Container(
+                constraints: BoxConstraints(maxWidth: 450),
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 20),
+                      child: Text(
+                        'Type your 12-word password to restore your existing wallet',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: ArborColors.white,
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: ListView(
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        PasswordBox(
-                          index: 9,
-                          onChanged: (v) => model.setNinthPassword(v),
-                          errorMessage: model.errorMessage9,
-                        ),
-                        PasswordBox(
-                          index: 10,
-                          onChanged: (v) => model.setTenthPassword(v),
-                          errorMessage: model.errorMessage10,
-                        ),
-                        PasswordBox(
-                          index: 11,
-                          errorMessage: model.errorMessage11,
-                          onChanged: (v) => model.setEleventhPassword(v),
-                        ),
-                        PasswordBox(
-                          index: 12,
-                          errorMessage: model.errorMessage12,
-                          onChanged: (v) => model.setTwelfthPassword(v),
-                        ),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 30),
-                          child: ArborButton(
-                            backgroundColor: ArborColors.logoGreen,
-                            disabled: !model.lastBatchButtonIsDisabled,
-                            loading:
-                                model.recoverWalletStatus == Status.LOADING,
-                            title: 'Restore',
-                            onPressed: () {
-                              if (model.validateLastBatch() == true) {
-                                model.concatenatePasswords();
-                                model.recoverWallet();
-                              }
-                            },
+                    Expanded(
+                      child: ListView(
+                        children: [
+                          SizedBox(
+                            height: 20,
                           ),
-                        ),
-                      ],
+                          PasswordBox(
+                            index: 9,
+                            onChanged: (v) => model.setNinthPassword(v),
+                            errorMessage: model.errorMessage9,
+                          ),
+                          PasswordBox(
+                            index: 10,
+                            onChanged: (v) => model.setTenthPassword(v),
+                            errorMessage: model.errorMessage10,
+                          ),
+                          PasswordBox(
+                            index: 11,
+                            errorMessage: model.errorMessage11,
+                            onChanged: (v) => model.setEleventhPassword(v),
+                          ),
+                          PasswordBox(
+                            index: 12,
+                            errorMessage: model.errorMessage12,
+                            onChanged: (v) => model.setTwelfthPassword(v),
+                          ),
+                          SizedBox(
+                            height: 50,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 30),
+                            child: ArborButton(
+                              backgroundColor: ArborColors.deepGreen,
+                              disabled: !model.lastBatchButtonIsDisabled,
+                              loading:
+                                  model.recoverWalletStatus == Status.LOADING,
+                              title: 'Restore',
+                              onPressed: () {
+                                if (model.validateLastBatch() == true) {
+                                  model.concatenatePasswords();
+                                  model.recoverWallet();
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

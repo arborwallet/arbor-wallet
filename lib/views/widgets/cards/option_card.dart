@@ -18,7 +18,7 @@ class OptionCard extends StatelessWidget {
       child: Card(
         margin: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
         elevation: 2,
-        color: ArborColors.logoGreen,
+        color: ArborColors.deepGreen,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20),),),
         child: Container(
           width: MediaQuery.of(context).size.width,
