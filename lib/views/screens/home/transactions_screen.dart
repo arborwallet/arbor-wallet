@@ -180,12 +180,13 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                         padding: const EdgeInsets.only(
                             bottom: kFloatingActionButtonMargin + 100),
                         elements: transactionsList,
-                        groupBy: (element) => element.toDateOnly(),
+                        groupBy: (element) => element.toUSDate(),
                         groupComparator: (value1, value2) =>
-                            value1.compareTo(value2),
+                            value2.compareTo(value1),
                         itemComparator: (item1, item2) =>
-                            item1.toTime().compareTo(item2.toTime()),
-                        order: GroupedListOrder.DESC,
+                            item1.timestamp.compareTo(item2.timestamp),
+                        order: GroupedListOrder.ASC,
+                        sort: true,
                         useStickyGroupSeparators: false,
                         groupHeaderBuilder: (dynamic value) => Padding(
                           padding: const EdgeInsets.all(8.0),

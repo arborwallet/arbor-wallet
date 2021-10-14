@@ -225,7 +225,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                         ),
                                         subtitle: Text(
-                                          walletData.blockchain.ticker.toUpperCase(),
+                                          walletData.blockchain.ticker
+                                              .toUpperCase(),
                                           style: TextStyle(
                                             color: ArborColors.white70,
                                           ),

@@ -44,28 +44,30 @@ class _ExpandedHomeScreenState extends State<ExpandedHomeScreen> {
         centerTitle: true,
         backgroundColor: ArborColors.green,
       ),
-      body:Responsive.isDesktop(context)
+      body: Responsive.isDesktop(context)
           ? Row(
-            children: [
-              kIsWeb & Responsive.isDesktop(context)? ArborDrawer(
-                onWalletsTapped: ()=>Navigator.pop(context),
-                onSettingsTapped: () => Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute<Widget>(
-                    builder: (context) => SettingsScreen(),
+              children: [
+                kIsWeb & Responsive.isDesktop(context)
+                    ? ArborDrawer(
+                        onWalletsTapped: () => Navigator.pop(context),
+                        onSettingsTapped: () => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute<Widget>(
+                            builder: (context) => SettingsScreen(),
+                          ),
+                        ),
+                      )
+                    : Container(),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(8),
+                    ),
+                    border: Border.all(
+                      color: ArborColors.black,
+                    ),
                   ),
-                ),
-              ):Container(),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(8),
-                  ),
-                  border: Border.all(
-                    color: ArborColors.black,
-                  ),
-                ),
                   alignment: Alignment.center,
                   child: SingleChildScrollView(
                     child: ConstrainedBox(
@@ -82,8 +84,8 @@ class _ExpandedHomeScreenState extends State<ExpandedHomeScreen> {
                     ),
                   ),
                 ),
-            ],
-          )
+              ],
+            )
           : SingleChildScrollView(
               child: Container(
                 padding: const EdgeInsets.all(16.0),

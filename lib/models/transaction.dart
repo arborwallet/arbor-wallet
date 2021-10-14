@@ -59,6 +59,12 @@ class Transaction {
     return dt.toString();
   }
 
+  String toUSDate() {
+    final DateFormat formatter = DateFormat("MM/dd/yyyy");
+    return formatter.format(DateTime.fromMillisecondsSinceEpoch(
+        timestamp * MILLISECONDS_MULTIPLIER));
+  }
+
   String toDateOnly() {
     final DateFormat formatter = DateFormat('MMM d, y');
     return formatter.format(DateTime.fromMillisecondsSinceEpoch(timestamp * MILLISECONDS_MULTIPLIER));
