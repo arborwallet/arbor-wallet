@@ -245,7 +245,7 @@ class SendCryptoProvider extends ChangeNotifier {
   }
 
   Future<Box> refreshWalletBalances(Box walletBox) async {
-    print("From view model");
+
     for (int index = 0; index < walletBox.length; index++) {
       Wallet existingWallet = walletBox.getAt(index);
       int newBalance =
@@ -265,7 +265,7 @@ class SendCryptoProvider extends ChangeNotifier {
     }
     transactionInProgress = false;
     notifyListeners();
-    print("From view model - done");
+    debugPrint("From view model - done");
     return walletBox;
   }
 }

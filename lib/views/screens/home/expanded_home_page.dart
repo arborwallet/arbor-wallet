@@ -221,8 +221,8 @@ class _ExpandedHomePageState extends State<ExpandedHomePage> {
             Expanded(
                 child: ArborButton(
                     backgroundColor: ArborColors.deepGreen,
-                    onPressed: () {
-                      Navigator.push(
+                    onPressed: () async {
+                      var result = await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => ValueScreen(
@@ -230,6 +230,9 @@ class _ExpandedHomePageState extends State<ExpandedHomePage> {
                           ),
                         ),
                       );
+                      if (result != null && result == true) {
+                        Navigator.pop(context, true);
+                      }
                     },
                     title: 'Send')),
           ],
