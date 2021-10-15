@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:arbor/core/constants/arbor_colors.dart';
+import 'package:arbor/core/utils/ui_helpers.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,10 +65,10 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
         }
       } else {
         String _errorMessage = qrValidationResult.error.toString();
-        showSnackBar(context, '$_errorMessage', ArborColors.errorRed);
+        UIHelpers.showErrorSnackBar(context, '$_errorMessage');
       }
     } on Exception catch (e) {
-      showSnackBar(context, '${e.toString()}', ArborColors.errorRed);
+      UIHelpers.showErrorSnackBar(context, '${e.toString()}');
     }
   }
 
@@ -146,8 +147,8 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
                         onTap: () {
                           Clipboard.setData(
                               ClipboardData(text: widget.wallet.address));
-                          showSnackBar(context, 'Wallet address copied',
-                              ArborColors.deepGreen);
+                          UIHelpers.showSnackBar(
+                              context, 'Wallet address copied');
                         },
                       ),
                     ),
@@ -170,24 +171,6 @@ class _WalletReceiveScreenState extends State<WalletReceiveScreen> {
               height: 20,
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  showSnackBar(BuildContext context, String message, Color color) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text("$message"),
-        duration: Duration(milliseconds: 1000),
-        backgroundColor: color,
-        elevation: 2,
-        padding: EdgeInsets.all(
-          10,
-        ), // Inner padding for SnackBar content.
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.0),
         ),
       ),
     );
