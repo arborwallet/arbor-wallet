@@ -237,7 +237,7 @@ class ValueScreen extends StatelessWidget {
                               );
                               if (status == true){
                                 //model.getBalance();
-                                Navigator.pop(context);
+                                Navigator.pop(context,true);
                               }
                             },
                           ),

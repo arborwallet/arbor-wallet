@@ -28,13 +28,15 @@ main() async {
 
   try {
     final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
-    var containsEncryptionKey =
-        await secureStorage.containsKey(key: HiveConstants.hiveEncryptionKeyKey);
+    var containsEncryptionKey = await secureStorage.containsKey(
+        key: HiveConstants.hiveEncryptionKeyKey);
     if (!containsEncryptionKey) {
       var newEncryptionKey = Hive.generateSecureKey();
       await secureStorage.write(
-          key: HiveConstants.hiveEncryptionKeyKey, value: base64UrlEncode(newEncryptionKey));
-      await secureStorage.write(key: HiveConstants.hiveEncryptionSchemaKey, value: "1");
+          key: HiveConstants.hiveEncryptionKeyKey,
+          value: base64UrlEncode(newEncryptionKey));
+      await secureStorage.write(
+          key: HiveConstants.hiveEncryptionSchemaKey, value: "1");
     }
     await secureStorage.readAll();
 
@@ -48,12 +50,14 @@ main() async {
       try {
         await Hive.openBox(HiveConstants.walletBox,
             encryptionCipher: HiveAesCipher(encryptionKey));
-        await Hive.openBox(HiveConstants.transactionsBox, encryptionCipher: HiveAesCipher(encryptionKey));
+        await Hive.openBox(HiveConstants.transactionsBox,
+            encryptionCipher: HiveAesCipher(encryptionKey));
       } on Exception catch (error) {
         return runApp(
           MaterialApp(
             home: NoEncryptionAvailableScreen(
-              message: 'We were unable to retrieve the encrypted keys to open your wallets. Please contact us.\n',
+              message:
+                  'We were unable to retrieve the encrypted keys to open your wallets. Please contact us.\n',
               errorString: 'Error: ${error.toString()}',
             ),
             debugShowCheckedModeBanner: false,
@@ -66,7 +70,8 @@ main() async {
       return runApp(
         MaterialApp(
           home: NoEncryptionAvailableScreen(
-            message: 'We were unable to retrieve the encrypted keys to open your wallets. Please contact us.',
+            message:
+                'We were unable to retrieve the encrypted keys to open your wallets. Please contact us.',
             errorString: ' ',
           ),
           debugShowCheckedModeBanner: false,
@@ -77,7 +82,8 @@ main() async {
     return runApp(
       MaterialApp(
         home: NoEncryptionAvailableScreen(
-          message: 'We were unable to use the encrypted storage for your wallets. Please contact us.\n',
+          message:
+              'We were unable to use the encrypted storage for your wallets. Please contact us.\n',
           errorString: 'Error: ${error.toString()}',
         ),
         debugShowCheckedModeBanner: false,
@@ -125,7 +131,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => SettingsProvider()),
       ],
       child: ScreenUtilInit(
-        builder:()=> MaterialApp(
+        builder: () => MaterialApp(
             title: 'Arbor',
             theme: ArborThemeData.lightTheme,
             debugShowCheckedModeBanner: false,
