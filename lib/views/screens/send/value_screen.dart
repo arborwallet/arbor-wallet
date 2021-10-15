@@ -38,7 +38,7 @@ class ValueScreen extends StatelessWidget {
           model.forkPrecision = wallet.blockchain.precision;
           model.forkName = wallet.blockchain.name;
           model.forkTicker = wallet.blockchain.ticker;
-          model.setWalletBalance(wallet.balance);
+             model.setWalletBalance(wallet.balance);
         }
       });
       return Container(

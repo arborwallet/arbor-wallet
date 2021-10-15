@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:arbor/api/services/wallet_service.dart';
 import 'package:arbor/core/constants/ui_constants.dart';
 import 'package:arbor/core/enums/status.dart';
@@ -95,6 +97,11 @@ class SendCryptoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  setTemporaryWalletBalance(int v) {
+    _walletBalance = v;
+    notifyListeners();
+  }
+
   setTransactionValue(v) {
     if (_transactionValue == '0' && v != '.') {
       _transactionValue = v;
@@ -177,6 +184,7 @@ class SendCryptoProvider extends ChangeNotifier {
 
       if (transactionResponse == 'success') {
         transactionInProgress = true;
+        calculateTemporaryBalance();
         sendCryptoStatus = Status.SUCCESS;
         _walletBalanceStatus = Status.IDLE;
         _transactionValue = '0';
@@ -210,21 +218,23 @@ class SendCryptoProvider extends ChangeNotifier {
     }
   }
 
-  /*calculateTemporaryBalance() {
+  calculateTemporaryBalance() {
     int _temporaryWalletBalanceHolder = 0;
+    print("Transaction Value : $_transactionValue");
     try {
       _temporaryWalletBalanceHolder = int.tryParse(
           (double.parse(_transactionValue) * chiaPrecision).toString())!;
-    } catch (e) {
+    } on Exception catch (e) {
+      print(e.toString());
       _temporaryWalletBalanceHolder = 0;
     }
     _temporaryWalletBalance = _walletBalance - _temporaryWalletBalanceHolder;
   }
 
   String displayTemporaryBalance() {
-    double display = _temporaryWalletBalance / pow(10, chiaPrecision);
-    return display.toStringAsFixed(chiaPrecision);
-  }*/
+    double display = _temporaryWalletBalance / pow(10, forkPrecision);
+    return display.toStringAsFixed(forkPrecision);
+  }
 
   clearInput() {
     _transactionValue = '0';

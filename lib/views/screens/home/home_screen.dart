@@ -300,7 +300,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                           title: FittedBox(
                                               fit: BoxFit.contain,
                                               child: Text(
-                                                walletData.balanceForDisplay(),
+                                                (model.currentUserAddress ==
+                                                            walletData
+                                                                .address) &&
+                                                        model
+                                                            .transactionInProgress
+                                                    ? model
+                                                        .displayTemporaryBalance()
+                                                    : walletData
+                                                        .balanceForDisplay(),
                                                 style: TextStyle(
                                                   color: ArborColors.white,
                                                 ),
