@@ -27,12 +27,12 @@ class SendCryptoProvider extends ChangeNotifier {
   String get addressErrorMessage => _addressErrorMessage;
 
   var transactionResponse;
-  int forkPrecision=0;
-  int networkFee=0;
-  String forkName='';
-  String forkTicker='';
-  String privateKey='';
-  String currentUserAddress='';
+  int forkPrecision = 0;
+  int networkFee = 0;
+  String forkName = '';
+  String forkTicker = '';
+  String privateKey = '';
+  String currentUserAddress = '';
   int _walletBalance = 0;
   int get walletBalance => _walletBalance;
 
@@ -101,8 +101,7 @@ class SendCryptoProvider extends ChangeNotifier {
     }
 
     if (_transactionValue.contains('.') &&
-        _transactionValue.split('.').last.length ==
-            forkPrecision) {
+        _transactionValue.split('.').last.length == forkPrecision) {
       return;
     }
 
@@ -152,18 +151,16 @@ class SendCryptoProvider extends ChangeNotifier {
   }
 
   send() async {
-
     debugPrint("Fee:$networkFee");
     sendCryptoStatus = Status.LOADING;
     notifyListeners();
     try {
       _transactionValueForDisplay = _transactionValue;
       transactionResponse = await walletService.sendXCH(
-        privateKey: privateKey,
-        amount: double.parse(_transactionValue) * chiaPrecision,
-        address: _receiverAddress,
-        fee: networkFee
-      );
+          privateKey: privateKey,
+          amount: (double.parse(_transactionValue) * chiaPrecision).toInt(),
+          address: _receiverAddress,
+          fee: networkFee);
 
       if (transactionResponse == 'success') {
         sendCryptoStatus = Status.SUCCESS;
@@ -171,7 +168,7 @@ class SendCryptoProvider extends ChangeNotifier {
         _transactionValue = '0';
         _receiverAddress = '';
         _appBarTitle = 'All Done';
-      } else{
+      } else {
         _errorMessage = transactionResponse;
         sendCryptoStatus = Status.ERROR;
       }
@@ -209,7 +206,7 @@ class SendCryptoProvider extends ChangeNotifier {
   }
 
   clearStatus() {
-    _validAddress=false;
+    _validAddress = false;
     sendCryptoStatus = Status.IDLE;
   }
 
