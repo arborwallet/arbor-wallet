@@ -263,7 +263,7 @@ class WalletService extends ApiService {
       List<JacobianPoint> signatures = [];
       List<Map<String, dynamic>> spends = [];
       var target = true;
-      var destinationHash = segwit.decode(address).program;
+      var destinationHash = segwit.decode(destination).program;
       var change = spendAmount - amount - fee;
       for (var record in spendRecords) {
         var conditions = Program.list(target
