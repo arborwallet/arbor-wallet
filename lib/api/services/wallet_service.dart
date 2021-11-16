@@ -8,7 +8,7 @@ import 'package:arbor/bls/ec.dart';
 import 'package:arbor/bls/private_key.dart';
 import 'package:arbor/bls/schemes.dart';
 import 'package:arbor/clvm/program.dart';
-import 'package:arbor/core/utils/puzzles.dart';
+import 'package:arbor/core/utils/wallet_utils.dart';
 import 'package:arbor/models/transaction.dart';
 import 'package:bech32m/bech32m.dart';
 import 'package:bip39/bip39.dart';
@@ -214,9 +214,35 @@ class WalletService extends ApiService {
     }
   }
 
-  Future<dynamic> sendXCH(
+  Future<RecordsResponse> fetchRecords(String address) async {
+    final responseData = await http.post(Uri.parse('$baseURL/v2/records'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'address': address,
+        }));
+    if (responseData.statusCode == 200) {
+      return RecordsResponse.fromJson(jsonDecode(responseData.body));
+    } else {
+      throw StateError(responseData.body);
+    }
+  }
+
+  Future<void> sendTransaction(Map<String, dynamic> spendBundle) async {
+    final responseData = await http.post(Uri.parse('$baseURL/v2/transaction'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(spendBundle));
+    if (responseData.statusCode != 200) {
+      throw StateError(responseData.body);
+    }
+  }
+
+  Future<String> sendXCH(
       {required String privateKey,
-      required String address,
+      required String destination,
       required int amount,
       required int fee}) async {
     var totalAmount = amount + fee;
@@ -227,109 +253,61 @@ class WalletService extends ApiService {
     var puzzleHash = wallet.hash();
     var address = segwit.encode(Segwit('xch', puzzleHash));
     try {
-      final responseData = await http.post(Uri.parse('$baseURL/v2/records'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, dynamic>{
-            'address': address,
-          }));
-      if (responseData.statusCode == 200) {
-        RecordsResponse recordsResponse =
-            RecordsResponse.fromJson(jsonDecode(responseData.body));
-        var records = recordsResponse.records;
-        records.sort((a, b) => b.coin.amount - a.coin.amount);
-        List<RecordResponse> spendRecords = [];
-        var spendAmount = 0;
-        calculator:
-        while (records.isNotEmpty && spendAmount < totalAmount) {
-          for (var i = 0; i < records.length; i++) {
-            if (spendAmount + records[i].coin.amount <= totalAmount) {
-              var record = records.removeAt(i--);
-              spendRecords.add(record);
-              spendAmount += record.coin.amount;
-              continue calculator;
-            }
-          }
-          var record = records.removeAt(0);
-          spendRecords.add(record);
-          spendAmount += record.coin.amount;
-        }
-        if (spendAmount < totalAmount) {
-          return 'Insufficient funds.';
-        }
-        List<JacobianPoint> signatures = [];
-        List<Map<String, dynamic>> spends = [];
-        var target = true;
-        var destinationHash = segwit.decode(address).program;
-        var change = spendAmount - amount - fee;
-        for (var record in spendRecords) {
-          var conditions = Program.list(target
-              ? [
-                    Program.list([
-                      Program.int(51),
-                      Program.atom(Uint8List.fromList(destinationHash)),
-                      Program.int(amount)
-                    ])
-                  ] +
-                  (change > 0
-                      ? [
-                          Program.list([
-                            Program.int(51),
-                            Program.atom(puzzleHash),
-                            Program.int(change)
-                          ])
-                        ]
-                      : [])
-              : []);
-          var solution = Program.list([conditions]);
-          target = false;
-          var coinId = Program.list([
-            Program.int(11),
-            Program.cons(Program.int(1),
-                Program.hex(record.coin.parentCoinInfo.substring(2))),
-            Program.cons(Program.int(1),
-                Program.hex(record.coin.puzzleHash.substring(2))),
-            Program.cons(Program.int(1), Program.int(record.coin.amount))
-          ]).run(Program.nil()).program.atom;
-          signatures.add(AugSchemeMPL.sign(
-              privateKeyObject,
-              Uint8List.fromList(conditions.hash() +
-                  coinId +
-                  const HexDecoder().convert(
-                      'ccd5bb71183532bff220ba46c268991a3ff07eb358e8255a65c30a2dce0e5fbb'))));
-          spends.add({
-            'coin': record.coin.toJson(),
-            'puzzle_reveal': const HexEncoder().convert(wallet.serialize()),
-            'solution': const HexEncoder().convert(solution.serialize())
-          });
-        }
-        var aggregate = AugSchemeMPL.aggregate(signatures);
-        try {
-          final responseData =
-              await http.post(Uri.parse('$baseURL/v2/transaction'),
-                  headers: <String, String>{
-                    'Content-Type': 'application/json; charset=UTF-8',
-                  },
-                  body: jsonEncode(<String, dynamic>{
-                    'spend_bundle': {
-                      'coin_spends': spends,
-                      'aggregated_signature':
-                          const HexEncoder().convert(aggregate.toBytes())
-                    },
-                    'blockchain': 'xch'
-                  }));
-          if (responseData.statusCode == 200) {
-            return 'success';
-          } else {
-            return responseData.body;
-          }
-        } on Exception catch (e) {
-          return e.toString();
-        }
-      } else {
-        return responseData.body;
+      var recordsResponse = await fetchRecords(address);
+      var records = recordsResponse.records;
+      records.sort((a, b) => b.coin.amount - a.coin.amount);
+      List<RecordResponse> spendRecords =
+          aggregateRecords(records, totalAmount);
+      var spendAmount = spendRecords.fold<int>(
+          0, (previousValue, element) => previousValue + element.coin.amount);
+      List<JacobianPoint> signatures = [];
+      List<Map<String, dynamic>> spends = [];
+      var target = true;
+      var destinationHash = segwit.decode(address).program;
+      var change = spendAmount - amount - fee;
+      for (var record in spendRecords) {
+        var conditions = Program.list(target
+            ? [
+                  Program.list([
+                    Program.int(51),
+                    Program.atom(Uint8List.fromList(destinationHash)),
+                    Program.int(amount)
+                  ])
+                ] +
+                (change > 0
+                    ? [
+                        Program.list([
+                          Program.int(51),
+                          Program.atom(puzzleHash),
+                          Program.int(change)
+                        ])
+                      ]
+                    : [])
+            : []);
+        var solution = Program.list([conditions]);
+        target = false;
+        var coinId = getCoinId(record);
+        signatures.add(AugSchemeMPL.sign(
+            privateKeyObject,
+            Uint8List.fromList(conditions.hash() +
+                coinId +
+                const HexDecoder().convert(aggSigMeExtraData))));
+        spends.add({
+          'coin': record.coin.toJson(),
+          'puzzle_reveal': const HexEncoder().convert(wallet.serialize()),
+          'solution': const HexEncoder().convert(solution.serialize())
+        });
       }
+      var aggregate = AugSchemeMPL.aggregate(signatures);
+      await sendTransaction({
+        'spend_bundle': {
+          'coin_spends': spends,
+          'aggregated_signature':
+              const HexEncoder().convert(aggregate.toBytes())
+        },
+        'blockchain': 'xch'
+      });
+      return 'success';
     } on Exception catch (e) {
       return e.toString();
     }

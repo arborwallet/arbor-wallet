@@ -26,7 +26,7 @@ class SendCryptoProvider extends ChangeNotifier {
   String _addressErrorMessage = '';
   String get addressErrorMessage => _addressErrorMessage;
 
-  var transactionResponse;
+  String? transactionResponse;
   int forkPrecision = 0;
   int networkFee = 0;
   String forkName = '';
@@ -159,7 +159,7 @@ class SendCryptoProvider extends ChangeNotifier {
       transactionResponse = await walletService.sendXCH(
           privateKey: privateKey,
           amount: (double.parse(_transactionValue) * chiaPrecision).toInt(),
-          address: _receiverAddress,
+          destination: _receiverAddress,
           fee: networkFee);
 
       if (transactionResponse == 'success') {
@@ -169,7 +169,7 @@ class SendCryptoProvider extends ChangeNotifier {
         _receiverAddress = '';
         _appBarTitle = 'All Done';
       } else {
-        _errorMessage = transactionResponse;
+        _errorMessage = transactionResponse!;
         sendCryptoStatus = Status.ERROR;
       }
       notifyListeners();
