@@ -182,7 +182,7 @@ class SendCryptoProvider extends ChangeNotifier {
           privateKey: privateKey,
           amount: (double.parse(_transactionValue) * chiaPrecision).toInt(),
           address: _receiverAddress,
-          fee: networkFee,
+          fee: blockchain!.network_fee,
           ticker: blockchain!.ticker
       );
 
