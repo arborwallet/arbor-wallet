@@ -2,9 +2,8 @@ import 'dart:typed_data';
 
 import 'package:arbor/bls/ec.dart';
 import 'package:arbor/bls/private_key.dart';
-import 'package:arbor/bls/schemes.dart';
 import 'package:arbor/clvm/program.dart';
-import 'package:arbor/core/utils/puzzles.dart';
+import 'package:arbor/core/utils/wallet_utils.dart';
 import 'package:bech32m/bech32m.dart';
 import 'package:bip39/bip39.dart';
 import 'package:hex/hex.dart';
