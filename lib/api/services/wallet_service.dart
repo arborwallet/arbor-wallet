@@ -8,6 +8,7 @@ import 'package:arbor/bls/ec.dart';
 import 'package:arbor/bls/private_key.dart';
 import 'package:arbor/bls/schemes.dart';
 import 'package:arbor/clvm/program.dart';
+import 'package:arbor/core/utils/local_signer.dart';
 import 'package:arbor/core/utils/puzzles.dart';
 import 'package:arbor/models/transaction.dart';
 import 'package:bech32m/bech32m.dart';
@@ -25,13 +26,16 @@ class WalletService extends ApiService {
   final String baseURL;
 
   Future<Wallet> createNewWallet() async {
-    var mnemonic = generateMnemonic();
-    var seed = mnemonicToSeed(mnemonic);
-    var privateKey = PrivateKey.fromSeed(seed);
-    var publicKey = privateKey.getG1();
-    var puzzle = walletPuzzle.curry([Program.atom(publicKey.toBytes())]);
-    var puzzleHash = puzzle.hash();
-    var address = segwit.encode(Segwit('xch', puzzleHash));
+
+    String mnemonic="";
+    WalletKeysAndAddress? walletKeysAndAddress;
+
+    try{
+      mnemonic = LocalSigner.generateWalletMnemonic();
+      walletKeysAndAddress=LocalSigner.convertMnemonicToKeysAndAddress(mnemonic);
+    }on Exception catch (e) {
+      throw Exception('ERROR : ${e.toString()}');
+    }
 
     try {
       final blockchainResponse = await http.post(
@@ -51,9 +55,9 @@ class WalletService extends ApiService {
         Wallet wallet = Wallet(
           name: '',
           phrase: mnemonic,
-          privateKey: const HexEncoder().convert(privateKey.toBytes()),
-          publicKey: const HexEncoder().convert(publicKey.toBytes()),
-          address: address,
+          privateKey: const HexEncoder().convert(walletKeysAndAddress.privateKey.toBytes()),
+          publicKey: const HexEncoder().convert(walletKeysAndAddress.publicKey.toBytes()),
+          address: walletKeysAndAddress.address,
           blockchain: Blockchain(
               name: blockchainResponseModel.blockchainData.name,
               ticker: blockchainResponseModel.blockchainData.ticker,
@@ -75,12 +79,16 @@ class WalletService extends ApiService {
   }
 
   Future<Wallet> recoverWallet(String phrase) async {
-    var seed = mnemonicToSeed(phrase);
-    var privateKey = PrivateKey.fromSeed(seed);
-    var publicKey = privateKey.getG1();
-    var puzzle = walletPuzzle.curry([Program.atom(publicKey.toBytes())]);
-    var puzzleHash = puzzle.hash();
-    var address = segwit.encode(Segwit('xch', puzzleHash));
+
+
+    WalletKeysAndAddress? walletKeysAndAddress;
+
+    try{
+
+      walletKeysAndAddress=LocalSigner.convertMnemonicToKeysAndAddress(phrase);
+    }on Exception catch (e) {
+      throw Exception('ERROR : ${e.toString()}');
+    }
 
     try {
       final blockchainResponse = await http.post(
@@ -103,7 +111,7 @@ class WalletService extends ApiService {
             'Content-Type': 'application/json; charset=UTF-8',
           },
           body: jsonEncode(<String, String>{
-            'address': address,
+            'address': walletKeysAndAddress.address,
           }),
         );
 
@@ -114,9 +122,9 @@ class WalletService extends ApiService {
           Wallet wallet = Wallet(
             name: '',
             phrase: phrase,
-            privateKey: const HexEncoder().convert(privateKey.toBytes()),
-            publicKey: const HexEncoder().convert(publicKey.toBytes()),
-            address: address,
+            privateKey: const HexEncoder().convert(walletKeysAndAddress.privateKey.toBytes()),
+            publicKey: const HexEncoder().convert(walletKeysAndAddress.publicKey.toBytes()),
+            address: walletKeysAndAddress.address,
             blockchain: Blockchain(
                 name: blockchainResponseModel.blockchainData.name,
                 ticker: blockchainResponseModel.blockchainData.ticker,
