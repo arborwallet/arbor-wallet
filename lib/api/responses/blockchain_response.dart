@@ -16,7 +16,7 @@ class BlockchainData {
   String ticker;
   int precision;
   int blockchainFee;
-  String extraData;
+  String aggSigMeExtraData;
 
   BlockchainData(
       {required this.name,
@@ -25,7 +25,7 @@ class BlockchainData {
       required this.ticker,
       required this.precision,
       required this.blockchainFee,
-      required this.extraData,});
+      required this.aggSigMeExtraData,});
 
   BlockchainData.fromJson(Map<String, dynamic> json)
       : name = json['name'],
@@ -34,7 +34,7 @@ class BlockchainData {
         ticker = json['ticker'],
         precision = json['precision'],
         blockchainFee = json['blockchain_fee'],
-        extraData = json['extra_data'];
+        aggSigMeExtraData = json['agg_sig_me_extra_data'];
 
   Map<String, dynamic> toJson() => {
         'name': name,
@@ -43,6 +43,6 @@ class BlockchainData {
         'ticker': ticker,
         'precision': precision,
         'blockchain_fee': blockchainFee,
-        'extra_data':extraData
+        'agg_sig_me_extra_data':aggSigMeExtraData
       };
 }

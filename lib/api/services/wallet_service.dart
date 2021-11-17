@@ -52,7 +52,7 @@ class WalletService extends ApiService {
               precision: blockchain.precision,
               logo: blockchain.logo,
               network_fee: blockchain.network_fee,
-              extra_data: blockchain.extra_data),
+              agg_sig_me_extra_data: blockchain.agg_sig_me_extra_data),
           balance: 0,
         );
 
@@ -88,7 +88,7 @@ class WalletService extends ApiService {
             precision: blockchainResponseModel.blockchainData.precision,
             logo: blockchainResponseModel.blockchainData.logo,
             network_fee: blockchainResponseModel.blockchainData.blockchainFee,
-            extra_data: blockchainResponseModel.blockchainData.extraData);
+            agg_sig_me_extra_data: blockchainResponseModel.blockchainData.aggSigMeExtraData);
 
         return blockchain;
       } else {
@@ -141,7 +141,7 @@ class WalletService extends ApiService {
                 precision: blockchain.precision,
                 logo: blockchain.logo,
                 network_fee: blockchain.network_fee,
-                extra_data: blockchain.extra_data),
+                agg_sig_me_extra_data: blockchain.agg_sig_me_extra_data),
             balance: balance.balance,
           );
 

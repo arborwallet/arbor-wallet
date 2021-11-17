@@ -23,7 +23,7 @@ class Blockchain {
   final int network_fee;
 
   @HiveField(6)
-  final String extra_data;
+  final String agg_sig_me_extra_data;
 
   Blockchain({
     required this.name,
@@ -32,6 +32,6 @@ class Blockchain {
     required this.precision,
     required this.logo,
     required this.network_fee,
-    required this.extra_data
+    required this.agg_sig_me_extra_data
   });
 }
