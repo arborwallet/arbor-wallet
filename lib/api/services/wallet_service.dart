@@ -78,7 +78,7 @@ class WalletService extends ApiService {
       );
 
       if (blockchainResponse.statusCode == 200) {
-        print("${blockchainResponse.body}");
+
         BlockchainResponse blockchainResponseModel =
             BlockchainResponse.fromJson(jsonDecode(blockchainResponse.body));
 
