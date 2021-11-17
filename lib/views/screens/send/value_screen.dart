@@ -36,7 +36,7 @@ class ValueScreen extends StatelessWidget {
           model.setWalletBalance(wallet.balance);
         }
         if(model.sendCryptoStatus==Status.ERROR){
-          AppUtils.showSnackBar(context, "${model.errorMessage}", Colors.red);
+          AppUtils.showSnackBar(context, "${model.errorMessage}", ArborColors.errorRed);
         }
       });
       return Container(
