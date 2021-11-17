@@ -37,35 +37,32 @@ class WalletService extends ApiService {
     try {
       Blockchain? blockchain = await fetchBlockchainInfo();
 
-      if (blockchain != null) {
-        Wallet wallet = Wallet(
-          name: '',
-          privateKey: const HexEncoder()
-              .convert(walletKeysAndAddress.privateKey.toBytes()),
-          publicKey: const HexEncoder()
-              .convert(walletKeysAndAddress.publicKey.toBytes()),
-          address: walletKeysAndAddress.address,
-          blockchain: Blockchain(
-              name: blockchain.name,
-              ticker: blockchain.ticker,
-              unit: blockchain.unit,
-              precision: blockchain.precision,
-              logo: blockchain.logo,
-              network_fee: blockchain.network_fee,
-              agg_sig_me_extra_data: blockchain.agg_sig_me_extra_data),
-          balance: 0,
-        );
+      Wallet wallet = Wallet(
+        name: '',
+        privateKey: const HexEncoder()
+            .convert(walletKeysAndAddress.privateKey.toBytes()),
+        publicKey: const HexEncoder()
+            .convert(walletKeysAndAddress.publicKey.toBytes()),
+        address: walletKeysAndAddress.address,
+        blockchain: Blockchain(
+            name: blockchain.name,
+            ticker: blockchain.ticker,
+            unit: blockchain.unit,
+            precision: blockchain.precision,
+            logo: blockchain.logo,
+            network_fee: blockchain.network_fee,
+            agg_sig_me_extra_data: blockchain.agg_sig_me_extra_data),
+        balance: 0,
+      );
 
-        return [wallet, mnemonic];
-      } else {
-        throw Exception("ERROR: Unable to get blockchain info");
-      }
+      return [wallet, mnemonic];
     } on Exception catch (e) {
       throw Exception('ERROR : ${e.toString()}');
     }
   }
 
-  Future<Blockchain?> fetchBlockchainInfo() async {
+  // @POST("/v2/blockchain")
+  Future<Blockchain> fetchBlockchainInfo() async {
     try {
       final blockchainResponse = await http.post(
         Uri.parse('$baseURL/v2/blockchain'),
@@ -88,7 +85,8 @@ class WalletService extends ApiService {
             precision: blockchainResponseModel.blockchainData.precision,
             logo: blockchainResponseModel.blockchainData.logo,
             network_fee: blockchainResponseModel.blockchainData.blockchainFee,
-            agg_sig_me_extra_data: blockchainResponseModel.blockchainData.aggSigMeExtraData);
+            agg_sig_me_extra_data:
+                blockchainResponseModel.blockchainData.aggSigMeExtraData);
 
         return blockchain;
       } else {
@@ -111,46 +109,41 @@ class WalletService extends ApiService {
 
     try {
       Blockchain? blockchain = await fetchBlockchainInfo();
+      final balanceResponse = await http.post(
+        Uri.parse('$baseURL/v2/balance'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'address': walletKeysAndAddress.address,
+        }),
+      );
 
-      if (blockchain != null) {
-        final balanceResponse = await http.post(
-          Uri.parse('$baseURL/v2/balance'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, String>{
-            'address': walletKeysAndAddress.address,
-          }),
+      if (balanceResponse.statusCode == 200) {
+        BalanceResponse balance =
+            BalanceResponse.fromJson(jsonDecode(balanceResponse.body));
+
+        Wallet wallet = Wallet(
+          name: '',
+          privateKey: const HexEncoder()
+              .convert(walletKeysAndAddress.privateKey.toBytes()),
+          publicKey: const HexEncoder()
+              .convert(walletKeysAndAddress.publicKey.toBytes()),
+          address: walletKeysAndAddress.address,
+          blockchain: Blockchain(
+              name: blockchain.name,
+              ticker: blockchain.ticker,
+              unit: blockchain.unit,
+              precision: blockchain.precision,
+              logo: blockchain.logo,
+              network_fee: blockchain.network_fee,
+              agg_sig_me_extra_data: blockchain.agg_sig_me_extra_data),
+          balance: balance.balance,
         );
 
-        if (balanceResponse.statusCode == 200) {
-          BalanceResponse balance =
-              BalanceResponse.fromJson(jsonDecode(balanceResponse.body));
-
-          Wallet wallet = Wallet(
-            name: '',
-            privateKey: const HexEncoder()
-                .convert(walletKeysAndAddress.privateKey.toBytes()),
-            publicKey: const HexEncoder()
-                .convert(walletKeysAndAddress.publicKey.toBytes()),
-            address: walletKeysAndAddress.address,
-            blockchain: Blockchain(
-                name: blockchain.name,
-                ticker: blockchain.ticker,
-                unit: blockchain.unit,
-                precision: blockchain.precision,
-                logo: blockchain.logo,
-                network_fee: blockchain.network_fee,
-                agg_sig_me_extra_data: blockchain.agg_sig_me_extra_data),
-            balance: balance.balance,
-          );
-
-          return wallet;
-        } else {
-          throw Exception(balanceResponse.body);
-        }
+        return wallet;
       } else {
-        throw Exception("ERROR: Unable to get blockchain info");
+        throw Exception(balanceResponse.body);
       }
     } on Exception catch (e) {
       throw Exception('ERROR : ${e.toString()}');
@@ -237,7 +230,8 @@ class WalletService extends ApiService {
       required String address,
       required int amount,
       required int fee,
-      required String ticker,required String blockChainExtraData}) async {
+      required String ticker,
+      required String blockChainExtraData}) async {
     SignedTransactionResponse? signedTransactionResponse;
     var totalAmount = amount + fee;
 

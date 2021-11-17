@@ -36,56 +36,6 @@ class LocalSigner {
     return SignedTransactionResponse(wallet, privateKeyObject, puzzleHash,address);
   }
 
-  // static dynamic generateSpendsAndSignature(SignedTransactionResponse signedTransactionResponse,var amount,var change,String receiversAddress){
-  //   List<JacobianPoint> signatures = [];
-  //   List<Map<String, dynamic>> spends = [];
-  //   var target = true;
-  //   var destinationHash = segwit.decode(receiversAddress).program;
-  //
-  //   for (var record in spendRecords) {
-  //     var conditions = Program.list(target
-  //     ? [
-  //     Program.list([
-  //       Program.int(51),
-  //       Program.atom(Uint8List.fromList(destinationHash)),
-  //       Program.int(amount)
-  //     ])
-  //     ] +
-  //         (change > 0
-  //         ? [
-  //         Program.list([
-  //           Program.int(51),
-  //           Program.atom(signedTransactionResponse.puzzleHash),
-  //           Program.int(change)
-  //         ])
-  //         ]
-  //                 : [])
-  //             : []);
-  //     var solution = Program.list([conditions]);
-  //     target = false;
-  //     var coinId = Program.list([
-  //       Program.int(11),
-  //       Program.cons(Program.int(1),
-  //           Program.hex(record.coin.parentCoinInfo.substring(2))),
-  //       Program.cons(Program.int(1),
-  //           Program.hex(record.coin.puzzleHash.substring(2))),
-  //       Program.cons(Program.int(1), Program.int(record.coin.amount))
-  //     ]).run(Program.nil()).program.atom;
-  //     signatures.add(AugSchemeMPL.sign(
-  //         signedTransactionResponse.privateKeyObject,
-  //         Uint8List.fromList(conditions.hash() +
-  //             coinId +
-  //             const HexDecoder().convert(
-  //                 'ccd5bb71183532bff220ba46c268991a3ff07eb358e8255a65c30a2dce0e5fbb'))));
-  //     spends.add({
-  //       'coin': record.coin.toJson(),
-  //       'puzzle_reveal': const HexEncoder().convert(signedTransactionResponse.wallet.serialize()),
-  //       'solution': const HexEncoder().convert(solution.serialize())
-  //     });
-  //   }
-  //
-  //   return [spends,signatures];
-  // }
 }
 
 class WalletKeysAndAddress {

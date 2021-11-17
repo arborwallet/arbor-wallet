@@ -157,6 +157,7 @@ class SendCryptoProvider extends ChangeNotifier {
   }
 
   getTransactionFee() async {
+    _errorMessage="";
     _sendButtonIsBusy = true;
     sendCryptoStatus = Status.IDLE;
     notifyListeners();
@@ -167,6 +168,7 @@ class SendCryptoProvider extends ChangeNotifier {
       notifyListeners();
     } on Exception catch (e) {
       _errorMessage = e.toString();
+      _sendButtonIsBusy = false;
       sendCryptoStatus = Status.ERROR;
       notifyListeners();
     }
