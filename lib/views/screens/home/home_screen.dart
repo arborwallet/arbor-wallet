@@ -37,7 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
       Wallet newWallet = Wallet(
         name: existingWallet.name,
-        phrase: existingWallet.phrase,
         privateKey: existingWallet.privateKey,
         publicKey: existingWallet.publicKey,
         address: existingWallet.address,

@@ -52,8 +52,12 @@ class CreateWalletProvider extends ChangeNotifier {
     _appBarTitle='Generating';
     notifyListeners();
     try {
-      newWallet = await walletService.createNewWallet();
-      seedPhrase=newWallet!.phrase;
+      var response=await walletService.createNewWallet();
+      newWallet = response[0];
+      seedPhrase=response[1];
+
+      print("Phrase - $seedPhrase");
+      //seedPhrase=newWallet!.phrase;
       _wordsList=seedPhrase.split(' ').toList();
 
       for(int i=0;i<_wordsList.length;i++){

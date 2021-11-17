@@ -12,7 +12,6 @@ import 'package:arbor/core/utils/local_signer.dart';
 import 'package:arbor/core/utils/puzzles.dart';
 import 'package:arbor/models/transaction.dart';
 import 'package:bech32m/bech32m.dart';
-import 'package:bip39/bip39.dart';
 import 'package:hex/hex.dart';
 import 'package:http/http.dart' as http;
 
@@ -25,7 +24,7 @@ class WalletService extends ApiService {
 
   final String baseURL;
 
-  Future<Wallet> createNewWallet() async {
+  Future<dynamic> createNewWallet() async {
 
     String mnemonic="";
     WalletKeysAndAddress? walletKeysAndAddress;
@@ -54,7 +53,6 @@ class WalletService extends ApiService {
 
         Wallet wallet = Wallet(
           name: '',
-          phrase: mnemonic,
           privateKey: const HexEncoder().convert(walletKeysAndAddress.privateKey.toBytes()),
           publicKey: const HexEncoder().convert(walletKeysAndAddress.publicKey.toBytes()),
           address: walletKeysAndAddress.address,
@@ -69,7 +67,8 @@ class WalletService extends ApiService {
           balance: 0,
         );
 
-        return wallet;
+        //return wallet;
+        return [wallet,mnemonic];
       } else {
         throw Exception(blockchainResponse.body);
       }
@@ -121,7 +120,6 @@ class WalletService extends ApiService {
 
           Wallet wallet = Wallet(
             name: '',
-            phrase: phrase,
             privateKey: const HexEncoder().convert(walletKeysAndAddress.privateKey.toBytes()),
             publicKey: const HexEncoder().convert(walletKeysAndAddress.publicKey.toBytes()),
             address: walletKeysAndAddress.address,

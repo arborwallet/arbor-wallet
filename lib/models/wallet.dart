@@ -11,8 +11,6 @@ class Wallet {
   @HiveField(0)
   final String name;
 
-  final String phrase;
-
   @HiveField(1)
   final String privateKey;
 
@@ -30,7 +28,6 @@ class Wallet {
 
   Wallet({
     required this.name,
-    this.phrase = '',
     required this.privateKey,
     required this.publicKey,
     required this.address,

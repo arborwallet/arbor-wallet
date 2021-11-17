@@ -37,7 +37,6 @@ class _UpdateWalletFormState extends State<UpdateWalletForm> {
     Wallet existingWallet = widget.wallet;
     Wallet newWallet = Wallet(
       name: _nameController.text,
-      phrase: existingWallet.phrase,
       privateKey: existingWallet.privateKey,
       publicKey: existingWallet.publicKey,
       address: existingWallet.address,
