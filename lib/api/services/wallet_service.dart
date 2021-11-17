@@ -78,7 +78,6 @@ class WalletService extends ApiService {
       );
 
       if (blockchainResponse.statusCode == 200) {
-
         BlockchainResponse blockchainResponseModel =
             BlockchainResponse.fromJson(jsonDecode(blockchainResponse.body));
 
@@ -238,7 +237,7 @@ class WalletService extends ApiService {
       required String address,
       required int amount,
       required int fee,
-      required String ticker}) async {
+      required String ticker,required String blockChainExtraData}) async {
     SignedTransactionResponse? signedTransactionResponse;
     var totalAmount = amount + fee;
 
@@ -279,7 +278,7 @@ class WalletService extends ApiService {
           spendRecords.add(record);
           spendAmount += record.coin.amount;
         }
-        print("$spendAmount $totalAmount");
+
         if (spendAmount < totalAmount) {
           return 'Insufficient funds.';
         }
@@ -322,8 +321,7 @@ class WalletService extends ApiService {
               signedTransactionResponse.privateKeyObject,
               Uint8List.fromList(conditions.hash() +
                   coinId +
-                  const HexDecoder().convert(
-                      'ccd5bb71183532bff220ba46c268991a3ff07eb358e8255a65c30a2dce0e5fbb'))));
+                  const HexDecoder().convert(blockChainExtraData))));
           spends.add({
             'coin': record.coin.toJson(),
             'puzzle_reveal': const HexEncoder()

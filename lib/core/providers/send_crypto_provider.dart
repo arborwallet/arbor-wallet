@@ -56,8 +56,8 @@ class SendCryptoProvider extends ChangeNotifier {
   bool scannedData = false;
   bool _validAddress = false;
 
-  bool _sendButtonIsBusy=false;
-  bool get sendButtonIsBusy=>_sendButtonIsBusy;
+  bool _sendButtonIsBusy = false;
+  bool get sendButtonIsBusy => _sendButtonIsBusy;
 
   bool validAddress(String address) {
     // format and length are from
@@ -156,16 +156,16 @@ class SendCryptoProvider extends ChangeNotifier {
     await send();
   }
 
-  getTransactionFee()async{
-    _sendButtonIsBusy=true;
+  getTransactionFee() async {
+    _sendButtonIsBusy = true;
     sendCryptoStatus = Status.IDLE;
     notifyListeners();
-    try{
-      blockchain=await walletService.fetchBlockchainInfo();
-      networkFee=blockchain!.network_fee;
-      _sendButtonIsBusy=false;
+    try {
+      blockchain = await walletService.fetchBlockchainInfo();
+      networkFee = blockchain!.network_fee;
+      _sendButtonIsBusy = false;
       notifyListeners();
-    }on Exception catch (e) {
+    } on Exception catch (e) {
       _errorMessage = e.toString();
       sendCryptoStatus = Status.ERROR;
       notifyListeners();
@@ -173,7 +173,6 @@ class SendCryptoProvider extends ChangeNotifier {
   }
 
   send() async {
-
     sendCryptoStatus = Status.LOADING;
     notifyListeners();
     try {
@@ -183,8 +182,8 @@ class SendCryptoProvider extends ChangeNotifier {
           amount: (double.parse(_transactionValue) * chiaPrecision).toInt(),
           address: _receiverAddress,
           fee: blockchain!.network_fee,
-          ticker: blockchain!.ticker
-      );
+          ticker: blockchain!.ticker,
+          blockChainExtraData: blockchain!.extra_data);
 
       if (transactionResponse == 'success') {
         sendCryptoStatus = Status.SUCCESS;
