@@ -16,6 +16,7 @@ class BlockchainData {
   String ticker;
   int precision;
   int blockchainFee;
+  String extraData;
 
   BlockchainData(
       {required this.name,
@@ -23,7 +24,8 @@ class BlockchainData {
       required this.logo,
       required this.ticker,
       required this.precision,
-      required this.blockchainFee});
+      required this.blockchainFee,
+      required this.extraData,});
 
   BlockchainData.fromJson(Map<String, dynamic> json)
       : name = json['name'],
@@ -31,7 +33,8 @@ class BlockchainData {
         logo = json['logo'],
         ticker = json['ticker'],
         precision = json['precision'],
-        blockchainFee = json['blockchain_fee'];
+        blockchainFee = json['blockchain_fee'],
+        extraData = json['extra_data'];
 
   Map<String, dynamic> toJson() => {
         'name': name,
@@ -39,6 +42,7 @@ class BlockchainData {
         'logo': logo,
         'ticker': ticker,
         'precision': precision,
-        'blockchain_fee': blockchainFee
+        'blockchain_fee': blockchainFee,
+        'extra_data':extraData
       };
 }

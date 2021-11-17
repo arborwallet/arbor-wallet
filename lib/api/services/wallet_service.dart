@@ -46,13 +46,13 @@ class WalletService extends ApiService {
               .convert(walletKeysAndAddress.publicKey.toBytes()),
           address: walletKeysAndAddress.address,
           blockchain: Blockchain(
-            name: blockchain.name,
-            ticker: blockchain.ticker,
-            unit: blockchain.unit,
-            precision: blockchain.precision,
-            logo: blockchain.logo,
-            network_fee: blockchain.network_fee,
-          ),
+              name: blockchain.name,
+              ticker: blockchain.ticker,
+              unit: blockchain.unit,
+              precision: blockchain.precision,
+              logo: blockchain.logo,
+              network_fee: blockchain.network_fee,
+              extra_data: blockchain.extra_data),
           balance: 0,
         );
 
@@ -83,13 +83,13 @@ class WalletService extends ApiService {
             BlockchainResponse.fromJson(jsonDecode(blockchainResponse.body));
 
         Blockchain blockchain = Blockchain(
-          name: blockchainResponseModel.blockchainData.name,
-          ticker: blockchainResponseModel.blockchainData.ticker,
-          unit: blockchainResponseModel.blockchainData.unit,
-          precision: blockchainResponseModel.blockchainData.precision,
-          logo: blockchainResponseModel.blockchainData.logo,
-          network_fee: blockchainResponseModel.blockchainData.blockchainFee,
-        );
+            name: blockchainResponseModel.blockchainData.name,
+            ticker: blockchainResponseModel.blockchainData.ticker,
+            unit: blockchainResponseModel.blockchainData.unit,
+            precision: blockchainResponseModel.blockchainData.precision,
+            logo: blockchainResponseModel.blockchainData.logo,
+            network_fee: blockchainResponseModel.blockchainData.blockchainFee,
+            extra_data: blockchainResponseModel.blockchainData.extraData);
 
         return blockchain;
       } else {
@@ -141,7 +141,8 @@ class WalletService extends ApiService {
                 unit: blockchain.unit,
                 precision: blockchain.precision,
                 logo: blockchain.logo,
-                network_fee: blockchain.network_fee),
+                network_fee: blockchain.network_fee,
+                extra_data: blockchain.extra_data),
             balance: balance.balance,
           );
 
