@@ -20,8 +20,9 @@ import '../responses.dart';
 import 'api_service.dart';
 
 class WalletService extends ApiService {
-  @override
-  String baseURL = 'https://dev.arborwallet.com/api';
+  WalletService({this.baseURL = ApiService.baseURL});
+
+  final String baseURL;
 
   Future<Wallet> createNewWallet() async {
     var mnemonic = generateMnemonic();

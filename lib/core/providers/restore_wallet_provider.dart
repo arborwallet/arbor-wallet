@@ -87,7 +87,7 @@ class RestoreWalletProvider extends ChangeNotifier {
       _password11IsCorrect = false,
       _password12IsCorrect = false;
 
-  String _errorMessage = 'Invalid password';
+  String _errorMessage = 'Invalid phrase';
 
   Wallet? recoveredWallet;
   String allPassword = '';
