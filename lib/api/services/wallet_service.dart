@@ -5,11 +5,9 @@ import 'package:arbor/api/responses/record_response.dart';
 import 'package:arbor/api/responses/records_response.dart';
 import 'package:arbor/api/responses/transaction_response.dart';
 import 'package:arbor/bls/ec.dart';
-import 'package:arbor/bls/private_key.dart';
 import 'package:arbor/bls/schemes.dart';
 import 'package:arbor/clvm/program.dart';
 import 'package:arbor/core/utils/local_signer.dart';
-import 'package:arbor/core/utils/puzzles.dart';
 import 'package:arbor/models/transaction.dart';
 import 'package:bech32m/bech32m.dart';
 import 'package:hex/hex.dart';
@@ -25,17 +23,49 @@ class WalletService extends ApiService {
   final String baseURL;
 
   Future<dynamic> createNewWallet() async {
-
-    String mnemonic="";
+    String mnemonic = "";
     WalletKeysAndAddress? walletKeysAndAddress;
 
-    try{
+    try {
       mnemonic = LocalSigner.generateWalletMnemonic();
-      walletKeysAndAddress=LocalSigner.convertMnemonicToKeysAndAddress(mnemonic);
-    }on Exception catch (e) {
+      walletKeysAndAddress =
+          LocalSigner.convertMnemonicToKeysAndAddress(mnemonic);
+    } on Exception catch (e) {
       throw Exception('ERROR : ${e.toString()}');
     }
 
+    try {
+      Blockchain? blockchain = await fetchBlockchainInfo();
+
+      if (blockchain != null) {
+        Wallet wallet = Wallet(
+          name: '',
+          privateKey: const HexEncoder()
+              .convert(walletKeysAndAddress.privateKey.toBytes()),
+          publicKey: const HexEncoder()
+              .convert(walletKeysAndAddress.publicKey.toBytes()),
+          address: walletKeysAndAddress.address,
+          blockchain: Blockchain(
+            name: blockchain.name,
+            ticker: blockchain.ticker,
+            unit: blockchain.unit,
+            precision: blockchain.precision,
+            logo: blockchain.logo,
+            network_fee: blockchain.network_fee,
+          ),
+          balance: 0,
+        );
+
+        return [wallet, mnemonic];
+      } else {
+        throw Exception("ERROR: Unable to get blockchain info");
+      }
+    } on Exception catch (e) {
+      throw Exception('ERROR : ${e.toString()}');
+    }
+  }
+
+  Future<Blockchain?> fetchBlockchainInfo() async {
     try {
       final blockchainResponse = await http.post(
         Uri.parse('$baseURL/v2/blockchain'),
@@ -48,27 +78,20 @@ class WalletService extends ApiService {
       );
 
       if (blockchainResponse.statusCode == 200) {
+        print("${blockchainResponse.body}");
         BlockchainResponse blockchainResponseModel =
             BlockchainResponse.fromJson(jsonDecode(blockchainResponse.body));
 
-        Wallet wallet = Wallet(
-          name: '',
-          privateKey: const HexEncoder().convert(walletKeysAndAddress.privateKey.toBytes()),
-          publicKey: const HexEncoder().convert(walletKeysAndAddress.publicKey.toBytes()),
-          address: walletKeysAndAddress.address,
-          blockchain: Blockchain(
-              name: blockchainResponseModel.blockchainData.name,
-              ticker: blockchainResponseModel.blockchainData.ticker,
-              unit: blockchainResponseModel.blockchainData.unit,
-              precision: blockchainResponseModel.blockchainData.precision,
-              logo: blockchainResponseModel.blockchainData.logo,
-              network_fee:
-                  blockchainResponseModel.blockchainData.blockchainFee),
-          balance: 0,
+        Blockchain blockchain = Blockchain(
+          name: blockchainResponseModel.blockchainData.name,
+          ticker: blockchainResponseModel.blockchainData.ticker,
+          unit: blockchainResponseModel.blockchainData.unit,
+          precision: blockchainResponseModel.blockchainData.precision,
+          logo: blockchainResponseModel.blockchainData.logo,
+          network_fee: blockchainResponseModel.blockchainData.blockchainFee,
         );
 
-        //return wallet;
-        return [wallet,mnemonic];
+        return blockchain;
       } else {
         throw Exception(blockchainResponse.body);
       }
@@ -78,32 +101,19 @@ class WalletService extends ApiService {
   }
 
   Future<Wallet> recoverWallet(String phrase) async {
-
-
     WalletKeysAndAddress? walletKeysAndAddress;
 
-    try{
-
-      walletKeysAndAddress=LocalSigner.convertMnemonicToKeysAndAddress(phrase);
-    }on Exception catch (e) {
+    try {
+      walletKeysAndAddress =
+          LocalSigner.convertMnemonicToKeysAndAddress(phrase);
+    } on Exception catch (e) {
       throw Exception('ERROR : ${e.toString()}');
     }
 
     try {
-      final blockchainResponse = await http.post(
-        Uri.parse('$baseURL/v2/blockchain'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'blockchain': 'xch',
-        }),
-      );
+      Blockchain? blockchain = await fetchBlockchainInfo();
 
-      if (blockchainResponse.statusCode == 200) {
-        BlockchainResponse blockchainResponseModel =
-            BlockchainResponse.fromJson(jsonDecode(blockchainResponse.body));
-
+      if (blockchain != null) {
         final balanceResponse = await http.post(
           Uri.parse('$baseURL/v2/balance'),
           headers: <String, String>{
@@ -120,17 +130,18 @@ class WalletService extends ApiService {
 
           Wallet wallet = Wallet(
             name: '',
-            privateKey: const HexEncoder().convert(walletKeysAndAddress.privateKey.toBytes()),
-            publicKey: const HexEncoder().convert(walletKeysAndAddress.publicKey.toBytes()),
+            privateKey: const HexEncoder()
+                .convert(walletKeysAndAddress.privateKey.toBytes()),
+            publicKey: const HexEncoder()
+                .convert(walletKeysAndAddress.publicKey.toBytes()),
             address: walletKeysAndAddress.address,
             blockchain: Blockchain(
-                name: blockchainResponseModel.blockchainData.name,
-                ticker: blockchainResponseModel.blockchainData.ticker,
-                unit: blockchainResponseModel.blockchainData.unit,
-                precision: blockchainResponseModel.blockchainData.precision,
-                logo: blockchainResponseModel.blockchainData.logo,
-                network_fee:
-                    blockchainResponseModel.blockchainData.blockchainFee),
+                name: blockchain.name,
+                ticker: blockchain.ticker,
+                unit: blockchain.unit,
+                precision: blockchain.precision,
+                logo: blockchain.logo,
+                network_fee: blockchain.network_fee),
             balance: balance.balance,
           );
 
@@ -139,7 +150,7 @@ class WalletService extends ApiService {
           throw Exception(balanceResponse.body);
         }
       } else {
-        throw Exception(blockchainResponse.body);
+        throw Exception("ERROR: Unable to get blockchain info");
       }
     } on Exception catch (e) {
       throw Exception('ERROR : ${e.toString()}');
@@ -225,23 +236,28 @@ class WalletService extends ApiService {
       {required String privateKey,
       required String address,
       required int amount,
-      required int fee}) async {
+      required int fee,
+      required String ticker}) async {
+    SignedTransactionResponse? signedTransactionResponse;
     var totalAmount = amount + fee;
-    var privateKeyObject = PrivateKey.fromBytes(
-        Uint8List.fromList(const HexDecoder().convert(privateKey)));
-    var publicKeyObject = privateKeyObject.getG1();
-    var wallet = walletPuzzle.curry([Program.atom(publicKeyObject.toBytes())]);
-    var puzzleHash = wallet.hash();
-    var address = segwit.encode(Segwit('xch', puzzleHash));
+
+    try {
+      signedTransactionResponse =
+          await LocalSigner.usePrivateKeyToGenerateHash(privateKey);
+    } on Exception catch (e) {
+      throw Exception('ERROR : ${e.toString()}');
+    }
+
     try {
       final responseData = await http.post(Uri.parse('$baseURL/v2/records'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
           body: jsonEncode(<String, dynamic>{
-            'address': address,
+            'address': signedTransactionResponse.address,
           }));
       if (responseData.statusCode == 200) {
+        print("${responseData.body}");
         RecordsResponse recordsResponse =
             RecordsResponse.fromJson(jsonDecode(responseData.body));
         var records = recordsResponse.records;
@@ -262,14 +278,16 @@ class WalletService extends ApiService {
           spendRecords.add(record);
           spendAmount += record.coin.amount;
         }
+        print("$spendAmount $totalAmount");
         if (spendAmount < totalAmount) {
           return 'Insufficient funds.';
         }
+        var change = spendAmount - amount - fee;
         List<JacobianPoint> signatures = [];
         List<Map<String, dynamic>> spends = [];
         var target = true;
         var destinationHash = segwit.decode(address).program;
-        var change = spendAmount - amount - fee;
+
         for (var record in spendRecords) {
           var conditions = Program.list(target
               ? [
@@ -283,7 +301,7 @@ class WalletService extends ApiService {
                       ? [
                           Program.list([
                             Program.int(51),
-                            Program.atom(puzzleHash),
+                            Program.atom(signedTransactionResponse.puzzleHash),
                             Program.int(change)
                           ])
                         ]
@@ -300,14 +318,15 @@ class WalletService extends ApiService {
             Program.cons(Program.int(1), Program.int(record.coin.amount))
           ]).run(Program.nil()).program.atom;
           signatures.add(AugSchemeMPL.sign(
-              privateKeyObject,
+              signedTransactionResponse.privateKeyObject,
               Uint8List.fromList(conditions.hash() +
                   coinId +
                   const HexDecoder().convert(
                       'ccd5bb71183532bff220ba46c268991a3ff07eb358e8255a65c30a2dce0e5fbb'))));
           spends.add({
             'coin': record.coin.toJson(),
-            'puzzle_reveal': const HexEncoder().convert(wallet.serialize()),
+            'puzzle_reveal': const HexEncoder()
+                .convert(signedTransactionResponse.wallet.serialize()),
             'solution': const HexEncoder().convert(solution.serialize())
           });
         }
@@ -324,7 +343,7 @@ class WalletService extends ApiService {
                       'aggregated_signature':
                           const HexEncoder().convert(aggregate.toBytes())
                     },
-                    'blockchain': 'xch'
+                    'blockchain': ticker.toLowerCase()
                   }));
           if (responseData.statusCode == 200) {
             return 'success';

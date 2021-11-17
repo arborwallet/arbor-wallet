@@ -36,7 +36,7 @@ class Wallet {
   });
 
   String balanceForDisplay() {
-    double display = balance / pow(10,blockchain.precision);
+    double display = balance / pow(10, blockchain.precision);
     return display.toStringAsFixed(blockchain.precision);
     // In case someone asks for the zeros at the end to be not displayed
     // return display.toString();

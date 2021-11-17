@@ -2,6 +2,7 @@ import 'package:arbor/api/services/wallet_service.dart';
 import 'package:arbor/core/constants/ui_constants.dart';
 import 'package:arbor/core/enums/status.dart';
 import 'package:arbor/core/utils/regex.dart';
+import 'package:arbor/models/blockchain.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -13,6 +14,8 @@ class SendCryptoProvider extends ChangeNotifier {
   Status get walletBalanceStatus => _walletBalanceStatus;
 
   final walletService = WalletService();
+
+  Blockchain? blockchain;
 
   String _appBarTitle = '';
   String get appBarTitle => _appBarTitle;
@@ -52,6 +55,9 @@ class SendCryptoProvider extends ChangeNotifier {
 
   bool scannedData = false;
   bool _validAddress = false;
+
+  bool _sendButtonIsBusy=false;
+  bool get sendButtonIsBusy=>_sendButtonIsBusy;
 
   bool validAddress(String address) {
     // format and length are from
@@ -150,8 +156,24 @@ class SendCryptoProvider extends ChangeNotifier {
     await send();
   }
 
+  getTransactionFee()async{
+    _sendButtonIsBusy=true;
+    sendCryptoStatus = Status.IDLE;
+    notifyListeners();
+    try{
+      blockchain=await walletService.fetchBlockchainInfo();
+      networkFee=blockchain!.network_fee;
+      _sendButtonIsBusy=false;
+      notifyListeners();
+    }on Exception catch (e) {
+      _errorMessage = e.toString();
+      sendCryptoStatus = Status.ERROR;
+      notifyListeners();
+    }
+  }
+
   send() async {
-    debugPrint("Fee:$networkFee");
+
     sendCryptoStatus = Status.LOADING;
     notifyListeners();
     try {
@@ -160,7 +182,9 @@ class SendCryptoProvider extends ChangeNotifier {
           privateKey: privateKey,
           amount: (double.parse(_transactionValue) * chiaPrecision).toInt(),
           address: _receiverAddress,
-          fee: networkFee);
+          fee: networkFee,
+          ticker: blockchain!.ticker
+      );
 
       if (transactionResponse == 'success') {
         sendCryptoStatus = Status.SUCCESS;

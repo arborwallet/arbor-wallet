@@ -35,6 +35,9 @@ class ValueScreen extends StatelessWidget {
           model.forkTicker = wallet.blockchain.ticker;
           model.setWalletBalance(wallet.balance);
         }
+        if(model.sendCryptoStatus==Status.ERROR){
+
+        }
       });
       return Container(
         color: ArborColors.green,
@@ -225,9 +228,12 @@ class ValueScreen extends StatelessWidget {
                           child: ArborButton(
                             backgroundColor: ArborColors.deepGreen,
                             disabled: !model.enableButton,
-                            loading: false,
+                            loading: model.sendButtonIsBusy,
                             title: 'Continue',
                             onPressed: () async {
+
+                              await model.getTransactionFee();
+
                               var status = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
