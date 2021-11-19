@@ -128,6 +128,7 @@ class StatusScreen extends StatelessWidget {
         ),
         Text(
           '${model.transactionValueForDisplay} ${model.forkName} (${model.forkTicker.toUpperCase()}) sent',
+          textAlign: TextAlign.center,
           style: TextStyle(
             color: ArborColors.white,
             fontWeight: FontWeight.w400,
@@ -137,6 +138,7 @@ class StatusScreen extends StatelessWidget {
         SizedBox(height: 20,),
         Text(
           'Transactions may take up to 2 minutes to show up in your wallet.',
+          textAlign: TextAlign.center,
           style: TextStyle(
             color: ArborColors.white,
             fontWeight: FontWeight.w200,
@@ -190,6 +192,7 @@ class StatusScreen extends StatelessWidget {
         ),
         Text(
           '${model.errorMessage}',
+          textAlign: TextAlign.center,
           style: TextStyle(
             color: ArborColors.white,
             fontWeight: FontWeight.w400,
