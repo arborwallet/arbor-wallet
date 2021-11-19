@@ -87,13 +87,13 @@ class RestoreWalletProvider extends ChangeNotifier {
       _password11IsCorrect = false,
       _password12IsCorrect = false;
 
-  String _errorMessage = 'Invalid password';
+  String _errorMessage = 'Invalid phrase';
 
   Wallet? recoveredWallet;
   String allPassword = '';
 
   bool validatePassword(String word) {
-    //word=word.toLowerCase();
+
     try {
       if (word.length >= 3 &&
           (word.trim() ==

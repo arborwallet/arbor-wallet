@@ -48,6 +48,10 @@ dependencies:
   share_plus: ^2.1.4
 
   shared_preferences: ^2.0.7
+  quiver: ^3.0.1+1
+  hex: ^0.2.0
+  bip39: ^1.0.6
+  bech32m: ^0.2.2
 
 
 dev_dependencies:
