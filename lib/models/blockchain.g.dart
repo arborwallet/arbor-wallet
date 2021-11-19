@@ -23,14 +23,13 @@ class BlockchainAdapter extends TypeAdapter<Blockchain> {
       precision: fields[3] as int,
       logo: fields[4] as String,
       network_fee: fields[5] as int,
-      agg_sig_me_extra_data: fields[6] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Blockchain obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -42,9 +41,7 @@ class BlockchainAdapter extends TypeAdapter<Blockchain> {
       ..writeByte(4)
       ..write(obj.logo)
       ..writeByte(5)
-      ..write(obj.network_fee)
-      ..writeByte(6)
-      ..write(obj.agg_sig_me_extra_data);
+      ..write(obj.network_fee);
   }
 
   @override

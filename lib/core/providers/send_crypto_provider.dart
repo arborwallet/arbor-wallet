@@ -2,6 +2,7 @@ import 'package:arbor/api/services/wallet_service.dart';
 import 'package:arbor/core/constants/ui_constants.dart';
 import 'package:arbor/core/enums/status.dart';
 import 'package:arbor/core/utils/regex.dart';
+import 'package:arbor/core/utils/wallet_utils.dart';
 import 'package:arbor/models/blockchain.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -36,6 +37,8 @@ class SendCryptoProvider extends ChangeNotifier {
   String forkTicker = '';
   String privateKey = '';
   String currentUserAddress = '';
+  String aggSigExtraData = '';
+
   int _walletBalance = 0;
   int get walletBalance => _walletBalance;
 
@@ -164,6 +167,7 @@ class SendCryptoProvider extends ChangeNotifier {
     try {
       blockchain = await walletService.fetchBlockchainInfo();
       networkFee = blockchain!.network_fee;
+      aggSigExtraData = blockchain!.agg_sig_me_extra_data;
       _sendButtonIsBusy = false;
       notifyListeners();
     } on Exception catch (e) {
@@ -185,7 +189,7 @@ class SendCryptoProvider extends ChangeNotifier {
           address: _receiverAddress,
           fee: blockchain!.network_fee,
           ticker: blockchain!.ticker,
-          blockChainExtraData: blockchain!.agg_sig_me_extra_data);
+          blockChainExtraData: aggSigExtraData);
 
       if (transactionResponse == 'success') {
         sendCryptoStatus = Status.SUCCESS;
