@@ -1,10 +1,14 @@
+import 'dart:math';
+
 import 'package:arbor/api/services/wallet_service.dart';
 import 'package:arbor/core/constants/ui_constants.dart';
 import 'package:arbor/core/enums/status.dart';
 import 'package:arbor/core/utils/regex.dart';
 import 'package:arbor/core/utils/wallet_utils.dart';
 import 'package:arbor/models/blockchain.dart';
+import 'package:arbor/models/wallet.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -260,5 +264,9 @@ class SendCryptoProvider extends ChangeNotifier {
       scannedData = true;
       notifyListeners();
     });
+  }
+
+  String feeForDisplay() {
+    return Wallet.amountToDisplayWithPrecision(networkFee, blockchain!.precision);
   }
 }

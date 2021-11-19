@@ -283,7 +283,7 @@ class StatusScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      '${model.networkFee} ${model.forkTicker.toUpperCase()}',
+                      '${model.feeForDisplay()} ${model.forkTicker.toUpperCase()}',
                       textAlign: TextAlign.right,
                       style: TextStyle(
                         color: ArborColors.white,
