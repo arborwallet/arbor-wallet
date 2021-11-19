@@ -29,7 +29,10 @@ class AddWalletStatusScreen extends StatelessWidget {
               backgroundColor: ArborColors.green,
             ),
             body: Container(
-              padding: EdgeInsets.symmetric(horizontal: 40, vertical: model.createWalletStatus == Status.SUCCESS?1:20),
+              padding: EdgeInsets.symmetric(
+                  horizontal: 40,
+                  vertical:
+                      model.createWalletStatus == Status.SUCCESS ? 1 : 20),
               child: Builder(
                 builder: (_) {
                   if (model.createWalletStatus == Status.LOADING) {
@@ -98,7 +101,9 @@ class AddWalletStatusScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           Container(
             decoration: BoxDecoration(
               color: ArborColors.logoGreen,
@@ -124,15 +129,14 @@ class AddWalletStatusScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 ...model.phrasesList
                     .map(
                       (e) => PhraseText(
-                    itemNumber: e.index,
-                    word: e.phrase,
-                    visible: model.revealPhrase,
-                  ),
-                )
+                        itemNumber: e.index,
+                        word: e.phrase,
+                        visible: model.revealPhrase,
+                      ),
+                    )
                     .toList(),
                 SizedBox(
                   height: 20,
@@ -205,7 +209,9 @@ class AddWalletStatusScreen extends StatelessWidget {
               }
             },
           ),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
         ],
       ),
     );
