@@ -4,12 +4,11 @@ import 'package:arbor/api/services/wallet_service.dart';
 import 'package:arbor/core/constants/ui_constants.dart';
 import 'package:arbor/core/enums/status.dart';
 import 'package:arbor/core/utils/regex.dart';
-import 'package:arbor/core/utils/wallet_utils.dart';
-import 'package:arbor/models/blockchain.dart';
-import 'package:arbor/models/wallet.dart';
+import 'package:arbor/models/models.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class SendCryptoProvider extends ChangeNotifier {
@@ -35,6 +34,9 @@ class SendCryptoProvider extends ChangeNotifier {
   String get addressErrorMessage => _addressErrorMessage;
 
   var transactionResponse;
+
+  int _autoRefreshBalanceTimer = 90;
+  int get autoRefreshBalanceTimer => _autoRefreshBalanceTimer;
   int forkPrecision = 0;
   int networkFee = 0;
   String forkName = '';
@@ -59,6 +61,8 @@ class SendCryptoProvider extends ChangeNotifier {
 
   double _amount = 0;
   double get amount => _amount;
+
+  bool transactionInProgress = false;
 
   bool scannedData = false;
   bool _validAddress = false;
@@ -196,17 +200,20 @@ class SendCryptoProvider extends ChangeNotifier {
           blockChainExtraData: aggSigExtraData);
 
       if (transactionResponse == 'success') {
+        transactionInProgress = true;
         sendCryptoStatus = Status.SUCCESS;
         _walletBalanceStatus = Status.IDLE;
         _transactionValue = '0';
         _receiverAddress = '';
         _appBarTitle = 'All Done';
       } else {
+        transactionInProgress = false;
         _errorMessage = transactionResponse;
         sendCryptoStatus = Status.ERROR;
       }
       notifyListeners();
     } on Exception catch (e) {
+      transactionInProgress = false;
       _errorMessage = e.toString();
       sendCryptoStatus = Status.ERROR;
       notifyListeners();
@@ -264,6 +271,29 @@ class SendCryptoProvider extends ChangeNotifier {
       scannedData = true;
       notifyListeners();
     });
+  }
+
+  Future<Box> refreshWalletBalances(Box walletBox) async {
+    for (int index = 0; index < walletBox.length; index++) {
+      Wallet existingWallet = walletBox.getAt(index);
+      int newBalance =
+      await walletService.fetchWalletBalance(existingWallet.address);
+
+      Wallet newWallet = Wallet(
+        name: existingWallet.name,
+        privateKey: existingWallet.privateKey,
+        publicKey: existingWallet.publicKey,
+        address: existingWallet.address,
+        balance: newBalance,
+        blockchain: existingWallet.blockchain,
+      );
+
+      walletBox.putAt(index, newWallet);
+    }
+    transactionInProgress = false;
+    notifyListeners();
+    debugPrint("From view model - done");
+    return walletBox;
   }
 
   String feeForDisplay() {

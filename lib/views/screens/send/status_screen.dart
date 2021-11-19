@@ -120,6 +120,7 @@ class StatusScreen extends StatelessWidget {
         ),
         Text(
           'Success!',
+          textAlign: TextAlign.center,
           style: TextStyle(
             color: ArborColors.white,
             fontWeight: FontWeight.w600,
@@ -137,7 +138,7 @@ class StatusScreen extends StatelessWidget {
         ),
         SizedBox(height: 20,),
         Text(
-          'Transactions may take up to 2 minutes to show up in your wallet.',
+          'Wallet balance will refresh automatically after 90 seconds.',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: ArborColors.white,
@@ -184,6 +185,7 @@ class StatusScreen extends StatelessWidget {
         ),
         Text(
           'Oops!',
+          textAlign: TextAlign.center,
           style: TextStyle(
             color: ArborColors.white,
             fontWeight: FontWeight.w600,

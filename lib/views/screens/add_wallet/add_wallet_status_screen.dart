@@ -2,6 +2,7 @@ import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/core/enums/status.dart';
 import 'package:arbor/core/providers/create_wallet_provider.dart';
+import 'package:arbor/core/utils/ui_helpers.dart';
 import 'package:arbor/views/screens/add_wallet/add_wallet_complete_screen.dart';
 import 'package:arbor/views/widgets/arbor_button.dart';
 import 'package:arbor/views/widgets/phrase_text.dart';
@@ -175,8 +176,10 @@ class AddWalletStatusScreen extends StatelessWidget {
                 trailing: Icon(Icons.copy),
                 onTap: () {
                   Clipboard.setData(ClipboardData(text: "${model.seedPhrase}"));
-                  showSnackBar(
-                      context, 'Secret Phrase copied', ArborColors.deepGreen);
+                  UIHelpers.showSnackBar(
+                    context,
+                    'Secret Phrase copied',
+                  );
                 },
               ),
             ),
@@ -266,24 +269,6 @@ class AddWalletStatusScreen extends StatelessWidget {
           },
         ),
       ],
-    );
-  }
-
-  showSnackBar(BuildContext context, String message, Color color) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text("$message"),
-        duration: Duration(milliseconds: 1000),
-        backgroundColor: color,
-        elevation: 2,
-        padding: EdgeInsets.all(
-          10,
-        ), // Inner padding for SnackBar content.
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.0),
-        ),
-      ),
     );
   }
 }

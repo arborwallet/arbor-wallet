@@ -1,3 +1,4 @@
+import 'package:arbor/core/utils/ui_helpers.dart';
 import 'package:arbor/models/models.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/views/screens/send/value_screen.dart';
@@ -106,11 +107,9 @@ class _ExpandedHomePageState extends State<ExpandedHomePage> {
                     ),
                     trailing: Icon(Icons.copy),
                     onTap: () {
-                      Clipboard.setData(ClipboardData(
-                          text: walletData.balanceForDisplay()));
-                      showSnackBar(context, 'Balance copied');
-
-
+                      Clipboard.setData(
+                          ClipboardData(text: walletData.balanceForDisplay()));
+                      UIHelpers.showSnackBar(context, 'Balance copied');
                     },
                   ),
                 ),
@@ -133,9 +132,7 @@ class _ExpandedHomePageState extends State<ExpandedHomePage> {
                     onTap: () {
                       Clipboard.setData(
                           ClipboardData(text: walletData.address));
-                      showSnackBar(context, 'Wallet address copied');
-
-
+                      UIHelpers.showSnackBar(context, 'Wallet address copied');
                     },
                   ),
                 ),
@@ -158,7 +155,7 @@ class _ExpandedHomePageState extends State<ExpandedHomePage> {
                     onTap: () {
                       Clipboard.setData(
                           ClipboardData(text: walletData.publicKey));
-                      showSnackBar(context, 'Public key copied');
+                      UIHelpers.showSnackBar(context, 'Public key copied');
                     },
                   ),
                 ),
@@ -171,8 +168,7 @@ class _ExpandedHomePageState extends State<ExpandedHomePage> {
                         color: ArborColors.white,
                       ),
                     ),
-                    subtitle:
-                    Text(
+                    subtitle: Text(
                       '*' * walletData.privateKey.toString().length,
                       style: TextStyle(
                         color: ArborColors.white70,
@@ -182,7 +178,7 @@ class _ExpandedHomePageState extends State<ExpandedHomePage> {
                     onTap: () {
                       Clipboard.setData(
                           ClipboardData(text: walletData.privateKey));
-                      showSnackBar(context, 'Private key copied');
+                      UIHelpers.showSnackBar(context, 'Private key copied');
                     },
                   ),
                 ),
@@ -191,19 +187,17 @@ class _ExpandedHomePageState extends State<ExpandedHomePage> {
           }
         },
       ),
-      SizedBox(height: 40,),
+      SizedBox(
+        height: 40,
+      ),
       ArborButton(
-        // style: ElevatedButton.styleFrom(
-        //   minimumSize: Size(double.infinity,
-        //       30), // double.infinity is the width and 30 is the height
-        // ),
         onPressed: () {
           showModalBottomSheet(
             context: context,
             isScrollControlled: true,
             builder: (BuildContext context) {
               return TransactionsSheet(
-                  walletAddress: (walletBox.getAt(index) as Wallet).address,
+                walletAddress: (walletBox.getAt(index) as Wallet).address,
                 precision: widget.wallet.blockchain.precision,
               );
             },
@@ -227,13 +221,18 @@ class _ExpandedHomePageState extends State<ExpandedHomePage> {
             Expanded(
                 child: ArborButton(
                     backgroundColor: ArborColors.deepGreen,
-                    onPressed: () {
-                      Navigator.push(
+                    onPressed: () async {
+                      var result = await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ValueScreen(wallet: widget.wallet,),
+                          builder: (context) => ValueScreen(
+                            wallet: widget.wallet,
+                          ),
                         ),
                       );
+                      if (result != null && result == true) {
+                        Navigator.pop(context, true);
+                      }
                     },
                     title: 'Send')),
           ],
@@ -241,19 +240,4 @@ class _ExpandedHomePageState extends State<ExpandedHomePage> {
       )
     ]);
   }
-
-  showSnackBar(BuildContext context,String message){
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$message!"),
-      duration: Duration(milliseconds: 1000),
-      backgroundColor: ArborColors.deepGreen,
-      elevation: 2,
-      padding: EdgeInsets.all(
-        10,
-      ), // Inner padding for SnackBar content.
-      behavior: SnackBarBehavior.floating,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
-      ),),);
-  }
 }
-

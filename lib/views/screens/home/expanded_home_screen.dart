@@ -1,4 +1,3 @@
-
 import 'package:arbor/models/models.dart';
 import 'package:arbor/views/screens/home/expanded_home_page.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
@@ -32,9 +31,9 @@ class _ExpandedHomeScreenState extends State<ExpandedHomeScreen> {
                 color: ArborColors.white,
               ),
             ),
-            leading:  IconButton(
+            leading: IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(context,false);
               },
               icon: Icon(
                 Icons.arrow_back,
