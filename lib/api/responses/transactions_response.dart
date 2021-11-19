@@ -1,28 +1,15 @@
 import 'transaction_group_response.dart';
 
 class TransactionListResponse {
-  List<TransactionGroupResponse>? transactions;
+  List<TransactionGroupResponse> transactions;
 
-  TransactionListResponse({this.transactions});
+  TransactionListResponse({required this.transactions});
 
-  TransactionListResponse.fromJson(Map<String, dynamic> json) {
-    if (json['transaction_groups'] != null) {
-      transactions = [];
-      json['transaction_groups'].forEach((v) {
-        transactions!.add(new TransactionGroupResponse.fromJson(v));
-      });
-    }
-  }
+  TransactionListResponse.fromJson(Map<String, dynamic> json)
+      : transactions = (json['transaction_groups'] as List)
+            .map((value) => TransactionGroupResponse.fromJson(value))
+            .toList();
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.transactions != null) {
-      data['transaction_groups'] = this.transactions!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
+  Map<String, dynamic> toJson() =>
+      {'transaction_groups': transactions.map((value) => value.toJson())};
 }
-
-
-
-

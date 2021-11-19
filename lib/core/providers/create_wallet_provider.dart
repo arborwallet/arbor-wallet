@@ -16,47 +16,48 @@ class CreateWalletProvider extends ChangeNotifier {
   List<String> _wordsList = [];
 
   List<Phrase> _phrasesList = [];
-  List<Phrase> get phrasesList=>_phrasesList;
+  List<Phrase> get phrasesList => _phrasesList;
 
-  String _errorMessage='';
-  String get errorMessage=>_errorMessage;
+  String _errorMessage = '';
+  String get errorMessage => _errorMessage;
 
-  bool _revealPhrase=false;
-  bool get revealPhrase=>_revealPhrase;
+  bool _revealPhrase = false;
+  bool get revealPhrase => _revealPhrase;
 
-  String _appBarTitle='';
-  String get appBarTitle=>_appBarTitle;
+  String _appBarTitle = '';
+  String get appBarTitle => _appBarTitle;
 
-  String _revealButtonTitle='Reveal the Phrase';
-  String get revealButtonTitle=>_revealButtonTitle;
-  
-  setRevealPhrase(){
-    
-    if(_tappedRevealButton==false){
-      _tappedRevealButton=true;
+  String _revealButtonTitle = 'Reveal the Phrase';
+  String get revealButtonTitle => _revealButtonTitle;
+
+  setRevealPhrase() {
+    if (_tappedRevealButton == false) {
+      _tappedRevealButton = true;
     }
-    _revealPhrase=!_revealPhrase;
-    if(_revealPhrase==true){
-      _revealButtonTitle='Hide the Phrase';
-    }else{
-      _revealButtonTitle='Reveal the Phrase';
+    _revealPhrase = !_revealPhrase;
+    if (_revealPhrase == true) {
+      _revealButtonTitle = 'Hide the Phrase';
+    } else {
+      _revealButtonTitle = 'Reveal the Phrase';
     }
     notifyListeners();
   }
-  
-  bool _tappedRevealButton=false;
-  bool get tappedRevealButton=>_tappedRevealButton;
 
-  createNewWallet() async    {
+  bool _tappedRevealButton = false;
+  bool get tappedRevealButton => _tappedRevealButton;
+
+  createNewWallet() async {
     createWalletStatus = Status.LOADING;
-    _appBarTitle='Generating';
+    _appBarTitle = 'Generating';
     notifyListeners();
     try {
-      newWallet = await walletService.createNewWallet();
-      seedPhrase=newWallet!.phrase;
-      _wordsList=seedPhrase.split(' ').toList();
+      var response = await walletService.createNewWallet();
+      newWallet = response[0];
+      seedPhrase = response[1];
 
-      for(int i=0;i<_wordsList.length;i++){
+      _wordsList = seedPhrase.split(' ').toList();
+
+      for (int i = 0; i < _wordsList.length; i++) {
         _phrasesList.add(Phrase(index: i, phrase: _wordsList[i]));
       }
 
@@ -64,29 +65,26 @@ class CreateWalletProvider extends ChangeNotifier {
     } on Exception catch (e) {
       debugPrint('Create Wallet Error: ${e.toString()} ${e.runtimeType}');
 
-        _errorMessage=e.toString();
+      _errorMessage = e.toString();
 
-      _appBarTitle='Error';
+      _appBarTitle = 'Error';
       createWalletStatus = Status.ERROR;
       notifyListeners();
       return;
     }
-    _appBarTitle='Secret Phrase';
+    _appBarTitle = 'Secret Phrase';
     createWalletStatus = Status.SUCCESS;
     notifyListeners();
   }
 
-  
-  clearAll(){
-    _wordsList=[];
-    _phrasesList=[];
-    _appBarTitle='Generating';
-    _revealButtonTitle='Reveal the Phrase';
+  clearAll() {
+    _wordsList = [];
+    _phrasesList = [];
+    _appBarTitle = 'Generating';
+    _revealButtonTitle = 'Reveal the Phrase';
     createWalletStatus = Status.IDLE;
-    _revealPhrase=false;
-    _tappedRevealButton=false;
+    _revealPhrase = false;
+    _tappedRevealButton = false;
     notifyListeners();
-    
   }
-
 }
