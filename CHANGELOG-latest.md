@@ -1,5 +1,7 @@
-## [1.2.1] - 2021-10-04
+## [2.0.0] - 2021-11-19
 
-### Changed
+### Fixed
 
-- Android only release - change minimum supported Android SDK from minSdkVersion 20 to minSdkVersion 27 (Android 8.1) to match Google supported devices with security updates.
+- Replaced wallet key generation, import and signing to all be done locally within the app.
+- Fixed transaction timestamps
+- In-progress sends are now also indicated by a yellow icon on the main wallet view and auto-refreshes after 90 seconds.
