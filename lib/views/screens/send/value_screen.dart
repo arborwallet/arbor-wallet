@@ -35,9 +35,9 @@ class ValueScreen extends StatelessWidget {
           model.forkTicker = wallet.blockchain.ticker;
           model.setWalletBalance(wallet.balance);
         }
-        if(model.sendCryptoStatus==Status.ERROR){
-          AppUtils.showSnackBar(context, "${model.errorMessage}", ArborColors.errorRed);
-        }
+        // if(model.sendCryptoStatus==Status.ERROR){
+        //   AppUtils.showSnackBar(context, "${model.errorMessage}", ArborColors.errorRed);
+        // }
       });
       return Container(
         color: ArborColors.green,
