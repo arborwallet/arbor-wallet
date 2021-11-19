@@ -1,19 +1,20 @@
 import 'dart:convert';
 
-import 'package:arbor/core/constants/arbor_constants.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
+import 'package:arbor/core/constants/arbor_constants.dart';
 import 'package:arbor/core/providers/restore_wallet_provider.dart';
+import 'package:arbor/core/providers/send_crypto_provider.dart';
 import 'package:arbor/core/providers/settings_provider.dart';
 import 'package:arbor/models/models.dart';
 import 'package:arbor/views/screens/base/base_screen.dart';
 import 'package:arbor/views/screens/no_encryption_available_sccreen.dart';
-import 'package:arbor/core/providers/send_crypto_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'core/constants/hive_constants.dart';
 import 'core/providers/create_wallet_provider.dart';
 import 'models/blockchain.dart';
@@ -27,7 +28,7 @@ main() async {
   await Hive.initFlutter();
 
   try {
-    final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
+    const FlutterSecureStorage secureStorage = FlutterSecureStorage();
     var containsEncryptionKey = await secureStorage.containsKey(
         key: HiveConstants.hiveEncryptionKeyKey);
     if (!containsEncryptionKey) {
@@ -65,10 +66,10 @@ main() async {
         );
       }
 
-      runApp(MyApp());
+      runApp(const MyApp());
     } else {
       return runApp(
-        MaterialApp(
+        const MaterialApp(
           home: NoEncryptionAvailableScreen(
             message:
                 'We were unable to retrieve the encrypted keys to open your wallets. Please contact us.',
@@ -96,11 +97,12 @@ void _hiveAdaptersRegistration() {
   Hive.registerAdapter(WalletAdapter());
   Hive.registerAdapter(BlockchainAdapter());
   Hive.registerAdapter(TransactionsGroupAdapter());
-  //Hive.registerAdapter(TransactionGroupAdapter());
   Hive.registerAdapter(TransactionAdapter());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -143,7 +145,7 @@ class _MyAppState extends State<MyApp> {
                     if (_isFirstTime) {
                       return SplashScreen();
                     } else {
-                      return BaseScreen();
+                      return const BaseScreen();
                     }
                   } else {
                     return Container(

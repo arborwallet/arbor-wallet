@@ -9,16 +9,16 @@ class TransactionsResponse {
   final String? sender;
   final int amount;
 
-  factory TransactionsResponse.fromJson(Map<String, dynamic> json) => TransactionsResponse(
-    destination: json["destination"] == null ? null : json["destination"],
-    sender: json["sender"] == null ? null : json["sender"],
-    amount: json["amount"],
-  );
+  factory TransactionsResponse.fromJson(Map<String, dynamic> json) =>
+      TransactionsResponse(
+        destination: json["destination"],
+        sender: json["sender"],
+        amount: json["amount"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "destination": destination == null ? null : destination,
-    "sender": sender == null ? null : sender,
-    "amount": amount,
-  };
+        "destination": destination,
+        "sender": sender,
+        "amount": amount,
+      };
 }
-

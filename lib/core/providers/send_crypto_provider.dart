@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:arbor/api/services/wallet_service.dart';
 import 'package:arbor/core/constants/ui_constants.dart';
 import 'package:arbor/core/enums/status.dart';
 import 'package:arbor/core/utils/regex.dart';
 import 'package:arbor/models/models.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -15,6 +18,8 @@ class SendCryptoProvider extends ChangeNotifier {
   Status get walletBalanceStatus => _walletBalanceStatus;
 
   final walletService = WalletService();
+
+  Blockchain? blockchain;
 
   String _appBarTitle = '';
   String get appBarTitle => _appBarTitle;
@@ -32,13 +37,14 @@ class SendCryptoProvider extends ChangeNotifier {
 
   int _autoRefreshBalanceTimer = 90;
   int get autoRefreshBalanceTimer => _autoRefreshBalanceTimer;
-
   int forkPrecision = 0;
   int networkFee = 0;
   String forkName = '';
   String forkTicker = '';
   String privateKey = '';
   String currentUserAddress = '';
+  String aggSigExtraData = '';
+
   int _walletBalance = 0;
   int get walletBalance => _walletBalance;
 
@@ -60,6 +66,9 @@ class SendCryptoProvider extends ChangeNotifier {
 
   bool scannedData = false;
   bool _validAddress = false;
+
+  bool _sendButtonIsBusy = false;
+  bool get sendButtonIsBusy => _sendButtonIsBusy;
 
   bool validAddress(String address) {
     // format and length are from
@@ -158,17 +167,37 @@ class SendCryptoProvider extends ChangeNotifier {
     await send();
   }
 
+  getTransactionFee() async {
+    _errorMessage="";
+    _sendButtonIsBusy = true;
+    sendCryptoStatus = Status.IDLE;
+    notifyListeners();
+    try {
+      blockchain = await walletService.fetchBlockchainInfo();
+      networkFee = blockchain!.network_fee;
+      aggSigExtraData = blockchain!.agg_sig_me_extra_data;
+      _sendButtonIsBusy = false;
+      notifyListeners();
+    } on Exception catch (e) {
+      _errorMessage = e.toString();
+      _sendButtonIsBusy = false;
+      sendCryptoStatus = Status.ERROR;
+      notifyListeners();
+    }
+  }
+
   send() async {
-    debugPrint("Fee:$networkFee");
     sendCryptoStatus = Status.LOADING;
     notifyListeners();
     try {
       _transactionValueForDisplay = _transactionValue;
       transactionResponse = await walletService.sendXCH(
           privateKey: privateKey,
-          amount: double.parse(_transactionValue) * chiaPrecision,
+          amount: (double.parse(_transactionValue) * chiaPrecision).toInt(),
           address: _receiverAddress,
-          fee: networkFee);
+          fee: blockchain!.network_fee,
+          ticker: blockchain!.ticker,
+          blockChainExtraData: aggSigExtraData);
 
       if (transactionResponse == 'success') {
         transactionInProgress = true;
@@ -245,15 +274,13 @@ class SendCryptoProvider extends ChangeNotifier {
   }
 
   Future<Box> refreshWalletBalances(Box walletBox) async {
-
     for (int index = 0; index < walletBox.length; index++) {
       Wallet existingWallet = walletBox.getAt(index);
       int newBalance =
-          await walletService.fetchWalletBalance(existingWallet.address);
+      await walletService.fetchWalletBalance(existingWallet.address);
 
       Wallet newWallet = Wallet(
         name: existingWallet.name,
-        phrase: existingWallet.phrase,
         privateKey: existingWallet.privateKey,
         publicKey: existingWallet.publicKey,
         address: existingWallet.address,
@@ -267,5 +294,9 @@ class SendCryptoProvider extends ChangeNotifier {
     notifyListeners();
     debugPrint("From view model - done");
     return walletBox;
+  }
+
+  String feeForDisplay() {
+    return Wallet.amountToDisplayWithPrecision(networkFee, blockchain!.precision);
   }
 }

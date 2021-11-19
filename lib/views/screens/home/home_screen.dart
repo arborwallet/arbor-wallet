@@ -33,11 +33,10 @@ class _HomeScreenState extends State<HomeScreen> {
     for (int index = 0; index < walletBox.length; index++) {
       Wallet existingWallet = walletBox.getAt(index);
       int newBalance =
-          await walletService.fetchWalletBalance(existingWallet.address);
+      await walletService.fetchWalletBalance(existingWallet.address);
 
       Wallet newWallet = Wallet(
         name: existingWallet.name,
-        phrase: existingWallet.phrase,
         privateKey: existingWallet.privateKey,
         publicKey: existingWallet.publicKey,
         address: existingWallet.address,
@@ -154,10 +153,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               Future.delayed(
                                   Duration(
                                       seconds: model.autoRefreshBalanceTimer),
-                                  () async {
-                                walletBox = await model
-                                    .refreshWalletBalances(walletBox);
-                              });
+                                      () async {
+                                    walletBox = await model
+                                        .refreshWalletBalances(walletBox);
+                                  });
                             }
                           },
                           child: Card(
@@ -199,17 +198,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         (model.currentUserAddress ==
-                                                    walletData.address) &&
-                                                model.transactionInProgress
+                                            walletData.address) &&
+                                            model.transactionInProgress
                                             ? Container(
-                                                height: 16,
-                                                width: 16,
-                                                decoration: BoxDecoration(
-                                                    color: ArborColors.yellow,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8)),
-                                              )
+                                          height: 16,
+                                          width: 16,
+                                          decoration: BoxDecoration(
+                                              color: ArborColors.yellow,
+                                              borderRadius:
+                                              BorderRadius.circular(
+                                                  8)),
+                                        )
                                             : Container(),
                                         SizedBox(
                                           width: 4,
@@ -266,24 +265,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                     children: <Widget>[
                                       Expanded(
                                           child: ArborButton(
-                                        onPressed: () {
-                                          _showReceiveView(walletIndex: index);
-                                        },
-                                        title: 'Receive',
-                                        backgroundColor: ArborColors.deepGreen,
-                                      )),
+                                            onPressed: () {
+                                              _showReceiveView(walletIndex: index);
+                                            },
+                                            title: 'Receive',
+                                            backgroundColor: ArborColors.deepGreen,
+                                          )),
                                       SizedBox(width: 10),
                                       Expanded(
                                         child: ArborButton(
                                           onPressed: () async {
                                             dynamic result =
-                                                await Navigator.push(
+                                            await Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     ValueScreen(
-                                                  wallet: walletData,
-                                                ),
+                                                      wallet: walletData,
+                                                    ),
                                               ),
                                             );
 
@@ -293,16 +292,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   Duration(
                                                       seconds: model
                                                           .autoRefreshBalanceTimer),
-                                                  () async {
-                                                walletBox = await model
-                                                    .refreshWalletBalances(
+                                                      () async {
+                                                    walletBox = await model
+                                                        .refreshWalletBalances(
                                                         walletBox);
-                                              });
+                                                  });
                                             }
                                           },
                                           title: 'Send',
                                           backgroundColor:
-                                              ArborColors.deepGreen,
+                                          ArborColors.deepGreen,
                                         ),
                                       ),
                                     ],
@@ -332,7 +331,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return ArborAlertDialog(
           title: "Delete Wallet",
           subTitle:
-              "You cannot undo this action. Do you want to proceed to delete wallet?",
+          "You cannot undo this action. Do you want to proceed to delete wallet?",
           onCancelPressed: () => Navigator.pop(context, false),
           onYesPressed: () => Navigator.pop(context, true),
         );

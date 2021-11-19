@@ -193,7 +193,7 @@ class _TransactionsSheetState extends State<TransactionsSheet> {
                             value2.compareTo(value1),
                         itemComparator: (item1, item2) =>
                             item1.timestamp.compareTo(item2.timestamp),
-                        order: GroupedListOrder.ASC,
+                        order: GroupedListOrder.DESC,
                         sort: true,
                         useStickyGroupSeparators: false,
                         groupHeaderBuilder: (dynamic value) => Padding(
