@@ -109,15 +109,15 @@ class SetPinScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-         Text(
-            "Create your ${model.pinLength} digit PIN",
-            textAlign: TextAlign.center,
-            style: TextStyle(
+        Text(
+          "Create your ${model.pinLength} digit PIN",
+          textAlign: TextAlign.center,
+          style: TextStyle(
               fontSize: 16.0,
               color: ArborColors.white,
               fontWeight: FontWeight.bold
-            ),
           ),
+        ),
 
       ],
     );

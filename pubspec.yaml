@@ -15,6 +15,7 @@ dependencies:
 
   animated_widgets: ^1.1.0
   cupertino_icons: ^1.0.2
+  flutter_hooks: ^0.18.0
   flutter_svg: ^0.22.0
   google_fonts: ^2.0.0
   grouped_list: ^4.1.0
@@ -35,9 +36,6 @@ dependencies:
 
   # Biometrics
   local_auth: ^1.1.7
-
-  # Hooks
-  flutter_hooks: ^0.18.0
 
   #QR
   image: ^3.0.4

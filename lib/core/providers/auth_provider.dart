@@ -1,11 +1,9 @@
 import 'package:arbor/core/enums/status.dart';
-import 'package:arbor/core/utils/local_storage_util.dart';
+import 'package:arbor/core/utils/local_storage_utils.dart';
 import 'package:flutter/foundation.dart';
-import 'package:local_auth/auth_strings.dart';
 import 'package:local_auth/local_auth.dart';
 
-class AuthProvider extends ChangeNotifier{
-
+class AuthProvider extends ChangeNotifier {
   final LocalAuthentication localAuthentication = LocalAuthentication();
 
   String _firstPin = "";
@@ -14,9 +12,9 @@ class AuthProvider extends ChangeNotifier{
   bool _invalidPin = false;
   final int _pinLength = 6;
 
-  bool unlock=true;
+  bool unlock = true;
 
-  Status setPinStatus=Status.IDLE;
+  Status setPinStatus = Status.IDLE;
 
   get firstPin => _firstPin;
   get currentPin => _currentPin;
@@ -24,47 +22,29 @@ class AuthProvider extends ChangeNotifier{
   get invalidPin => _invalidPin;
   get pinLength => _pinLength;
 
+
+  AuthProvider(){
+    hasBiometrics();
+  }
+
   ///Biometrics
   //Check if device support biometrics
-  Future<bool> hasBiometrics() {
-    return localAuthentication.canCheckBiometrics;
+   hasBiometrics() async {
+    bool deviceHasBiometrics = await localAuthentication.canCheckBiometrics;
+    customSharedPreference.setHasBiometrics(deviceHasBiometrics);
+    //return deviceHasBiometrics;
   }
 
   //Check the available biometric support
   Future<BiometricType> biometricType() async {
     List<BiometricType> availableBiometrics =
-    await localAuthentication.getAvailableBiometrics();
+        await localAuthentication.getAvailableBiometrics();
     if (availableBiometrics.contains(BiometricType.face)) {
       return BiometricType.face;
     } else {
       return BiometricType.fingerprint;
     }
   }
-
-
-  IOSAuthMessages iosAuthMessages(String type) {
-    return IOSAuthMessages(
-      cancelButton: 'Cancel',
-      goToSettingsButton: 'Settings',
-      goToSettingsDescription:
-      '$type ID is not set up on your device. Please enable $type ID on your phone',
-      lockOut: 'Please re-enable your $type ID for Arbor',
-    );
-  }
-
-  AndroidAuthMessages androidAuthMessages() {
-    return AndroidAuthMessages(
-      cancelButton: 'Cancel',
-      goToSettingsButton: 'Settings',
-      goToSettingsDescription:
-      'Touch ID is not set up on your device. Please enable Touch ID on your phone',
-    );
-  }
-
-
-
-
-
 
   ///PIN
   void clear() {
@@ -74,45 +54,43 @@ class AuthProvider extends ChangeNotifier{
     }
   }
 
-  unlockWithPin(String key){
+  unlockWithPin(String key) {
     if (_currentPin.length <= _pinLength) {
       _currentPin = _currentPin + key;
       notifyListeners();
     }
     Future.delayed(
       const Duration(milliseconds: 200),
-          () {
+      () {
         if (_currentPin.length == _pinLength) {
-          unlock=true;
-          String _savedPin=customSharedPreference.pin;
+          unlock = true;
+          String _savedPin = customSharedPreference.pin;
 
-
-            if (_currentPin != _savedPin) {
-              _invalidPin = true;
-              notifyListeners();
-              resetInvalidPin();
-            } else {
-              _currentPin = "";
-              setPinStatus=Status.SUCCESS;
-              notifyListeners();
-            }
+          if (_currentPin != _savedPin) {
+            _invalidPin = true;
+            notifyListeners();
+            resetInvalidPin();
+          } else {
+            _currentPin = "";
+            setPinStatus = Status.SUCCESS;
+            notifyListeners();
+          }
         }
       },
     );
   }
 
-  disablePin(String key){
+  disablePin(String key) {
     if (_currentPin.length <= _pinLength) {
       _currentPin = _currentPin + key;
       notifyListeners();
     }
     Future.delayed(
       const Duration(milliseconds: 200),
-          () {
+      () {
         if (_currentPin.length == _pinLength) {
-          unlock=false;
-          String _savedPin=customSharedPreference.pin;
-
+          unlock = false;
+          String _savedPin = customSharedPreference.pin;
 
           if (_currentPin != _savedPin) {
             _invalidPin = true;
@@ -120,9 +98,9 @@ class AuthProvider extends ChangeNotifier{
             resetInvalidPin();
           } else {
             customSharedPreference.setUsePin(false);
-            debugPrint("Unlock with pin: ${customSharedPreference.pinIsSet}");
+            customSharedPreference.setUseBiometrics(false);
             _currentPin = "";
-            setPinStatus=Status.SUCCESS;
+            setPinStatus = Status.SUCCESS;
             notifyListeners();
           }
         }
@@ -137,7 +115,7 @@ class AuthProvider extends ChangeNotifier{
     }
     Future.delayed(
       const Duration(milliseconds: 200),
-          () {
+      () {
         if (_currentPin.length == _pinLength) {
           if (_currentStep == 1) {
             _firstPin = currentPin;
@@ -155,9 +133,8 @@ class AuthProvider extends ChangeNotifier{
             } else {
               customSharedPreference.setPin(_currentPin);
               customSharedPreference.setUsePin(true);
-              debugPrint("Unlock with pin: ${customSharedPreference.pinIsSet}");
               _currentPin = "";
-              setPinStatus=Status.SUCCESS;
+              setPinStatus = Status.SUCCESS;
               notifyListeners();
             }
           }
@@ -165,7 +142,6 @@ class AuthProvider extends ChangeNotifier{
       },
     );
   }
-
 
   void goBack() async {
     _currentStep = 1;
@@ -176,7 +152,7 @@ class AuthProvider extends ChangeNotifier{
   void resetInvalidPin() {
     Future.delayed(
       const Duration(milliseconds: 200),
-          () {
+      () {
         _invalidPin = false;
         _currentPin = "";
         notifyListeners();
@@ -184,8 +160,7 @@ class AuthProvider extends ChangeNotifier{
     );
   }
 
-  clearStatus(){
-    setPinStatus=Status.IDLE;
+  clearStatus() {
+    setPinStatus = Status.IDLE;
   }
-
 }

@@ -3,16 +3,18 @@ import 'package:arbor/api/responses.dart';
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/constants/arbor_constants.dart';
 import 'package:arbor/core/constants/asset_paths.dart';
+import 'package:arbor/core/providers/auth_provider.dart';
 import 'package:arbor/core/providers/settings_provider.dart';
-import 'package:arbor/core/utils/local_storage_util.dart';
+import 'package:arbor/core/utils/local_storage_utils.dart';
 import 'package:arbor/views/screens/settings/set_pin_screen.dart';
 import 'package:arbor/views/screens/settings/unlock_with_pin_screen.dart';
 import 'package:arbor/views/widgets/arbor_switch.dart';
 import 'package:arbor/views/widgets/dialogs/arbor_alert_dialog.dart';
 import 'package:arbor/views/widgets/dialogs/arbor_info_dialog.dart';
+import 'package:arbor/views/widgets/tiles/settings_tile.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +32,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   void initState() {
+    AuthProvider();
     _getAppDetails();
     super.initState();
   }
@@ -67,13 +70,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         SizedBox(
                           height: 4,
                         ),
-                        settingsItem(
+                        SettingsTile(
                           title: "Visit DFI Discord Channel",
                           assetPath: AssetPaths.discord,
                           onPressed: () => model.launchURL(
                               url: ArborConstants.discordChannelURL),
                         ),
-                        settingsItem(
+                        SettingsTile(
                           title: "View Privacy Policy",
                           assetPath: AssetPaths.privacyPolicy,
                           onPressed: () => model.launchURL(
@@ -91,63 +94,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         SizedBox(
                           height: 4,
                         ),
-                        settingsItem(
+                        SettingsTile(
                           title: "Unlock with PIN",
                           assetPath: AssetPaths.padlock,
                           trailing: ArborSwitch(
                             state: customSharedPreference.pinIsSet,
-                            onChanged: (v) async {
-                              var result;
-                              if (v == true) {
-                                result = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SetPinScreen(),
-                                  ),
-                                );
-                              } else {
-                                result = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => UnlockWithPinScreen(
-                                      unlock: false,
-                                    ),
-                                  ),
-                                );
-                              }
-                              if (result == true) {
-                                setState(() {});
-                              }
-                            },
+                            onChanged: (v) => toggleUnlockWithPIN(),
                           ),
-                          onPressed: () {},
+                          onPressed: () => toggleUnlockWithPIN(),
                         ),
-                        settingsItem(
-                          title: "Unlock with biometrics",
-                          assetPath: AssetPaths.fingerprint,
-                          trailing: ArborSwitch(
-                            state: customSharedPreference.biometricsIsSet,
-                            onChanged: (_) async{
-                              if(_==true){
-                                customSharedPreference.setUseBiometrics(true);
-                              }else{
-                                await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => UnlockWithPinScreen(
-                                      unlock: false,
-                                    ),
-                                  ),
-                                );
-                              }
-
-                              setState(() {
-
-                              });
-                            },
-                          ),
-                          onPressed: () {},
-                        ),
+                        customSharedPreference.hasBiometrics
+                            ? SettingsTile(
+                                title: "Unlock with biometrics",
+                                assetPath: Platform.isIOS
+                                    ? AssetPaths.faceId
+                                    : AssetPaths.fingerprint,
+                                trailing: ArborSwitch(
+                                  state: customSharedPreference.biometricsIsSet,
+                                  onChanged: (_) =>
+                                      toggleUnlockWithBiometrics(),
+                                ),
+                                onPressed: () => toggleUnlockWithBiometrics(),
+                              )
+                            : Container(),
                         SizedBox(height: 10),
                         Text(
                           "Arbor Data",
@@ -160,7 +129,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         SizedBox(
                           height: 4,
                         ),
-                        settingsItem(
+                        SettingsTile(
                           title: "Delete Arbor Data",
                           assetPath: AssetPaths.delete,
                           onPressed: () async {
@@ -191,50 +160,71 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
-  Widget settingsItem(
-      {required String title,
-      required String assetPath,
-      Widget? trailing,
-      required VoidCallback onPressed}) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-          //constraints: BoxConstraints(maxWidth: 500, minWidth: 250),
-          padding: EdgeInsets.all(
-            10,
+  toggleUnlockWithPIN() async {
+    var result;
+    bool isSet = customSharedPreference.pinIsSet;
+    if (isSet == false) {
+      result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SetPinScreen(),
+        ),
+      );
+    } else {
+      result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => UnlockWithPinScreen(
+            unlock: false,
           ),
-          margin: EdgeInsets.only(bottom: 10),
-          decoration: BoxDecoration(
-            color: ArborColors.logoGreen,
-            borderRadius: BorderRadius.all(
-              Radius.circular(8),
+        ),
+      );
+    }
+    if (result == true) {
+      setState(() {});
+    }
+  }
+
+  toggleUnlockWithBiometrics() async {
+    bool pinIsSet = customSharedPreference.pinIsSet;
+    bool biometricIsSet = customSharedPreference.biometricsIsSet;
+
+    if (pinIsSet) {
+      if (biometricIsSet == false) {
+        var localAuth = LocalAuthentication();
+        bool isSupported = await localAuth.isDeviceSupported();
+        List<BiometricType> availableBiometrics = await localAuth.getAvailableBiometrics();
+        if(isSupported && (availableBiometrics.contains(BiometricType.face) ||availableBiometrics.contains(BiometricType.fingerprint)) ){
+          customSharedPreference.setUseBiometrics(true);
+          setState(() {});
+        }else if (isSupported==false&& (availableBiometrics.contains(BiometricType.face) ||availableBiometrics.contains(BiometricType.fingerprint))){
+          showInfoDialog(context,
+              title: "Error",
+              description: "You have not enrolled biometrics",
+              onPressed: null);
+        }else{
+          showInfoDialog(context,
+              title: "Error",
+              description: "Your device does not support biometrics",
+              onPressed: null);
+        }
+      } else {
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => UnlockWithPinScreen(
+              unlock: false,
             ),
           ),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  width: 40,
-                  height: 30,
-                  child: SvgPicture.asset(
-                    assetPath,
-                    color: ArborColors.white,
-                  ),
-                ),
-                SizedBox(width: 16),
-                Text(
-                  "$title",
-                  style: TextStyle(
-                    color: ArborColors.white,
-                    fontSize: 14.sp,
-                  ),
-                ),
-                Spacer(),
-                trailing ?? SizedBox()
-              ])),
-    );
+        );
+        setState(() {});
+      }
+    } else {
+      showInfoDialog(context,
+          title: "Error",
+          description: "Please enable 'Unlock with PIN' first",
+          onPressed: null);
+    }
   }
 
   void _getAppDetails() async {
@@ -258,7 +248,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (result == true) {
       BaseResponse response = await model.deleteArborData();
       if (response.success == true) {
-        showDeleteArborInfo(context,
+        showInfoDialog(context,
             title: "Arbor Data Deleted",
             description: "${response.error}", onPressed: () {
           if (Platform.isAndroid) {
@@ -268,7 +258,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           }
         });
       } else {
-        showDeleteArborInfo(context,
+        showInfoDialog(context,
             title: "Erase Arbor Data Failed",
             description: "${response.error}",
             onPressed: null);
@@ -276,7 +266,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  void showDeleteArborInfo(BuildContext context,
+  void showInfoDialog(BuildContext context,
       {required String title,
       required String description,
       required VoidCallback? onPressed}) {
