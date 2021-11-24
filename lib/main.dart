@@ -109,10 +109,17 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
+  void initState(){
+    super.initState();
+    WidgetsBinding.instance!.addObserver(this);
+  }
+
+  @override
   void dispose() {
     // Closes all Hive boxes
     Hive.close();
     super.dispose();
+    WidgetsBinding.instance!.removeObserver(this);
   }
 
   @override
