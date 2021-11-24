@@ -2,6 +2,7 @@ name: arbor
 description: Arbor Wallet is a secure and easy to use light Chia wallet.
 repository: https://github.com/Digital-Farming-Initiative/arbor-wallet
 version: 2.0.0+17
+publish_to: none
 
 environment:
   flutter: ^2.2.0
@@ -57,6 +58,12 @@ dependencies:
   hex: ^0.2.0
   bip39: ^1.0.6
   bech32m: ^0.2.2
+
+  #In-house package
+  chia_utils:
+    git:
+      url: https://github.com/Digital-Farming-Initiative/chia-crypto-utils.git
+      ref: fix
 
 
 dev_dependencies:

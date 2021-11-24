@@ -5,13 +5,12 @@ import 'package:arbor/api/responses/record_response.dart';
 import 'package:arbor/api/responses/records_response.dart';
 import 'package:arbor/api/responses/transaction_response.dart';
 import 'package:arbor/api/services/connectivity_service.dart';
-import 'package:arbor/bls/ec.dart';
-import 'package:arbor/bls/schemes.dart';
-import 'package:arbor/clvm/program.dart';
 import 'package:arbor/core/constants/hive_constants.dart';
-import 'package:arbor/core/utils/local_signer.dart';
+import 'package:arbor/api/services/signing_service.dart';
 import 'package:arbor/models/transaction.dart';
 import 'package:bech32m/bech32m.dart';
+import 'package:chia_utils/bls.dart';
+import 'package:chia_utils/clvm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hex/hex.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -34,9 +33,9 @@ class WalletService extends ApiService {
     WalletKeysAndAddress? walletKeysAndAddress;
 
     try {
-      mnemonic = LocalSigner.generateWalletMnemonic();
+      mnemonic = SigningService.generateWalletMnemonic();
       walletKeysAndAddress =
-          LocalSigner.convertMnemonicToKeysAndAddress(mnemonic);
+          SigningService.convertMnemonicToKeysAndAddress(mnemonic);
     } on Exception catch (e) {
       throw Exception('ERROR : ${e.toString()}');
     }
@@ -149,7 +148,7 @@ class WalletService extends ApiService {
 
     try {
       walletKeysAndAddress =
-          LocalSigner.convertMnemonicToKeysAndAddress(phrase);
+          SigningService.convertMnemonicToKeysAndAddress(phrase);
     } on Exception catch (e) {
       throw Exception('ERROR : ${e.toString()}');
     }
@@ -285,7 +284,7 @@ class WalletService extends ApiService {
 
     try {
       signedTransactionResponse =
-          await LocalSigner.usePrivateKeyToGenerateHash(privateKey);
+          await SigningService.usePrivateKeyToGenerateHash(privateKey);
     } on Exception catch (e) {
       throw Exception('ERROR : ${e.toString()}');
     }
@@ -333,17 +332,17 @@ class WalletService extends ApiService {
           var conditions = Program.list(target
               ? [
                     Program.list([
-                      Program.int(51),
-                      Program.atom(Uint8List.fromList(destinationHash)),
-                      Program.int(amount)
+                      Program.fromInt(51),
+                      Program.fromBytes(Uint8List.fromList(destinationHash)),
+                      Program.fromInt(amount)
                     ])
                   ] +
                   (change > 0
                       ? [
                           Program.list([
-                            Program.int(51),
-                            Program.atom(signedTransactionResponse.puzzleHash),
-                            Program.int(change)
+                            Program.fromInt(51),
+                            Program.fromBytes(signedTransactionResponse.puzzleHash),
+                            Program.fromInt(change)
                           ])
                         ]
                       : [])
@@ -351,13 +350,13 @@ class WalletService extends ApiService {
           var solution = Program.list([conditions]);
           target = false;
           var coinId = Program.list([
-            Program.int(11),
-            Program.cons(Program.int(1),
-                Program.hex(record.coin.parentCoinInfo.substring(2))),
-            Program.cons(Program.int(1),
-                Program.hex(record.coin.puzzleHash.substring(2))),
-            Program.cons(Program.int(1), Program.int(record.coin.amount))
-          ]).run(Program.nil()).program.atom;
+            Program.fromInt(11),
+            Program.cons(Program.fromInt(1),
+                Program.fromHex(record.coin.parentCoinInfo.substring(2))),
+            Program.cons(Program.fromInt(1),
+                Program.fromHex(record.coin.puzzleHash.substring(2))),
+            Program.cons(Program.fromInt(1), Program.fromInt(record.coin.amount))
+          ]).run(Program.nil).program.atom;
           signatures.add(AugSchemeMPL.sign(
               signedTransactionResponse.privateKeyObject,
               Uint8List.fromList(conditions.hash() +
