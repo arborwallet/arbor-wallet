@@ -161,6 +161,7 @@ class _UnlockWithPinScreenState extends State<UnlockWithPinScreen> {
       customSharedPreference.setUseBiometrics(false);
       Navigator.pop(context, true);
     } else {
+      customSharedPreference.setIsAlreadyUnlocked(true);
       NavigationUtils.pushReplacement(context, BaseScreen());
     }
   }

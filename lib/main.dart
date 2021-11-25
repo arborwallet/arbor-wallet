@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/providers/auth_provider.dart';
@@ -10,7 +12,6 @@ import 'package:arbor/core/utils/local_storage_utils.dart';
 import 'package:arbor/models/models.dart';
 import 'package:arbor/views/screens/base/base_screen.dart';
 import 'package:arbor/views/screens/no_encryption_available_sccreen.dart';
-import 'package:arbor/core/providers/send_crypto_provider.dart';
 import 'package:arbor/views/screens/settings/unlock_with_pin_screen.dart';
 import 'package:arbor/views/themes/arbor_theme_data.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ import 'views/screens/on_boarding/splash_screen.dart';
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+  await customSharedPreference.init();
 
   try {
     const FlutterSecureStorage secureStorage = FlutterSecureStorage();
@@ -70,7 +72,7 @@ main() async {
         );
       }
 
-      runApp(const MyApp());
+      runApp(MyApp());
     } else {
       return runApp(
         const MaterialApp(
@@ -101,7 +103,6 @@ void _hiveAdaptersRegistration() {
   Hive.registerAdapter(WalletAdapter());
   Hive.registerAdapter(BlockchainAdapter());
   Hive.registerAdapter(TransactionsGroupAdapter());
-  //Hive.registerAdapter(TransactionGroupAdapter());
   Hive.registerAdapter(TransactionAdapter());
 }
 
@@ -222,6 +223,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           new MaterialPageRoute(builder: (BuildContext context) {
         return SplashScreen();
       }));
+    } else if (customSharedPreference.isAlreadyUnlocked == true &&
+        Platform.isIOS) {
+      _navigatorKey.currentState!.pushReplacement(
+          new MaterialPageRoute(builder: (BuildContext context) {
+        return BaseScreen();
+      }));
+      customSharedPreference.setIsAlreadyUnlocked(false);
     } else if (customSharedPreference.pinIsSet ||
         customSharedPreference.biometricsIsSet) {
       _navigatorKey.currentState!.pushReplacement(
