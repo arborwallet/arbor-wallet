@@ -156,7 +156,6 @@ class _UnlockWithPinScreenState extends State<UnlockWithPinScreen> {
   }
 
   handleNavigationForBiometrics() {
-    debugPrint("We are here");
     if (widget.unlock == false) {
       customSharedPreference.setUseBiometrics(false);
       Navigator.pop(context, true);
