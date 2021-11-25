@@ -2,6 +2,7 @@ import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/core/enums/status.dart';
 import 'package:arbor/core/providers/send_crypto_provider.dart';
+import 'package:arbor/core/utils/app_utils.dart';
 import 'package:arbor/models/models.dart';
 import 'package:arbor/views/screens/send/address_scanner.dart';
 import 'package:arbor/views/screens/send/status_screen.dart';
@@ -11,9 +12,9 @@ import 'package:arbor/views/widgets/text_fields/editting_controller.dart';
 import 'package:arbor/views/widgets/layout/hide_keyboard_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:numeric_keyboard/numeric_keyboard.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ValueScreen extends StatelessWidget {
   final addressFocusNode = FocusNode();
@@ -27,14 +28,16 @@ class ValueScreen extends StatelessWidget {
     return Consumer<SendCryptoProvider>(builder: (_, model, __) {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         if (model.walletBalanceStatus == Status.IDLE) {
-          model.privateKey=wallet.privateKey;
-          model.networkFee=wallet.blockchain.network_fee;
-          model.currentUserAddress=wallet.address;
-          model.forkPrecision=wallet.blockchain.precision;
-          model.forkName=wallet.blockchain.name;
-          model.forkTicker=wallet.blockchain.ticker;
+          model.privateKey = wallet.privateKey;
+          model.currentUserAddress = wallet.address;
+          model.forkPrecision = wallet.blockchain.precision;
+          model.forkName = wallet.blockchain.name;
+          model.forkTicker = wallet.blockchain.ticker;
           model.setWalletBalance(wallet.balance);
         }
+        // if(model.sendCryptoStatus==Status.ERROR){
+        //   AppUtils.showSnackBar(context, "${model.errorMessage}", ArborColors.errorRed);
+        // }
       });
       return Container(
         color: ArborColors.green,
@@ -72,11 +75,10 @@ class ValueScreen extends StatelessWidget {
                 ),
                 child: SingleChildScrollView(
                   child: ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight:
-                        MediaQuery.of(context).size.height
-                        - MediaQuery.of(context).padding.top
-                        - MediaQuery.of(context).padding.bottom
-                    ),
+                    constraints: BoxConstraints(
+                        maxHeight: MediaQuery.of(context).size.height -
+                            MediaQuery.of(context).padding.top -
+                            MediaQuery.of(context).padding.bottom),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -136,6 +138,7 @@ class ValueScreen extends StatelessWidget {
                         Spacer(flex: 2),
                         Text(
                           '${model.transactionValue} ${wallet.blockchain.ticker.toUpperCase()}',
+                          textAlign: TextAlign.center,
                           style:
                           TextStyle(fontSize: 30.h, color: ArborColors.deepGreen),
                         ),
@@ -154,7 +157,7 @@ class ValueScreen extends StatelessWidget {
                           errorMessage: model.addressErrorMessage,
                           onChanged: (v) => model.setReceiverAddress(v),
                           onIconPressed: () {
-                            model.scannedData=false;
+                            model.scannedData = false;
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -185,7 +188,8 @@ class ValueScreen extends StatelessWidget {
                                     Icons.adjust_sharp,
                                     color: ArborColors.white,
                                   ),
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                 ),
                               ),
                               Flexible(
@@ -201,8 +205,8 @@ class ValueScreen extends StatelessWidget {
                                     decoration: BoxDecoration(
                                         color: ArborColors.transparent,
                                         borderRadius: BorderRadius.circular(20),
-                                        border: Border.all(color: ArborColors.lightGreen)
-                                    ),
+                                        border: Border.all(
+                                            color: ArborColors.lightGreen)),
                                     child: Center(
                                       child: Text(
                                         'MAX',
@@ -225,23 +229,28 @@ class ValueScreen extends StatelessWidget {
                           child: ArborButton(
                             backgroundColor: ArborColors.deepGreen,
                             disabled: !model.enableButton,
-                            loading: false,
+                            loading: model.sendButtonIsBusy,
                             title: 'Continue',
                             onPressed: () async {
+
+                              await model.getTransactionFee();
+
                               var status = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => StatusScreen(),
                                 ),
                               );
-                              if (status == true){
+                              if (status == true) {
                                 //model.getBalance();
-                                Navigator.pop(context);
+                                Navigator.pop(context,true);
                               }
                             },
                           ),
                         ),
-                        Spacer(flex: 1,),
+                        Spacer(
+                          flex: 1,
+                        ),
                       ],
                     ),
                   ),

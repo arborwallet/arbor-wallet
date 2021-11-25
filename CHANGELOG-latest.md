@@ -1,12 +1,7 @@
-## [1.2.0] - 2021-10-02
-
-### Added
-
-- Now using the new wallet puzzle API which is incompatible with previous beta apps.
-- Add progress indicator to the transactions screen.
-- Add more info to the transactions screen.
-- Add more info on the send success screen.
+## [2.0.0] - 2021-11-19
 
 ### Fixed
 
-- Fix colors of the pull to refresh spinner.
+- Replaced wallet key generation, import and signing to all be done locally within the app.
+- Fixed transaction timestamps
+- In-progress sends are now also indicated by a yellow icon on the main wallet view and auto-refreshes after 90 seconds.

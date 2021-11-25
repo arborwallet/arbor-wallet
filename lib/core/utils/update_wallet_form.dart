@@ -4,8 +4,6 @@ import 'package:hive/hive.dart';
 
 import '../constants/hive_constants.dart';
 
-
-
 class UpdateWalletForm extends StatefulWidget {
   final int index;
   final Wallet wallet;
@@ -37,7 +35,6 @@ class _UpdateWalletFormState extends State<UpdateWalletForm> {
     Wallet existingWallet = widget.wallet;
     Wallet newWallet = Wallet(
       name: _nameController.text,
-      phrase: existingWallet.phrase,
       privateKey: existingWallet.privateKey,
       publicKey: existingWallet.publicKey,
       address: existingWallet.address,

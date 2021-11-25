@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 import 'blockchain.dart';
@@ -10,8 +11,6 @@ part 'wallet.g.dart';
 class Wallet {
   @HiveField(0)
   final String name;
-
-  final String phrase;
 
   @HiveField(1)
   final String privateKey;
@@ -30,7 +29,6 @@ class Wallet {
 
   Wallet({
     required this.name,
-    this.phrase = '',
     required this.privateKey,
     required this.publicKey,
     required this.address,
@@ -39,8 +37,12 @@ class Wallet {
   });
 
   String balanceForDisplay() {
-    double display = balance / pow(10,blockchain.precision);
-    return display.toStringAsFixed(blockchain.precision);
+    return Wallet.amountToDisplayWithPrecision(balance, blockchain.precision);
+  }
+
+  static String amountToDisplayWithPrecision(amount, precision) {
+    double display = amount / pow(10, precision);
+    return display.toStringAsFixed(precision);
     // In case someone asks for the zeros at the end to be not displayed
     // return display.toString();
   }
