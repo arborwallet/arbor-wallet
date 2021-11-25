@@ -41,8 +41,8 @@ class _UnlockWithPinScreenState extends State<UnlockWithPinScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!
-        .addPostFrameCallback((_) => unlockWithBiometrics());
+    //Future.delayed(Duration(milliseconds: 1000), () =>unlockWithBiometrics());
+    WidgetsBinding.instance!.addPostFrameCallback((_) => unlockWithBiometrics());
   }
 
   unlockWithBiometrics() async {
@@ -156,6 +156,7 @@ class _UnlockWithPinScreenState extends State<UnlockWithPinScreen> {
   }
 
   handleNavigationForBiometrics() {
+    debugPrint("We are here");
     if (widget.unlock == false) {
       customSharedPreference.setUseBiometrics(false);
       Navigator.pop(context, true);
