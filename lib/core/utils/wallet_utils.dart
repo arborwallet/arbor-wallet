@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:arbor/api/responses/record_response.dart';
-import 'package:arbor/clvm/program.dart';
+import 'package:chia_utils/clvm.dart';
 
 final walletPuzzle = Program.parse(
     '(a (q 4 (c 4 (c 5 (c (a 6 (c 2 (c 11 ()))) ()))) 11) (c (q 50 2 (i (l 5) (q 11 (q . 2) (a 6 (c 2 (c 9 ()))) (a 6 (c 2 (c 13 ())))) (q 11 (q . 1) 5)) 1) 1))');
@@ -32,11 +32,11 @@ List<RecordResponse> aggregateRecords(
 
 Uint8List getCoinId(RecordResponse record) {
   return Program.list([
-    Program.int(11),
+    Program.fromInt(11),
     Program.cons(
-        Program.int(1), Program.hex(record.coin.parentCoinInfo.substring(2))),
+        Program.fromInt(1), Program.fromHex(record.coin.parentCoinInfo.substring(2))),
     Program.cons(
-        Program.int(1), Program.hex(record.coin.puzzleHash.substring(2))),
-    Program.cons(Program.int(1), Program.int(record.coin.amount))
-  ]).run(Program.nil()).program.atom;
+        Program.fromInt(1), Program.fromHex(record.coin.puzzleHash.substring(2))),
+    Program.cons(Program.fromInt(1), Program.fromInt(record.coin.amount))
+  ]).run(Program.nil).program.atom;
 }

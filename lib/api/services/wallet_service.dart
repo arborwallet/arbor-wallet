@@ -4,13 +4,16 @@ import 'dart:typed_data';
 import 'package:arbor/api/responses/record_response.dart';
 import 'package:arbor/api/responses/records_response.dart';
 import 'package:arbor/api/responses/transaction_response.dart';
-import 'package:arbor/bls/ec.dart';
-import 'package:arbor/bls/schemes.dart';
-import 'package:arbor/clvm/program.dart';
-import 'package:arbor/core/utils/local_signer.dart';
+import 'package:arbor/api/services/connectivity_service.dart';
+import 'package:arbor/core/constants/hive_constants.dart';
+import 'package:arbor/api/services/signing_service.dart';
 import 'package:arbor/models/transaction.dart';
 import 'package:bech32m/bech32m.dart';
+import 'package:chia_utils/bls.dart';
+import 'package:chia_utils/clvm.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:hex/hex.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 
 import '/models/models.dart';
@@ -21,21 +24,65 @@ class WalletService extends ApiService {
   WalletService({this.baseURL = ApiService.baseURL});
 
   final String baseURL;
+  Box blockchainBox = Hive.box(HiveConstants.blockchainBox);
+
+  final _connectivityService = ConnectivityService();
 
   Future<dynamic> createNewWallet() async {
     String mnemonic = "";
     WalletKeysAndAddress? walletKeysAndAddress;
 
     try {
-      mnemonic = LocalSigner.generateWalletMnemonic();
+      mnemonic = SigningService.generateWalletMnemonic();
       walletKeysAndAddress =
-          LocalSigner.convertMnemonicToKeysAndAddress(mnemonic);
+          SigningService.convertMnemonicToKeysAndAddress(mnemonic);
     } on Exception catch (e) {
       throw Exception('ERROR : ${e.toString()}');
     }
 
-    try {
-      Blockchain? blockchain = await fetchBlockchainInfo();
+    bool hasInternet = await _connectivityService.hasInternetConnection();
+
+    if (hasInternet) {
+      try {
+        Blockchain? blockchain = await fetchBlockchainInfo();
+
+        if (blockchainBox.containsKey(HiveConstants.blockchainData)) {
+          blockchainBox.delete(HiveConstants.blockchainData);
+          blockchainBox.put(HiveConstants.blockchainData, blockchain);
+        }
+
+        Wallet wallet = Wallet(
+          name: '',
+          privateKey: const HexEncoder()
+              .convert(walletKeysAndAddress.privateKey.toBytes()),
+          publicKey: const HexEncoder()
+              .convert(walletKeysAndAddress.publicKey.toBytes()),
+          address: walletKeysAndAddress.address,
+          blockchain: Blockchain(
+              name: blockchain.name,
+              ticker: blockchain.ticker,
+              unit: blockchain.unit,
+              precision: blockchain.precision,
+              logo: blockchain.logo,
+              network_fee: blockchain.network_fee,
+              agg_sig_me_extra_data: blockchain.agg_sig_me_extra_data),
+          balance: 0,
+        );
+
+        return [wallet, mnemonic];
+      } on Exception catch (e) {
+        throw Exception('ERROR : ${e.toString()}');
+      }
+    } else {
+      Blockchain? blockchain;
+      try {
+        blockchain = blockchainBox.get(HiveConstants.blockchainData,
+            defaultValue: HiveConstants.defaultBlockchainData);
+
+        debugPrint("${blockchain!.unit}  ${blockchain.name}");
+      } on Exception catch (e) {
+        throw Exception('ERROR : ${e.toString()}');
+      }
 
       Wallet wallet = Wallet(
         name: '',
@@ -56,8 +103,6 @@ class WalletService extends ApiService {
       );
 
       return [wallet, mnemonic];
-    } on Exception catch (e) {
-      throw Exception('ERROR : ${e.toString()}');
     }
   }
 
@@ -79,14 +124,15 @@ class WalletService extends ApiService {
             BlockchainResponse.fromJson(jsonDecode(blockchainResponse.body));
 
         Blockchain blockchain = Blockchain(
-            name: blockchainResponseModel.blockchainData.name,
-            ticker: blockchainResponseModel.blockchainData.ticker,
-            unit: blockchainResponseModel.blockchainData.unit,
-            precision: blockchainResponseModel.blockchainData.precision,
-            logo: blockchainResponseModel.blockchainData.logo,
-            network_fee: blockchainResponseModel.blockchainData.blockchainFee,
-            agg_sig_me_extra_data:
-                blockchainResponseModel.blockchainData.aggSigMeExtraData);
+          name: blockchainResponseModel.blockchainData.name,
+          ticker: blockchainResponseModel.blockchainData.ticker,
+          unit: blockchainResponseModel.blockchainData.unit,
+          precision: blockchainResponseModel.blockchainData.precision,
+          logo: blockchainResponseModel.blockchainData.logo,
+          network_fee: blockchainResponseModel.blockchainData.blockchainFee,
+          agg_sig_me_extra_data:
+              blockchainResponseModel.blockchainData.aggSigMeExtraData,
+        );
 
         return blockchain;
       } else {
@@ -102,7 +148,7 @@ class WalletService extends ApiService {
 
     try {
       walletKeysAndAddress =
-          LocalSigner.convertMnemonicToKeysAndAddress(phrase);
+          SigningService.convertMnemonicToKeysAndAddress(phrase);
     } on Exception catch (e) {
       throw Exception('ERROR : ${e.toString()}');
     }
@@ -131,13 +177,14 @@ class WalletService extends ApiService {
               .convert(walletKeysAndAddress.publicKey.toBytes()),
           address: walletKeysAndAddress.address,
           blockchain: Blockchain(
-              name: blockchain.name,
-              ticker: blockchain.ticker,
-              unit: blockchain.unit,
-              precision: blockchain.precision,
-              logo: blockchain.logo,
-              network_fee: blockchain.network_fee,
-              agg_sig_me_extra_data: blockchain.agg_sig_me_extra_data),
+            name: blockchain.name,
+            ticker: blockchain.ticker,
+            unit: blockchain.unit,
+            precision: blockchain.precision,
+            logo: blockchain.logo,
+            network_fee: blockchain.network_fee,
+            agg_sig_me_extra_data: blockchain.agg_sig_me_extra_data,
+          ),
           balance: balance.balance,
         );
 
@@ -231,13 +278,13 @@ class WalletService extends ApiService {
       required int amount,
       required int fee,
       required String ticker,
-      required String blockChainExtraData}) async {
+      required String aggSigMeExtraData}) async {
     SignedTransactionResponse? signedTransactionResponse;
     var totalAmount = amount + fee;
 
     try {
       signedTransactionResponse =
-          await LocalSigner.usePrivateKeyToGenerateHash(privateKey);
+          await SigningService.usePrivateKeyToGenerateHash(privateKey);
     } on Exception catch (e) {
       throw Exception('ERROR : ${e.toString()}');
     }
@@ -251,7 +298,6 @@ class WalletService extends ApiService {
             'address': signedTransactionResponse.address,
           }));
       if (responseData.statusCode == 200) {
-
         RecordsResponse recordsResponse =
             RecordsResponse.fromJson(jsonDecode(responseData.body));
         var records = recordsResponse.records;
@@ -286,17 +332,17 @@ class WalletService extends ApiService {
           var conditions = Program.list(target
               ? [
                     Program.list([
-                      Program.int(51),
-                      Program.atom(Uint8List.fromList(destinationHash)),
-                      Program.int(amount)
+                      Program.fromInt(51),
+                      Program.fromBytes(Uint8List.fromList(destinationHash)),
+                      Program.fromInt(amount)
                     ])
                   ] +
                   (change > 0
                       ? [
                           Program.list([
-                            Program.int(51),
-                            Program.atom(signedTransactionResponse.puzzleHash),
-                            Program.int(change)
+                            Program.fromInt(51),
+                            Program.fromBytes(signedTransactionResponse.puzzleHash),
+                            Program.fromInt(change)
                           ])
                         ]
                       : [])
@@ -304,18 +350,18 @@ class WalletService extends ApiService {
           var solution = Program.list([conditions]);
           target = false;
           var coinId = Program.list([
-            Program.int(11),
-            Program.cons(Program.int(1),
-                Program.hex(record.coin.parentCoinInfo.substring(2))),
-            Program.cons(Program.int(1),
-                Program.hex(record.coin.puzzleHash.substring(2))),
-            Program.cons(Program.int(1), Program.int(record.coin.amount))
-          ]).run(Program.nil()).program.atom;
+            Program.fromInt(11),
+            Program.cons(Program.fromInt(1),
+                Program.fromHex(record.coin.parentCoinInfo.substring(2))),
+            Program.cons(Program.fromInt(1),
+                Program.fromHex(record.coin.puzzleHash.substring(2))),
+            Program.cons(Program.fromInt(1), Program.fromInt(record.coin.amount))
+          ]).run(Program.nil).program.atom;
           signatures.add(AugSchemeMPL.sign(
               signedTransactionResponse.privateKeyObject,
               Uint8List.fromList(conditions.hash() +
                   coinId +
-                  const HexDecoder().convert(blockChainExtraData))));
+                  const HexDecoder().convert(aggSigMeExtraData))));
           spends.add({
             'coin': record.coin.toJson(),
             'puzzle_reveal': const HexEncoder()
