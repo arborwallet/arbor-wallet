@@ -251,7 +251,7 @@ class WalletService extends ApiService {
             'address': signedTransactionResponse.address,
           }));
       if (responseData.statusCode == 200) {
-        print("${responseData.body}");
+
         RecordsResponse recordsResponse =
             RecordsResponse.fromJson(jsonDecode(responseData.body));
         var records = recordsResponse.records;
