@@ -195,7 +195,7 @@ class _UnlockWithPinScreenState extends State<UnlockWithPinScreen> {
               centerTitle: true,
               elevation: 0,
               leading: widget.fromRoot
-                  ? null
+                  ? Container()
                   : IconButton(
                       onPressed: () {
                         Navigator.pop(context, false);
