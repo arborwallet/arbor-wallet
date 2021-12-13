@@ -5,6 +5,7 @@ import 'package:arbor/core/constants/arbor_constants.dart';
 import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/core/providers/auth_provider.dart';
 import 'package:arbor/core/providers/settings_provider.dart';
+import 'package:arbor/core/utils/app_utils.dart';
 import 'package:arbor/core/utils/local_storage_utils.dart';
 import 'package:arbor/views/screens/settings/set_pin_screen.dart';
 import 'package:arbor/views/screens/settings/unlock_with_pin_screen.dart';
@@ -191,6 +192,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     if (pinIsSet) {
       if (biometricIsSet == false) {
+        authAction=AuthAction.SetUp;
         var localAuth = LocalAuthentication();
         bool isSupported = await localAuth.isDeviceSupported();
         List<BiometricType> availableBiometrics = await localAuth.getAvailableBiometrics();

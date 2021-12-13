@@ -19,6 +19,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+
 class UnlockWithPinScreen extends StatefulWidget {
   final bool unlock;
   final bool fromRoot;

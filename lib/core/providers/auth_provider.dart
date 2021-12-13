@@ -3,6 +3,12 @@ import 'package:arbor/core/utils/local_storage_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:local_auth/local_auth.dart';
 
+enum AuthAction{
+  Resume,
+  SetUp,
+  Unlock,
+}
+
 class AuthProvider extends ChangeNotifier {
   final LocalAuthentication localAuthentication = LocalAuthentication();
 

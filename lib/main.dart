@@ -8,6 +8,7 @@ import 'package:arbor/core/constants/arbor_constants.dart';
 import 'package:arbor/core/providers/restore_wallet_provider.dart';
 import 'package:arbor/core/providers/send_crypto_provider.dart';
 import 'package:arbor/core/providers/settings_provider.dart';
+import 'package:arbor/core/utils/app_utils.dart';
 import 'package:arbor/core/utils/local_storage_utils.dart';
 import 'package:arbor/models/models.dart';
 import 'package:arbor/views/screens/base/base_screen.dart';
@@ -218,7 +219,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void _showRequiredScreen() async {
     bool isFirstTimer = await _isFirstTimeUser();
 
-    if (isFirstTimer) {
+    if (authAction != null && authAction == AuthAction.SetUp) {
+    } else if (isFirstTimer) {
       _navigatorKey.currentState!.pushReplacement(
           new MaterialPageRoute(builder: (BuildContext context) {
         return SplashScreen();
