@@ -129,11 +129,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addObserver(this);
+
     _showLockScreenSubs = _showLockScreenStream.stream.listen((bool show) {
       if (mounted && show) {
         _showRequiredScreen();
       }
     });
+
+
   }
 
   @override
@@ -183,7 +186,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                     bool _isFirstTime = snapshot.data as bool;
                     if (_isFirstTime) {
                       return SplashScreen();
-                    } else {
+                    }else if(customSharedPreference.pinIsSet ||
+                        customSharedPreference.biometricsIsSet){
+                      return UnlockWithPinScreen(
+                        fromRoot: true,
+                        unlock: true,
+                      );
+                    }
+                    else {
                       return const BaseScreen();
                     }
                   } else {
@@ -191,7 +201,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                       color: ArborColors.green,
                     );
                   }
-                })),
+                }),
+        ),
       ),
     );
   }
@@ -220,6 +231,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     bool isFirstTimer = await _isFirstTimeUser();
 
     if (authAction != null && authAction == AuthAction.SetUp) {
+      _navigatorKey.currentState!.pushReplacement(
+          new MaterialPageRoute(builder: (BuildContext context) {
+            return BaseScreen();
+          }));
+
     } else if (isFirstTimer) {
       _navigatorKey.currentState!.pushReplacement(
           new MaterialPageRoute(builder: (BuildContext context) {

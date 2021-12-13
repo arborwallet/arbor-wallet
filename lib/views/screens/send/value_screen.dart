@@ -2,7 +2,6 @@ import 'package:arbor/core/constants/arbor_colors.dart';
 import 'package:arbor/core/constants/asset_paths.dart';
 import 'package:arbor/core/enums/status.dart';
 import 'package:arbor/core/providers/send_crypto_provider.dart';
-import 'package:arbor/core/utils/app_utils.dart';
 import 'package:arbor/models/models.dart';
 import 'package:arbor/views/screens/send/address_scanner.dart';
 import 'package:arbor/views/screens/send/status_screen.dart';
