@@ -1,3 +1,6 @@
+<h1 align="center">Arbor Wallet, has been shutdown and no longer being actively developed/supported.</h1>
+<h3 align="center">Thank you for everyone that made this project a possibility and the journey you've taken with us.</h3>
+
 <p align="center">
   <a href="https://www.arborwallet.com/">
     <img src="https://github.com/Digital-Farming-Initiative/arbor-wallet/blob/develop/assets/images/logo.png" alt="Arbor Wallet logo" width="200" height="200">
@@ -16,5 +19,4 @@ Arbor Wallet v1 is focused on bringing a light wallet that doesn't store your se
 
 ## Releases
 
-- Android BETA https://play.google.com/store/apps/details?id=com.digitalfarminginitiative.arbor
-- iOS BETA https://testflight.apple.com/join/afdyqrwp
+SHUTDOWN - NO LONGER ACTIVELY DEVELOPED
